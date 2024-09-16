@@ -1,0 +1,54 @@
+%
+% titlepage.tex -- TeXfiles
+%
+% (c) 2024 Jakob Gierer & Lukas Schöpf, OST Ostschweizer Fachhochschule
+%
+
+
+\begin{titlepage}
+    % Bigger symmetric margins
+    \newgeometry{
+        outer = 3cm, inner = 3cm, top=5cm,bottom=6cm
+    }
+    \centering
+%    \vspace{4cm}
+
+    % Titel
+    {\huge \bfseries \sffamily Audioklassifizierung \par
+     \normalfont\itshape Akustische Erkennung von Drohnen \par}
+    \vspace{1cm}
+
+    % Autoren
+    {\large \textsl{Jakob Gierer, Lukas Schöpf}}
+    \par
+    \vspace{1cm}
+
+    % Informationen über Hochschule
+    {\textsc Bachelorarbeit \par}
+    {Ostschweizer Fachhochschule \par}
+    \today
+    \vfill
+    
+    % Titelbild
+    % Beispiel
+%    \begin{figure}[h]
+%        \centering
+%        \includegraphics[width=3cm]{example-image-c}
+%    \end{figure}
+
+    % Oder Tikz
+    % \resizebox{.9\linewidth}{!}{
+        %   \input{figures/tikz/}
+        % }
+    \vfill
+
+    % Wichtige Informationen
+    \begin{tabular}{rl}
+        \bfseries\sffamily Thema & Audioklassifizierung \\
+        \bfseries\sffamily Fachgebiet          & Digitale Signalverarbeitung \\
+        \bfseries\sffamily Betreuer       & Hannes Badertscher, Patrik Müller \\
+        
+    \end{tabular}
+    \restoregeometry    
+\end{titlepage}
+
