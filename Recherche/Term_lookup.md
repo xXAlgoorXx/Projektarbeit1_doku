@@ -20,7 +20,7 @@ BLEU is an algorithm for evaluating the quality of text which has been machine-t
 
 # Scene Understanding [[Paper](https://www.mdpi.com/2076-3417/9/10/2110)]
 
-Scene Understanding is something that to understand a scene. For instance, iPhone has function that help eye disabled person to take a photo by discribing what the camera sees. This is an example of Scene Understanding.
+Scene Understanding is something that to understand a scene. For instance, iPhone has function that help eye disabled person to take a photo by discribing what the camera sees.
 
 # Transformer
 Inputs get split up into tokens and get assigned to a vector with destinct values. This proceder is called encoding.
@@ -72,18 +72,68 @@ It consists of a text encoder and an image encoder. The text encoder is a transf
 TinyCLIP is a method to destill large-scale language models such as CLIP.
 It consists of 3 components.
 
-### Affinity mimicking
+## Affinity mimicking
 
 It introduces 2 affinity distillaition losses: image-to-language loss and language-to-image loss.
 
-### Weight inheritance
+## Weight inheritance
 
 Weight inheritance is a techinque which inherits the important weights from well-trained teacher models to smaller student models.
 In they paper they propose 2 methods:
 
-- Manual inheritance
-- Automatic inheritance
+### Manual inheritance
 
-### Multi-stage progressiv distillaiton 
+Based on observaitions of the authors. Text encoder have most redundancy in depth (layer-wise), image encoder in width (channel-wise). They select $k$ layers and channels of a branch which will function as initialization weights. To select the most important weights prior knowledge is required
+
+### Automatic inheritance
+
+The Authors introduce a learnable mask to identify weight importance.
+
+
+
+## Multi-stage progressiv distillaiton 
+
+# Optimizing LLM [[Video](https://www.youtube.com/watch?v=UcwDgsMgTu4&t=359s)]
+
+## Quantization
+
+Quantize the values of a LLM(e.g. from FP32 to INT8 with Zero-point Quantizaition). Quantization should be determaned after inspecting the hardware in which the model should be runned.
+
+There are 2 ways to Quantize a network:
+### Weigth quantizaition
+Store weights in INT8,dequantize into FP32 when running it. Not faster inference but saves space.
+
+### Activation quantizaition
+Convert inputs and outputs to INT8 and do computaition in INT8. Need calibraition (static or dynamic) to determine scale factors for data in each layer.
+
+## Pruning
+Remove some conections in the network which results in a sparse network which is easier to store.
+To use a sparse network, one has to use same sort of sparse execution engine (e.g. sparse MatMul).
+
+### Magnitude pruning
+
+Pick pruning factor X. In each layer, set the lowest X% of the weights (by absolute value) to zero.
+Optional: retrain the model to recover accuracy
+
+### Structured Pruning
+
+Removing random connections in a network is called unstructured pruning.
+Structured pruning is when one enforces more structure on which weights one is allowed to set to zero.
+#### 2:4 Structured pruning
+
+For each block of 4 consecutive matric values only 2 are allowed to be 0.
+
+## Knowledge distillation (Model distillation)
+
+First train a larger teacher network. After the teacher network has been trained, one then starts training a smaller student network to predict the output of the teacher network. This works because the output of the teacher network has more informaition than the original label.
+
+### Advantages
+- Can modify the architecture of student models (e.g. fewer layers)
+- Biggest potential gain in speed
+### Disadvantages
+- Need to setup training data, need to run teacher model while training student
+- Relatively expensive (typically 5-10% of the teacher training compute)
+
+## Engineeting optimizations
 
 
