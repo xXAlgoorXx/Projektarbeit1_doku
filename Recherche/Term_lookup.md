@@ -41,7 +41,7 @@ Let's the vectors "talk" to each other. It is resposible for the meanings of the
 
 *What does it refer to in a scentens*
 
-**Multi Layer Perceptron(MLP) / Residual Block**:
+**Multi Layer Perceptron(MLP) /Residual Block /FFL**
 Feed forward layer. A linear Layer , a ReLU and a liner Layer. The resulting vector is added to the original vector(Residual connetction).
 
 these two layers with some normalizaition are repeated until the transformer has enough capacity to execute its task.
@@ -92,6 +92,8 @@ The Authors introduce a learnable mask to identify weight importance.
 
 
 ## Multi-stage progressiv distillaiton 
+
+Pruning the model over multiple stages. For each stage the authors use a modest degree of compression (e.g. 25%). Each stage includes weight inheritance and affinity mimicking.
 
 # Optimizing LLM [[Video](https://www.youtube.com/watch?v=UcwDgsMgTu4&t=359s)]
 
