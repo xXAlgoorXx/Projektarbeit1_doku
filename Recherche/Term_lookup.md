@@ -6,6 +6,8 @@
 **Cross-modal networks**: Levereges from one modality to another 
 *image to text*
 
+**Modality explanation**:[[Website Modality](https://jina.ai/news/what-is-multimodal-deep-learning-and-what-are-the-applications/)]
+
 **Knowledge distillation**: Transfering knowledge from a larger model to another smaller model
 
 **N-shot capability**[[explanaition](https://www.pinecone.io/learn/series/image-search/zero-shot-image-classification-clip/)]: Here we define N as the number of samples required to train a model to begin making predictions in a new domain or on a new task.
@@ -23,6 +25,8 @@ BLEU is an algorithm for evaluating the quality of text which has been machine-t
 # Scene Understanding [[Paper](https://www.mdpi.com/2076-3417/9/10/2110)]
 
 Scene Understanding is something that to understand a scene. For instance, iPhone has function that help eye disabled person to take a photo by discribing what the camera sees.
+
+[Language-Image](https://voxel51.com/blog/a-history-of-clip-model-training-data-advances/)
 
 # Transformer
 Inputs get split up into tokens and get assigned to a vector with destinct values. This proceder is called encoding.
@@ -71,6 +75,8 @@ It consists of a text encoder and an image encoder. The text encoder is a transf
 
 Dataset: 400 M
 
+Zeroshot on CIFAR100: 61,7% (35,4 it/s)
+
 # ALIGN [[Paper](http://proceedings.mlr.press/v139/jia21b.html)]
 
 Similar to CLIP but trained on a larger but noisier Dataset (1.8B).
@@ -80,9 +86,15 @@ raw alt-text data, while CLIP collects the dataset by first
 constructing an allowlist of high-frequency visual concepts
 from English Wikipedia. 
 
+Original Code is not available.
+
 Image Encoder: EfficientNet with global pooling 
 
 Text Encoder: BERT
+
+Interferance is much slower than CLIP(2.16s/it on ALIGN comperade to 35.4 it/s on CLIP)
+
+ZeroShot on CIFAR100: 48.9% (interruped at 35% of the computation due to duration)
 
 # TinyCLIP [[Paper](https://arxiv.org/pdf/2309.12314)]
 
@@ -155,4 +167,6 @@ First train a larger teacher network. After the teacher network has been trained
 
 ## Engineeting optimizations
 
-# 
+# Linear probing[[Paper](https://openaccess.thecvf.com/content/CVPR2024/papers/Huang_LP_A_Surprisingly_Strong_Linear_Probe_for_Few-Shot_CLIP_CVPR_2024_paper.pdf)]
+
+
