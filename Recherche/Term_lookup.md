@@ -8,6 +8,8 @@
 
 **Knowledge distillation**: Transfering knowledge from a larger model to another smaller model
 
+**N-shot capability**[[explanaition](https://www.pinecone.io/learn/series/image-search/zero-shot-image-classification-clip/)]: Here we define N as the number of samples required to train a model to begin making predictions in a new domain or on a new task.
+
 **Zero-shot capability**: A learner(model) observers a sample from classes which were not observed during training
 
 **Cosine simularity**: Used to check, if 2 vectors point in the same direction. To do this, the cosine of the angel between the vectors must be calculated.
@@ -57,7 +59,7 @@ The "talking" between the vector happens with querys and keys. The query ask a q
 At the end, a value is also used to further process the data.
 
 # CLIP [[Paper](https://arxiv.org/pdf/2103.00020)]
-CLIP is a pretrained model for telling you how well a given image and a given text fit together.
+CLIP is a pretrained model for telling you how well a given image and a given text fit together. It is special because of its zero-shot capability.
 
 It consists of a text encoder and an image encoder. The text encoder is a transformer and the image encoder is a ViT.
 
@@ -66,6 +68,21 @@ It consists of a text encoder and an image encoder. The text encoder is a transf
 [[Further explanation](https://medium.com/@paluchasz/understanding-openais-clip-model-6b52bade3fa3)]
 
 [[ViT Paper](https://arxiv.org/pdf/2010.11929)]
+
+Dataset: 400 M
+
+# ALIGN [[Paper](http://proceedings.mlr.press/v139/jia21b.html)]
+
+Similar to CLIP but trained on a larger but noisier Dataset (1.8B).
+
+ALIGN follows the natural distribution of image-text pairs from the
+raw alt-text data, while CLIP collects the dataset by first
+constructing an allowlist of high-frequency visual concepts
+from English Wikipedia. 
+
+Image Encoder: EfficientNet with global pooling 
+
+Text Encoder: BERT
 
 # TinyCLIP [[Paper](https://arxiv.org/pdf/2309.12314)]
 
@@ -138,4 +155,4 @@ First train a larger teacher network. After the teacher network has been trained
 
 ## Engineeting optimizations
 
-
+# 
