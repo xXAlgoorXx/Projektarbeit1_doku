@@ -52,6 +52,7 @@
         The goal is for such a pair to be represented in a similar embedding by its corresponding encoder.
         Speech-image describes the two modalities used by a model.
         Pre-training means that the model has been trained on a large and universal dataset.
+        These models are often refered to as foundational models.
         For a specific application, a pre-trained model can be fine-tuned to better perform its specific task.
 
         \subsection{CLIP
@@ -79,12 +80,13 @@
         \begin{figure}
             \centering
             \includegraphics[width=\textwidth]{Images/crossmodalnetworks/examplepicsalign.png}
-            \caption{example of alt-text image pairs from the train dataset from \acrshort{align}}
+            \caption{Example of alt-text image pairs from the train dataset from \acrshort{align}}
             \label{fig:crossmodalnetworks:alignepairs}
         \end{figure}
 
-        In test for this work \acrshort{align} was much slower in computing a zeroshot evaluation on the CIFAR100\cite{cifar100} dataset than CLIP.
+        In a test for this work \acrshort{align} was much slower in computing a zeroshot evaluation on the CIFAR100\cite{cifar100} dataset than CLIP.
         For 1 prediction \acrshort{align} needs 70 times more time than \acrshort{clip} (see \cref{tab:clipaligntest}).
+        Both networks are not finetuned. The highest predicted label is used. Due to the slow interferance ALIGN was stopped after it processed 35\% of the dataset.
 
         \begin{table}
             \centering
@@ -94,7 +96,7 @@
             Accuracy& 48.9\% & 61.7\%\\
             Speed(seconds per iterarion)&  2.16&  0.02\\ \hline
             \end{tabular}
-            \caption{First test on CIFAR100. Both networks are not finetuned. The highest predicted label is used. Due to the slow interferance ALIGN was stopped after it processed 35\% of the dataset.}
+            \caption{First test on CIFAR100.}
             \label{tab:clipaligntest}
         \end{table}
 

@@ -14,6 +14,9 @@ These networks use a text- and image-encoder to learn and predict relations betw
 These models are pretrained.
 This allows a user to finetune them to better fit the networks to excecute a specific task.
 
+In addition it could be usefull to segment a scene to obeserve specific objects in a image.
+For this case a foundational model like \Acrfull{sam}\cite{sam} could be used to preprocess a image.
+
 Because of knowledge distillation\cite{knowledgedistillation} the size of these networks can be reduced significant while still maintaining their function.
 TinyCLIP\cite{tinyclip} is an example where the orginial network is reduced by 75\%.
 This reduction allows it to use them on restricted platforms and to compute data on the edge.
