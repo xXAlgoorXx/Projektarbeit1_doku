@@ -26,7 +26,7 @@ BLEU is an algorithm for evaluating the quality of text which has been machine-t
 
 Scene Understanding is something that to understand a scene. For instance, iPhone has function that help eye disabled person to take a photo by discribing what the camera sees.
 
-[Language-Image](https://voxel51.com/blog/a-history-of-clip-model-training-data-advances/)
+[Language-Image Models](https://voxel51.com/blog/a-history-of-clip-model-training-data-advances/)
 
 # Transformer
 Inputs get split up into tokens and get assigned to a vector with destinct values. This proceder is called encoding.
