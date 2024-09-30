@@ -101,6 +101,9 @@ ZeroShot on CIFAR100: 48.9% (interruped at 35% of the computation due to duratio
 TinyCLIP is a method to destill large-scale language models such as CLIP.
 It consists of 3 components.
 
+TinyCLIP-ViT-40M-32-Text-19M-LAION400M
+Zeroshot on CIFAR100: 69,29% (10.85 it/s)
+
 ## Affinity mimicking
 
 It introduces 2 affinity distillaition losses: image-to-language loss and language-to-image loss.
