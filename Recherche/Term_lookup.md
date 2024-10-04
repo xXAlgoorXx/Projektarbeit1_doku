@@ -172,4 +172,35 @@ First train a larger teacher network. After the teacher network has been trained
 
 # Linear probing[[Paper](https://openaccess.thecvf.com/content/CVPR2024/papers/Huang_LP_A_Surprisingly_Strong_Linear_Probe_for_Few-Shot_CLIP_CVPR_2024_paper.pdf)]
 
+# Hailo
 
+Some examples on how to use Hailo: [Examples](https://github.com/hailo-ai/hailo-rpi5-examples/tree/main)
+
+How to implement own models: [Hailo Model zoo](https://github.com/hailo-ai/hailo_model_zoo)
+
+More about code for Hailo: [Tappas repo](https://github.com/hailo-ai/tappas/blob/master/README.rst)
+
+Hailo CLIP imeplementation: [Hailo CLIP](https://github.com/hailo-ai/hailo-CLIP)
+
+Tappas User Guide pdf: [Tappas User Guide](https://f.hubspotusercontent30.net/hubfs/3383687/TAPPAS%20User%20Guide.pdf)
+
+## GStreamer [Explanation](https://github.com/hailo-ai/tappas/blob/master-vpu/docs/terminology.rst#gstreamer-framework)
+
+### Elements
+Have one special function for processing/ generating / consuing data.
+By chaining together a pipeline can be created.
+
+### Pads
+An elements in or outputs, which can connect to oher elements.
+- **src**: output
+- **sink**: input
+Datatypes are negotiated between pairs using a process called *Caps Negotiation*.
+Datatypes are described as *GstCaps*.
+
+### Bin
+A container full of elements. Since bins are subclasses of elements, a bin can be mostly controlled as if it was an element. A pipeline is a toplevel bin.
+
+# Important Links
+Problems with Image.show(): [Link](https://askubuntu.com/questions/1462295/ubuntu-22-04-both-eye-of-gnome-and-gimp-failing-with-undefined-symbol-error)
+
+Source code models: [Link](https://github.com/huggingface/transformers/tree/main/src/transformers/models)
