@@ -1,0 +1,30 @@
+\chapter{Task}
+This work shall include the following work packages:
+\subsection*{State-of-the-art in Scene understanding}
+\begin{itemize}
+    \item Get familiar with the state-of-the-art concerning machine learning/deep learning models for environment recognition and scene understanding by reading the relevant scientific papers, covering foundation models like SAM\cite{sam} or CLIP \cite{clip}.
+    \item Understand the working principles of existing approaches, especially CLIP and TinyCLIP\cite{tinyclip}, in detail.
+    \item Gather experience with CLIP-based models by experimenting on suitable available datasets and code (openly available or provided by Hexagon) within a PC-environment (e.g., Python-based application). The dataset provided by Hexagon provides over 1000 panoramic images from at least five different classes.
+\end{itemize}
+
+\subsection*{Hardware accelerator Overview}
+\begin{itemize}
+    \item Perform a brief market analysis to collect an updated view of currently active players (universities, startups, and larger companies) for the provision of AI hardware accelerators with M.2 interface capabilities (like the one of Raspberry Pi AI Kit), which could be effectively used for a CLIP-based approach like in our project.
+    \item Set up the Raspberry Pi AI Kit and its toolchain, and specifically compare the Hailo AI accelerator with the other hardware accelerators found from above.
+\end{itemize}
+
+\subsection*{CLIP model on Edge AI Platform}
+\begin{itemize}
+    \item Integrate a state-of-the-art machine learning algorithm like TinyCLIP on Raspberry Pi AI Kit (typically using Python on Raspberry Pi and C/C++ for Hailo AI accelerator).
+    \item Test the performance of the implementation (using meaningful metrics) and run benchmarking to evaluate differences (e.g., in performance) when computing CLIP in the cloud vs. on the edge.
+    \item Create a proof-of-concept with the Raspberry Pi AI Kit platform that demonstrates feasibility of the use case by processing realistic datasets from Hexagon.
+\end{itemize}
+
+\subsection*{Enhanced Proof-of-Concept}
+\begin{itemize}
+    \item Add some own improvements regarding performance, reliability, or generalization to the existing AI models and/or platform ports, considering quantization, pruning, architecture modifications, dataset processing, training, and optimized hardware deployments (allocation).
+    \item Generalize the implementation to arrive at a unified Edge AI platform framework that can operate with ideally any other AI hardware accelerator card providing a M.2 slot interface.
+    \item \textit{Optionally} Expand the used machine learning pipeline to support multi-label classification.
+    \item \textit{Optionally}  Extend the given framework and platform to test other foundation models (like SAM) in an edge deployment.
+    \item \textit{Optionally}  Explore the possibility to incorporate user feedback and a respective feedback mechanism on the platform, which may offer valuable continuous updates in an effort towards online learning.
+\end{itemize}
