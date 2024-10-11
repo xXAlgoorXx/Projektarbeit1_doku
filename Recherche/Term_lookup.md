@@ -176,13 +176,17 @@ First train a larger teacher network. After the teacher network has been trained
 
 Some examples on how to use Hailo: [Examples](https://github.com/hailo-ai/hailo-rpi5-examples/tree/main)
 
-How to implement own models: [Hailo Model zoo](https://github.com/hailo-ai/hailo_model_zoo)
+Model zoo with precompiled networks: [Hailo Model zoo](https://github.com/hailo-ai/hailo_model_zoo)
 
 More about code for Hailo: [Tappas repo](https://github.com/hailo-ai/tappas/blob/master/README.rst)
 
 Hailo CLIP imeplementation: [Hailo CLIP](https://github.com/hailo-ai/hailo-CLIP)
 
 Tappas User Guide pdf: [Tappas User Guide](https://f.hubspotusercontent30.net/hubfs/3383687/TAPPAS%20User%20Guide.pdf)
+
+Compile own network: [Custom HEF](https://community.hailo.ai/t/creating-custom-hef-using-dfc-model-zoo/739)
+
+Hailo documentations and datasheets: [Generel Documentations](https://hailo.ai/developer-zone/documentation/)
 
 ## GStreamer [Explanation](https://github.com/hailo-ai/tappas/blob/master-vpu/docs/terminology.rst#gstreamer-framework)
 
@@ -204,3 +208,5 @@ A container full of elements. Since bins are subclasses of elements, a bin can b
 Problems with Image.show(): [Link](https://askubuntu.com/questions/1462295/ubuntu-22-04-both-eye-of-gnome-and-gimp-failing-with-undefined-symbol-error)
 
 Source code models: [Link](https://github.com/huggingface/transformers/tree/main/src/transformers/models)
+
+Docker installation: [Docker Tutorial](https://www.digitalocean.com/community/tutorials/how-to-install-and-use-docker-on-ubuntu-20-04)
