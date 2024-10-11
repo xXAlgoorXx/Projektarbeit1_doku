@@ -39,7 +39,8 @@
     \section{Image encoder}
     The image encoder consists of a vision transformer\cite{Vis_N_Grams} in most cases.
     As the text encoder the vision encoder encodes a image in a high dimensional vector space.
-
+    A vision transformer needs an image in a specific dimension.
+    For that reason a Image encode is a pair of vision transformer and preprocessor which changes a imge to the right dimensions for the vision transformer
 
     
     \section{Contrastive Language-Image models
@@ -110,6 +111,8 @@
         \end{figure}
 
         TinyCLIP\cite{tinyclip} is a destilled smaller version of the original \acrshort{clip}.
+        The miniaturisation makes it possible to use TinyClip on limited systems.
+        It also speeds up interferance with a minimal loss of model accuracy.
         It uses 3 concepts to reduce the size of network.
 
         \subsubsection{Affiniy mimicking}
