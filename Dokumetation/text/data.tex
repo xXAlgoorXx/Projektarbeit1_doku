@@ -1,0 +1,31 @@
+\chapter{Hexagon Dataset}
+The dataset was collected using the terrestrial laser scanner RTC 360 from Leica at 32
+different locations.
+In total, this dataset consists of 1330 images and the number of images per location ranges from 4 to 423.
+All the images are 360-degree panoramas with a
+resolution of 8192 \(\times\) 4096 pixels.
+The images are divided into the following 5 classes:
+\begin{itemize}
+    \item Indoor architectural
+    \item Indoor construction
+    \item Outdoor construction
+    \item Outdoor Urban
+    \item Forest
+\end{itemize}
+
+
+
+\begin{table}[htbp]
+    \centering
+    \begin{tabular}{ccc}
+    \toprule
+    \textbf{1. Original}& \textbf{2. Rephrased}& \textbf{3. Subclasses}\\ \midrule
+    Construction (in) & construction site & \makecell{construction site,\\ mining, tunnel}\\ \hline
+    Architectural (in)& architectural& \makecell{architectural, office,\\ residential, school,\\ manufacturing, cellar,\\ laboratory} \\ \hline
+    Construction (out)& construction site & construction site \\ \hline
+    Urban (out)& town & \makecell{town, city,\\countryside, alley,\\ parking lot} \\ \hline
+    Forest (out)& forest& forest \\
+    \bottomrule
+    \end{tabular}
+    \caption{Rephrased terms and their subclasses}
+\end{table}

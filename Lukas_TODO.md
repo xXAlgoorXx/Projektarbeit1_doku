@@ -18,3 +18,6 @@ z_(): incompatible function arguments. The following argument types are supporte
     Invoked with: %308 : Tensor = onnx::Constant(), scope: transformers.models.clip.modeling_clip.CLIPVisionTransformer::/transformers.models.clip.modeling_clip.CLIPEncoder::encoder/transformers.models.clip.modeling_clip.CLIPEncoderLayer::layers.0/transformers.models.clip.modeling_clip.CLIPSdpaAttention::self_attn
     , 'value', 0.125 
     (Occurred when translating scaled_dot_product_attention).
+
+
+https://github.com/huggingface/transformers/issues/22221
