@@ -23,15 +23,18 @@
     \section{Text encoder}
     The text encoder is in most cases a transformer (see \cref{fig:crossmodalnetworks:textencoder}).
     It encodes a given text into a high dimensional vector space.
-    The closer 2 words are related, the closer their embedded vectors are to each other.
-    This high dimensional vector space allows the transformer to classify unseen classes quit correctly because their vector is close to related classes.
-    For example the vector for cat shoud be close to the vector for dog.
+    This high dimensional vector space allows the encoder to classify unseen classes quit correctly because their vector is close to related classes.
+    In theorie the closer 2 words are related, the closer their embedding vectors are to each other.
+    An example of this can be seen in \cref{fig:crossmodalnetworks:3demb} where \Acrfull{pca} is used to reduce the dimensions of the embedding vectors.
+    Cat and dog are close together.
+
     \begin{figure}
         \centering
-        \includegraphics[width=\textwidth]{Images/crossmodalnetworks/examplepicsalign.png}
-        \caption{Example of alt-text image pairs from the train dataset from \acrshort{align}}
-        \label{fig:crossmodalnetworks:alignepairs}
+        \includegraphics[width=\textwidth]{Images/crossmodalnetworks/3DEmbedding.png}
+        \caption{Example of text embeddings made with CLIP and \Acrshort{pca}}
+        \label{fig:crossmodalnetworks:3demb}
     \end{figure}
+
     \begin{figure}
         \centering
         \includegraphics[width=0.25\textwidth]{Images/crossmodalnetworks/The-Transformer-encoder-structure.png}

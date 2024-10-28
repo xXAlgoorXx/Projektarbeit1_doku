@@ -1,5 +1,18 @@
 # TODO
+- ## Evaluierung auf PC
+    - ### Model erwerb
+        - Huggingface
+        - Git Clip/ TinyCLIP
+    - ### Evaluierung
+        - Code von Lia zum direkten vergleich
 
+    - ### Metriken
+        - Accuracy
+        - Throughput
+- ## Evaluierung auf Raspberry Pi
+    - DFC Pipeline
+
+## Notes
 - Modelle von Huggingface können nicht zu ONNX umgewandelt werden wegen `scaled_dot_product_attention`, Clip vit vom original repo aber schon.
     
 z_(): incompatible function arguments. The following argument types are supported:

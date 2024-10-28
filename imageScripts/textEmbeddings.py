@@ -7,7 +7,7 @@ import clip
 from mpl_toolkits.mplot3d import Axes3D
 from pathlib import Path
 
-outputfolder = Path("images")
+outputfolder = Path("Dokumentation/Images/crossmodalnetworks")
 figname = "3DEmbedding"
 
 
@@ -31,11 +31,11 @@ embeddings_3d = pca.fit_transform(text_features)
 plt.rcParams.update({
     "text.usetex": True,
     "font.family": "Times New Roman",
-    "font.size": 12
+    "font.size": 10
 })
 
 # Create a 3D plot
-fig = plt.figure(figsize=(10, 8))
+fig = plt.figure(figsize=(8, 6))
 ax = fig.add_subplot(111, projection='3d')
 
 # Plot the 3D embeddings
