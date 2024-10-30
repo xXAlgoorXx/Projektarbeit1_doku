@@ -1,23 +1,22 @@
 \chapter{Literature research}
 
-This Literature research studied relevant papers in the field of scene understanding
-and papers which analyse the reduction of neural networks regarding their parameter count and interferance time.
-State of the art is to use deep learning models for scene understanding tasks.
-The goal of to discover the semantic information within a given scene, which is the base for many applicaitions such as surveillance, autonomous driving, traffic savety, vision-guided mobile navigation and many more.
-The term gains a lot of relevantcy because of the rapid evolution of neural networks over the last couple years.
+This literature review examined relevant papers in the field of scene understanding and papers analysing the reduction of neural networks in terms of number of parameters and training time.
+The state of the art is to use deep learning models for scene understanding tasks.
+The goal is to discover the semantic information within a given scene, which is the basis for many applications such as surveillance, autonomous driving, traffic safety, vision-guided mobile navigation, and many more.
+The term is gaining relevance due to the rapid development of neural networks in recent years.
 
-Most of the papers found online tackel the topic of autonomous driving\cite{sceneunderstandingautdriving1}.
-In early research \acrfull{cnn}\cite{SegNet} were mostly used for this task.
+Most of the papers found online deal with the topic of autonomous driving\cite{sceneunderstandingautdriving1}.
+In early research, \acrfull{cnn}\cite{SegNet} was mostly used for this task.
 With the introduction of the transformer \cite{attentionisallyouneed} many researchers moved on to this new arcitecture.
-Soon multi-modal networks like CLIP\cite{clip} and ALIGN\cite{ALIGN} came up.
-These networks use a text- and image-encoder to learn and predict relations between image and text pairs.
-These models are pretrained.
-This allows a user to finetune them to better fit the networks to excecute a specific task without training a whole network.
+Multimodal networks such as CLIP\cite{clip} and ALIGN\cite{ALIGN} soon appeared.
+These networks use a text and image encoder to learn and predict relationships between image and text pairs.
+These models are pre-trained.
+This allows a user to fine-tune them to better adapt the networks to perform a specific task without having to train a whole network.
 
-In addition it could be usefull to segment a scene to obeserve specific objects in a image.
+In addition, it might be useful to segment a scene in order to observe specific objects in an image.
 For this case a foundational model like \Acrfull{sam}\cite{sam} could be used to preprocess a image and/or for feature extraction.
 
-Because of knowledge distillation\cite{knowledgedistillation} the size of these networks can be reduced significant while still maintaining their function.
-TinyCLIP\cite{tinyclip} is an example where the orginial network is reduced by 75\%.
-This reduction allows it to use them on restricted platforms and to compute data on the edge.
+Knowledge Distillation can significantly reduce the size of these networks while maintaining their function.
+TinyCLIP\cite{tinyclip} is an example where the original network is reduced by 75\%.
+This reduction allows it to be used on limited platforms and to compute data at the edge.
 

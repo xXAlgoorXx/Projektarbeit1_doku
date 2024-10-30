@@ -1,10 +1,13 @@
-\chapter{Hexagon Dataset}
+\chapter{Hexagon Dataset
+    \label{chapter:dataset}}
+Most of the information for this chapter was taken from Lia Winklers master thesies.
 The dataset was collected using the terrestrial laser scanner RTC 360 from Leica at 32
 different locations.
 In total, this dataset consists of 1330 images and the number of images per location ranges from 4 to 423.
 All the images are 360-degree panoramas with a
 resolution of 8192 \(\times\) 4096 pixels.
 The images are divided into the following 5 classes:
+
 \begin{itemize}
     \item Indoor architectural
     \item Indoor construction
@@ -13,8 +16,9 @@ The images are divided into the following 5 classes:
     \item Forest
 \end{itemize}
 
-
-
+\noindent
+To increase the accuracy of the algorithem the classes got rephrased and divided in subclasses
+These subclasses can be seen in \cref{tab:dataset:subclasses}.
 \begin{table}[htbp]
     \centering
     \begin{tabular}{ccc}
@@ -27,5 +31,35 @@ The images are divided into the following 5 classes:
     Forest (out)& forest& forest \\
     \bottomrule
     \end{tabular}
-    \caption{Rephrased terms and their subclasses}
+    \caption{Rephrased terms and their subclasses
+        \label{tab:dataset:subclasses}}
 \end{table}
+
+\begin{table}[htbp]
+    \centering
+    \begin{tabular}{cc}
+    \toprule
+    \textbf{Class}& \textbf{Pictures of Class}\\ \midrule
+    Construction (in) & 9,13,39,12 \\ \hline
+    Architectural (in)& 7,10,18,27,29,32,36,1,28,6,33,40,30,31,24\\ \hline
+    Construction (out)& 8,16,22\\ \hline
+    Urban (out)& 2,20,38,26,15,42,44,4,23\\ \hline
+    Forest (out)& 17\\
+    \bottomrule
+    \end{tabular}
+    \caption{Classes of pictures
+        \label{tab:dataset:piccoding}}
+\end{table}
+
+The labels of the pictures are in the name of the picture.
+The first number is the location where the picture was taken.
+The second number is a sequential number for that location.
+The \cref{tab:dataset:piccoding} tell you which class corresponds to which location.
+For example the picture from \cref{fig:dataset:examplepic} is from the class Construction (in).
+
+\begin{figure}
+    \centering
+    \includegraphics[width=\textwidth]{Images/Dataset/panorama_00009_0015.jpg}
+    \caption{Example picture from the hexagon dataset [panorama\_00009\_0015.jpg]}
+    \label{fig:dataset:examplepic}
+\end{figure}
