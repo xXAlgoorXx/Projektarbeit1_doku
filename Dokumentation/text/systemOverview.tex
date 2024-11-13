@@ -1,1 +1,29 @@
 \chapter{System Overview}
+
+The goal of the system is to calssify panorama images into defined classes.
+For that a CLIP like network is used on the edge.
+As a computing platform a Raspberry Pi 5 with the hardware accelerator extension is used.
+The hardware accelerato is the Hailo-8L entry level accelerator (\cref{fig:overview:aikit}).
+The System which is used and developt in this work, can be divided in 2 parts.
+One part is the compilation of a neural network on a PC.
+The other part is the inference of a compiled network on the Raspberry Pi.
+
+\begin{figure}
+    \centering
+    \includegraphics[width=0.5\textwidth]{Images/SystemOverview/ai-kit.png}
+    \caption{Picture of the hardware accelerator \cite{bildAiKit}}
+    \label{fig:overview:aikit}
+\end{figure}
+
+\section{Compilation of a Network}
+
+During compilation, the network is quantized and simplified.
+This reduces the amount of memory and processing power needed to use a network.
+The network has to be compiled to format which can be executed on the hardware accelerator.
+
+In this work the compilation is done with the \Acrlong{dfc} from Hailo.
+
+\section{Inference on Raspberry Pi}
+
+To use a network on a hardware accelerator a specific software has to be used.
+Beacuse of the usage of the Hailo hardware accelerator a software from hailo is used in this work.

@@ -1,0 +1,13 @@
+Chapters:
+- Introduction
+- Task description
+- Literatur research
+- Theorie CLIP like networks
+- Market analysis
+- System Overview
+- Hailo Hardware Accelerator
+- Dataset
+- Results and Comperisons
+
+Appendix:
+- Results tabels
