@@ -11,7 +11,9 @@ With the introduction of the transformer \cite{attentionisallyouneed} many resea
 Multimodal networks such as CLIP\cite{clip} and ALIGN\cite{ALIGN} soon appeared.
 These networks use a text and image encoder to learn and predict relationships between image and text pairs.
 These models are pre-trained.
-This allows a user to fine-tune them to better adapt the networks to perform a specific task without having to train a whole network.
+This allows a user to fine-tune them to better adapt the networks to perform a specific task without having to train a whole network for example a linear layer in the most naive way.
+In \cite{finetuneclip} the authors imporve CLIP's performance by feature Distillation.
+Other approaches like linear probing\cite{linearprobeclip} or CLIP adapter\cite{clipadapter} also seem imporve the performance on specific tasks.
 
 In addition, it might be useful to segment a scene in order to observe specific objects in an image.
 For this case a foundational model like \Acrfull{sam}\cite{sam} could be used to preprocess a image and/or for feature extraction.

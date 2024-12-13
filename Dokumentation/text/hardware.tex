@@ -12,21 +12,28 @@ Secondly were looking on the way to run the network on the edge.
 
 \section{Network compilation}
 As sad before, the network has to be precompiled on a pc.
-The application which is meant for this task is callde the \Acrfull{dfc}.
+The application which is meant for this task is called the \Acrfull{dfc}.
 
-\subsection{Dataflow compiler}
+\subsection{Dataflow compiler
+\label{section:dfc}}
 
 To use the \acrshort{dfc} a pytorch or tensorflow model has to be converted to Onnx or tensorflow light.
 Information and pictures are taken from \cite{hailo_dataflow_compiler}.
 The \acrshort{dfc} the compiles the model to a \Acrfull{hef} by executing the following steps:
-\begin{enumerate}
-    \item Tensorflow or ONNX translation
-    \item Profiler
-    \item Emulator
-    \item Model Optimization
-    \item Compiling the model into a binary image
-\end{enumerate}
 
+\begin{enumerate}
+    \item Full Precision Optimization
+    \item Quantization Optimization
+\end{enumerate}
+In the full precision optimization step ONNX file first gets compiled into a \acrfull{har} file, a file type defined by Hailo.
+This step also includes any changes to the model in the floating-point precision domain, for example Equalization [Meller2019], TSE [Vosco2021] and pruning.
+
+In the quantization optimization step the model gets compressed.
+This means that the model gets converted from floating point to integer.
+Weights get compiled to either 4,8 or 16 bits.
+Activaitions get compiled to 8 or 16 bits.
+The result of this step is a quantized \acrshort{har} file.
+This can be compiled to a \acrshort{hef} file to use the model on the Hailo hardware.
 
 
 \begin{figure}
@@ -38,6 +45,8 @@ The \acrshort{dfc} the compiles the model to a \Acrfull{hef} by executing the fo
 
 \subsection{Constrains}
 At the time of this writing, the \acrshort{dfc} is not capable of compiling Transformers.
+This is a very important limiting factor for this porject.
+The best performance for CLIP is achieved with vision Transformers as image encoder.
 Fortunately, the visual encoding of CLIP can also be done with ResNet, a special form of \Acrshort{cnn}'s.
 
 \section{Running on the edge}
@@ -58,12 +67,11 @@ It enables the design any type of multimedia application but it isnt restridted 
 The framework can porcess any kind of dataflow.
 
 GStreamer consists of blocks which can be concantenated.
-To work with the Hailo hardware accelerator some blocks in the pipeline get offloaded to the Hailo porcessor.
+To work with the Hailo hardware accelerator some blocks in the pipeline get offloaded to the Hailo processor.
 A python programm is used to construct a string which then is executed in a terminal.
 
 
 \subsection{Python API approach}
 
 With the Python API approch one can execute the whole inferance in python.
-A thread for the inferance gets created which communicates over queues with the rest of the programm.
 That makes the programm very simple in comparison to the GStreamer approach.

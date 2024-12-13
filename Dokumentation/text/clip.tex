@@ -73,7 +73,7 @@
         \begin{figure}
             \centering
             \includegraphics[width=\textwidth]{Images/crossmodalnetworks/OpenAICLIP.png}
-            \caption{A picture from the \acrshort{clip} paper by OpenAI.}
+            \caption{A picture from the \acrshort{clip} paper by OpenAI \cite{clip}.}
             \label{fig:crossmodalnetworks:openaiclip}
         \end{figure}
 
@@ -147,16 +147,27 @@
 
         % Due to the fact that TinyCLIP is already available and is much smaller in comparison to the origibal it will be further used in this work.
 
+\section{Enhance the algorithm}
+
+    One objective of this project is to enhance the functionality of an existing network infrastructure.
+    In order to fulfil this requirement, a network will be fine-tuned.
+    Fine-tuning is a wide spread term.
+    It ranges from a simply adding a learnable linear layer at the end of the network to feature destillation.
+    The concept of fine-tuning is derived from transfer learning (see reference [transferlearning]).
+    In transfer learning, the final layers of a neural network are removed and the network is retrained with new, independent layers.
+    This approach saves time and resources.
+    For instance, in clip a linear layer can be incorporated to enhance the classification performance \cite{finetuneclip}.
+    In all of the found fine-tuning approches the output of the networks get further processed.
+
+    \subsection{Probing}
+    % https://openaccess.thecvf.com/content/CVPR2024/papers/Huang_LP_A_Surprisingly_Strong_Linear_Probe_for_Few-Shot_CLIP_CVPR_2024_paper.pdf
+    \subsection{Feature destillation}
+    % https://arxiv.org/abs/2110.04544
+    \subsection{Prompt engeneering}
+
 
 \section{Conclusion}
     Due to the result of own test ALIGN will not be considerd as a solution for this work.
     Instead, the focus of this work is on CLIP and TinyCLIP.
-    % \begin{table}
-    %     \begin{tabular}{llll}
-    %         \hline
-    %     &  a Yahoo& ImageNet& SUN \\\hline
-    %     Visual N-Grams&  72,4&  11,5&  23,0\\
-    %     CLIP&  98,4&  76,2&58,5\\ \hline
-    %     \end{tabular}
-    %     \caption{Table 1. from \cite{clip}. Comparing CLIP to prior image zero-shot classification results\cite{Vis_N_Grams}}
-    % \end{table}
+    These models can be fine-tuned to further improve their performance.
+    Additionaly the models performance can be increased by using better promts.
