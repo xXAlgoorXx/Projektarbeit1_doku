@@ -59,7 +59,7 @@ Due to the limitation that no transformers can be used with hailo the embeddings
 \textbf{Comparison size}
 
 
-\subsection{Preprocessing}
+\subsection{Pre processing}
 
 The hexagon dataset which is used as refrence consists of panorama pictures.
 These pictuers get cut into 5 equal sized patches.
@@ -67,8 +67,15 @@ Every patch gets processed with CLIP.
 To finally classify a image a mayority vote is taken over the subclasses of the patches.
 This process is mentiond in Lia Winkler's report and increases the accuracy of the model.
 
-\section{Inference}
+\subsection{Post processing}
 
+As sad the cut of part of the Onnx graph is processed in post processing.
+The Cut of part consists of one matrix multipication and some rearanging of the dimensions.
+In a first implementation the weights for the matrix multipication were extracted and saved in a json file.
+In a second attemp the cut off Onnx Graph is directly used.
+The second attemp proved as faster while using much less memory.
+
+\section{Inference}
 To have a good comparison of performance the implementation on the Raspberry Pi is mostly similar to the one which is used on PC.
 The PC application is mostly the same as Lia Winkler used in her work.
 For Vision encoder only ResNet's were used because of the limitations from the \acrshort{dfc}.
