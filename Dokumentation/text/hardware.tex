@@ -7,23 +7,25 @@ The hardware accelerator of the Ai kit is made by Hailo \cite{hailo}.
 Hailo is a company which produces hardware accelerators.
 The Ai kit uses the Hailo-8L entry level hardware accelerator.
 Hailo provides a pipeline to compile a network so that it can be executed on the hailo software.
-First we take a look at the compilation of a network which has to be done on a pc.
+First we take a look at the compilation of a network which has to be done on a PC, 
+preferibly one with a GPU.
 Secondly were looking on the way to run the network on the edge.
 
 \section{Network compilation}
-As sad before, the network has to be precompiled on a pc.
+As sad before, the network has to be precompiled on a PC.
 The application which is meant for this task is called the \Acrfull{dfc}.
 
 \subsection{Dataflow compiler
 \label{section:dfc}}
 
 To use the \acrshort{dfc} a pytorch or tensorflow model has to be converted to Onnx or tensorflow light.
-Information and pictures are taken from \cite{hailo_dataflow_compiler}.
+Information and pictures are taken from the Hailo Dataflow Compiler User Guide\cite{hailo_dataflow_compiler}.
 The \acrshort{dfc} the compiles the model to a \Acrfull{hef} by executing the following steps:
 
 \begin{enumerate}
     \item Full Precision Optimization
     \item Quantization Optimization
+    \item Compilation
 \end{enumerate}
 In the full precision optimization step ONNX file first gets compiled into a \acrfull{har} file, a file type defined by Hailo.
 This step also includes any changes to the model in the floating-point precision domain, for example Equalization [Meller2019], TSE [Vosco2021] and pruning.
@@ -32,9 +34,12 @@ In the quantization optimization step the model gets compressed.
 This means that the model gets converted from floating point to integer.
 Weights get compiled to either 4,8 or 16 bits.
 Activaitions get compiled to 8 or 16 bits.
+Which quantisation is aplied is handeled through a model script.
+In that script the amount of quantized weights can be described.
+There is also the posibility to target specific layer by the model script.
+It is also possible to add preprocessing steps to the model script like resize the input or convert the input from RGB to YUV.
 The result of this step is a quantized \acrshort{har} file.
-This can be compiled to a \acrshort{hef} file to use the model on the Hailo hardware.
-
+This file can be compiled to a \acrshort{hef} file to use the model on Hailo hardware.
 
 \begin{figure}
     \centering
@@ -57,7 +62,7 @@ The information for this section are taken from the TAPPAS User Guide.
 In the point of time there are 2 approaches to run a network on a hailo device.
 One with Gstreamer and one with a Python API.
 There are many different example applications available for many diffrent usecases.
-Sadly most of the exmaples work with a video input.
+These examples can be found in the Hailo model zoo\cite{hailo_model_zoo} or in their repo for Raspberry Pi examples \cite{hailo_rpi5_examples}.
 
 
 \subsection{GStreamer approach}
@@ -75,3 +80,4 @@ A python programm is used to construct a string which then is executed in a term
 
 With the Python API approch one can execute the whole inferance in python.
 That makes the programm very simple in comparison to the GStreamer approach.
+Due to complexity of the GStreamer approch the Python API is used in this project.
