@@ -50,3 +50,14 @@ z_(): incompatible function arguments. The following argument types are supporte
 
 
 https://github.com/huggingface/transformers/issues/22221
+
+
+# Latex Build
+
+Use the following commands to build pdf with acronyms
+```
+pdflatex <file>
+makeglossaries <file>
+pdflatex <file>
+pdflatex <file>
+```
