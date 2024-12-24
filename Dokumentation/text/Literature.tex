@@ -1,22 +1,22 @@
 \chapter{Literature research}
-
+ % DeepL Corrected
 This literature review examined relevant papers in the field of scene understanding and papers analysing the reduction of neural networks in terms of number of parameters and training time.
 The state of the art is to use deep learning models for scene understanding tasks.
-The goal is to discover the semantic information within a given scene, which is the basis for many applications such as surveillance, autonomous driving, traffic safety, vision-guided mobile navigation, and many more.
+The goal is to discover the semantic information within a given scene, which is the basis for many applications such as surveillance, autonomous driving, road safety, vision-guided mobile navigation, and many more.
 The term is gaining relevance due to the rapid development of neural networks in recent years.
 
 Most of the papers found online deal with the topic of autonomous driving\cite{sceneunderstandingautdriving1}.
 In early research, \acrfull{cnn}\cite{SegNet} was mostly used for this task.
-With the introduction of the transformer \cite{attentionisallyouneed} many researchers moved on to this new arcitecture.
+With the introduction of the transformer \cite{attentionisallyouneed} many researchers moved on to this new architecture.
 Multimodal networks such as CLIP\cite{clip} and ALIGN\cite{ALIGN} soon appeared.
 These networks use a text and image encoder to learn and predict relationships between image and text pairs.
 These models are pre-trained.
 This allows a user to fine-tune them to better adapt the networks to perform a specific task without having to train a whole network for example a linear layer in the most naive way.
-In \cite{finetuneclip} the authors imporve CLIP's performance by feature Distillation.
-Other approaches like linear probing\cite{linearprobeclip} or CLIP adapter\cite{clipadapter} also seem imporve the performance on specific tasks.
+In \cite{finetuneclip} the authors improve the performance of CLIP by feature distillation.
+Other approaches such as linear probing\cite{linearprobeclip} or the CLIP adapter\cite{clipadapter} also seem to improve performance for certain tasks.
 
 In addition, it might be useful to segment a scene in order to observe specific objects in an image.
-For this case a foundational model like \Acrfull{sam}\cite{sam} could be used to preprocess a image and/or for feature extraction.
+In this case, a foundational model like \Acrfull{sam}\cite{sam} could be used for a image pre-processing and/or for feature extraction.
 
 Knowledge Distillation can significantly reduce the size of these networks while maintaining their function.
 TinyCLIP\cite{tinyclip} is an example where the original network is reduced by 75\%.

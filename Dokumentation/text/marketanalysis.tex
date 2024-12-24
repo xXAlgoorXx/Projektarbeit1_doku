@@ -4,7 +4,8 @@
 
 A part of this work is a market analysis of the available hardware accelerator with M.2 interferance.
 The found accelerator are summerised in table.
-Many of the available product are either to old and weak (Coral M.2 accelerator) or only available as preorder.
+The Table contains the most important columns.
+Many of the available product are either to old and weak (Coral M.2 accelerator) or only available as preorder().
 From the current lookt at products, Hailo seems as the most suited for this project.
 It uses less power than products from Coral with higher TOPS.
 
@@ -17,6 +18,7 @@ It is possible to design a PCB with an M.2 slot yourself to be less dependend on
 
 % \begin{table}
 %     \centering
+%     \rotatebox{90}{
 %     \begin{tabular}{|l|l|l|r|r|l|}
 %     \hline
 %         \thead{Product Name }& \thead{Manufacturer} & Availability & \makecell{Processing \\Power \\(TOPS INT8)} & \makecell{Processing\\ Power\\ (TFLOPS BF16)} & \makecell{Power\\ Consumption} \\ \hline
@@ -31,4 +33,32 @@ It is possible to design a PCB with an M.2 slot yourself to be less dependend on
 %         MLSoC Dual M.2 Production Board & Sima.ai & ~ & 50 & ~ & 15 W \\ \hline
 %         Orca 1.1 M.2 & DeGirum & In Stock & ~ & ~ & ~ \\ \hline
 %     \end{tabular}
+%     }
 % \end{table}
+
+\begin{table}
+    \centering
+    \rotatebox{90}{
+    \begin{tabular}{|l|l|l|l|l|l|l|l|l|}
+    \hline
+        \textbf{Product Name} & \textbf{Manufacturer} & \textbf{Price (\$)} & \textbf{Availability} & \textbf{\makecell{M.2 Slot \\Type (Key)}} & \textbf{\makecell{Processing \\Power \\(TOPS INT8)}} & \textbf{\makecell{Processing\\ Power\\ (TFLOPS FP32)}} & \textbf{Power Consumption} & \textbf{Special Features} \\ \hline
+        Hailo-8L Entry-Level M.2 Module & Hailo & 80 & Available & M, B+M, A+E & 13 & ~ & 1.5 W & - \\ \hline
+        Hailo-8 M.2 AI Acceleration Module & Hailo & 220 & Available & M, B+M, A+E & 26 & ~ & 2.5W & - \\ \hline
+        Hailo-10H M.2 Key M ET Generative AI Acceleration Module & Hailo & ~ & On request & M & 40 & ~ & 3.5 W & 8GB On-Module DDR \\ \hline
+        Metis M.2 Card & Axelera & 150 & Preorder & M & 214 & ~ & 4-8 W & - \\ \hline
+        SAKURA-II M.2 & Edge Cortix & 249-299 & Preorder & M & 60 & 30 (BF16) & 10 W & Onboard DRAM \\ \hline
+        M.2 Accelerator & Coral & 25 & Available & B+M, A+E & 4 & ~ & 2 W & - \\ \hline
+        M.2 Accelerator Dual Edge TPU & Coral & 40 & Available & E & 8 & ~ & 4 W & - \\ \hline
+        ME1076 M.2 Accelerator Card & Mythic & ~ & On request & A+E & 25 & ~ & 3.5 W & - \\ \hline
+        MM1076 M.2 Accelerator Card & Mythic & ~ & On request & M & 25 & ~ & 3.5 W & - \\ \hline
+        MLSoC Dual M.2 Production Board & Sima.ai & ~ & On request & Dual M.2 & 50 & ~ & 15 W & Dual M.2 Slot \\ \hline
+        MemryX MX3 & MemryX & ~ & On request & N.A.(Chip) & ~ & 5 (BF16) & ~ & Stats per Chip \\ \hline
+        Orca 1.1 M.2 & DeGirum & 159 & Available & M & yes & yes & 4.5 W & Onboard DRAM \\ \hline
+        byteENGINE IMX8MP Plus Quad & bytesatwork & 139 & Available & N.A.(Chip) & 2.3 & ~ & 5.5V 6A & CPU,GPU,NPU on chip \\ \hline
+        Jetson Orin Nano 4GB & Nvidia & ~ & ~ & N.A.(Chip) & 20 & ~ & 7-10 W & CPU,GPU on chip \\ \hline
+        Jetson Orin Nano 8GB & Nvidia & ~ & ~ & N.A.(Chip) & 40 & ~ & 7-15 W & CPU,GPU on chip \\ \hline
+        Jetson Orin Nano Developer Kit & Nvidia & ~ & ~ & N.A.(Chip) & 40 & ~ & 7-15 W & CPU,GPU on chip \\ \hline
+        EnCharge AI Analog IMC & EnChargeAI & ~ & ~ & ~ & 150 /W & ~ & ~ & Chip \\ \hline
+    \end{tabular}
+    }
+\end{table}

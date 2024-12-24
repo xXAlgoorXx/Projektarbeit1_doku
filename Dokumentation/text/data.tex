@@ -1,8 +1,7 @@
 \chapter{Hexagon Dataset
     \label{chapter:dataset}}
 Most of the information for this chapter was taken from Lia Winklers master thesies.
-The dataset was collected using the terrestrial laser scanner RTC 360 from Leica at 32
-different locations.
+The dataset was collected using the terrestrial laser scanner RTC 360 from Leica at 32 different locations.
 In total, this dataset consists of 821 images and the number of images per location ranges from 4 to 423.
 All the images are 360-degree panoramas with a
 resolution of 8192 \(\times\) 4096 pixels.
@@ -17,7 +16,7 @@ The images are divided into the following 5 classes:
 \end{itemize}
 
 \noindent
-To increase the accuracy of the algorithem the classes got rephrased and divided in subclasses
+To increase the accuracy of the algorithem the classes got rephrased and divided in subclasses.
 These subclasses can be seen in \cref{tab:dataset:subclasses}.
 \begin{table}[!ht]
     \centering
@@ -57,10 +56,10 @@ The second number is a sequential number for that location.
 The \cref{tab:dataset:piccoding} tell you which class corresponds to which location.
 For example the picture from \cref{fig:dataset:examplepic} is from the class Construction (in).
 
-It important to mention that the dataset is highly imbalanced.
+It is important to mention that the dataset is highly imbalanced.
 Nearly 80\% of the panorama images are from the class indoor architectural.
-It is important to incoparate this fact in the evaluation of the performance of a model.
 This means that a "stupid" model can achieve a accuracy of 80\% by labeling every input as indoor architectural.
+It is important to incoparate this fact in the evaluation of the performance of a model.
 
 \begin{figure}
     \centering
