@@ -83,11 +83,86 @@ The Hexagon dataset is used as image input.
 As text input the subclasses from \cref{tab:dataset:subclasses} are used.
 The text input were used solo or in a scentens.
 In \cite{clip} the authors state that the performance of the network can improve if the text inputs are in a scentens.
-
 To use the vision model on Hailo the python api is used.
 2 diffrent implmentations were tested.
 One proved much slower because the device initialisation happens every time a image is encoded.
 
 
+To check the functionalit of the \acrshort{dfc} as test picture is used.
+The \acrshort{dfc} is able to calculate the output of the compiling network at every step.
+This is used to compare the output of the different stages with a test image.
+The Results can be seen in \cref{tab:methods:clipcompare}.
+
+\begin{table}[]
+    \centering
+    \begin{tabular}{llllll}
+    \hline
+    Labels        & a Human & a Cat   & a Dog  & a white cat & a small dog \\ \hline
+    Original      & 1.57 \%  & 90.65 \% & 0.34 \% & 7.23 \%      & 0.2 \%       \\
+    Nativ \acrshort{har}        & 1.57 \%  & 90.65 \% & 0.34 \% & 7.23 \%      & 0.2 \%       \\
+    Compiled \acrshort{har}     & 1.57 \%  & 90.65 \% & 0.34 \% & 7.23 \%      & 0.2 \%       \\
+    Qunatized \acrshort{har}    & 1.9 \%   & 90.10 \% & 3.49 \% & 3.63 \%      & 0.8 \%       \\ \hline
+    \end{tabular}
+    \caption{Output probabilitys of test image at diffrent \acrshort{dfc} stages with CLIP RN50x4 as image encoder}
+    \label{tab:methods:clipcompare}
+\end{table}
+
+\begin{table}
+    \centering
+    \begin{tabular}{llllll}
+    \hline
+    Labels        & a Human & a Cat & a Dog & a white cat & a small dog \\ \hline
+    Original      &         &       &       &             &             \\
+    Nativ \acrshort{har}     &         &       &       &             &             \\
+    Compiled HAR  &         &       &       &             &             \\
+    Qunatized HAR &         &       &       &             &                   
+    \end{tabular}
+    \caption{Output probabilitys of test image at diffrent \acrshort{dfc} stages
+    \label{tab:methods:tinyclipcompare}}
+\end{table}
+
+As suspected the accuracy reduces significant after quantisation.
+
 
 \section{Measurments}
+
+
+% classes = ["construction site", "town", "city",
+% "country side", "alley", "parking lot", "forest"]
+
+% === CLIP PC ===
+% Label probs: tensor([[0.1811, 0.0591, 0.0398, 0.0643, 0.5045, 0.0731, 0.0782]])
+
+% === CLIP ONNX ===
+% Label probs: tensor([[0.1811, 0.0591, 0.0398, 0.0643, 0.5045, 0.0731, 0.0782]])
+
+% === CLIP HAR Nativ ===
+% Label probs: [[0.18112072348594666, 0.05905136093497276, 0.03980713337659836, 0.06425424665212631, 0.5045444965362549, 0.07307031750679016, 0.07815175503492355]]
+
+% === CLIP HAR Compiled ===
+% Label probs: [[0.1811216175556183, 0.05905177444219589, 0.03980710357427597, 0.06425445526838303, 0.5045422315597534, 0.07307054847478867, 0.07815229147672653]]
+
+% === CLIP HAR Quantized ===
+% Label probs: [[0.11425743252038956, 0.05362681299448013, 0.04226280003786087, 0.07041049748659134, 0.47000423073768616, 0.1376064419746399, 0.11183185130357742]]
+
+
+% === TinyCLIP PC ===
+% Label probs: tensor([[4.0224e-05, 9.6976e-02, 8.2027e-01, 1.2005e-06, 8.2412e-02, 2.9768e-04,
+%          1.0994e-06]])
+
+% === TinyCLIP ONNX Modified ===
+% Label probs: tensor([[4.0224e-05, 9.6976e-02, 8.2027e-01, 1.2005e-06, 8.2412e-02, 2.9768e-04,
+%          1.0994e-06]])
+
+% === TinyCLIP ONNX ===
+% Label probs: tensor([[[4.0224e-05, 9.6976e-02, 8.2027e-01, 1.2005e-06, 8.2412e-02,
+%           2.9768e-04, 1.0994e-06]]])
+
+% === TinyCLIP HAR Nativ ===
+% Label probs: [4.022434586659074e-05, 0.0969763770699501, 0.8202731609344482, 1.2005439202766865e-06, 0.08241038769483566, 0.00029767947853542864, 1.0993793466695934e-06]
+
+% === TinyCLIP HAR Compiled ===
+% Label probs: [4.022362918476574e-05, 0.09697584807872772, 0.8202733993530273, 1.2005442613371997e-06, 0.08241056650876999, 0.00029767389059998095, 1.099363998946501e-06]
+
+% === TinyCLIP HAR Quantized ===
+% Label probs: [3.652078885352239e-05, 0.021380390971899033, 0.9444331526756287, 0.006429065950214863, 0.02356742136180401, 0.0007093786844052374, 0.003444116795435548]
