@@ -41,7 +41,7 @@ It is also possible to add preprocessing steps to the model script like resize t
 The result of this step is a quantized \acrshort{har} file.
 This file can be compiled to a \acrshort{hef} file to use the model on Hailo hardware.
 
-\begin{figure}
+\begin{figure}[!h]
     \centering
     \includegraphics[width=\textwidth]{Images/Hardware/model_build_overview_with_onnx_and_hef_w_har.png}
     \caption{\Acrlong{dfc} overview \cite{hailo_dataflow_compiler}}
@@ -74,10 +74,20 @@ The framework can porcess any kind of dataflow.
 GStreamer consists of blocks which can be concantenated.
 To work with the Hailo hardware accelerator some blocks in the pipeline get offloaded to the Hailo processor.
 A python programm is used to construct a string which then is executed in a terminal.
-
+A example pipeline can be seen in \cref{fig:hardware:gstreamerpipeline}.
+More examples with code can be found in the TAPPAS User Guide.
+\begin{figure}[!h]
+    \centering
+    \includegraphics[width=\textwidth]{Images/Hardware/gstreamerExample.png}
+    \caption{Example GStreamer pipeline from TAPPAS User Guide}
+    \label{fig:hardware:gstreamerpipeline}
+\end{figure}
 
 \subsection{Python API approach}
 
 With the Python API approch one can execute the whole inferance in python.
 That makes the programm very simple in comparison to the GStreamer approach.
+In python the Hailo hardware accelerator gets treated as an object with dedicated functions to use inference.
+Importent to know is that hailo swaps the input dimension of the network.
+This menas that the dimensions of the input to the network has to be adjusted.
 Due to complexity of the GStreamer approch the Python API is used in this project.

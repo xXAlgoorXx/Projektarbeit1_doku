@@ -68,10 +68,10 @@
         \acrfull{clip} \cite{clip} is a cross-modal model from openAI\cite{openai} that can tell how well a given image and text match.
         It can be used with a variety of image and text encoders.
         It is trained on a large dataset consisting of 400 million image-text pairs.
-        It has been shown to outperform some of the best known models.
+        It has been shown to outperform some of the best known models in classifing images.
         Many other models use CLIP as a base and build better models from it.
 
-        \begin{figure}
+        \begin{figure}[!h]
             \centering
             \includegraphics[width=\textwidth]{Images/crossmodalnetworks/OpenAICLIP.png}
             \caption{A picture from the \acrshort{clip} paper by OpenAI \cite{clip}.}
@@ -153,12 +153,12 @@ TinyClip can be used on limited systems due to its miniaturisation.
     To improve the accuracy of a pre-trained network, it can be fine-tuned to a specific task.
     Fine-tuning is a broad term.
     It ranges from the simple addition of a learnable linear layer at the end of the network to feature destillation.
-    The concept of fine-tuning is derived from transfer learning (see reference [transferlearning]).
+    The concept of fine-tuning is derived from transfer learning\cite{transferlearning}.
     In transfer learning, the final layers of a neural network are removed and the network is retrained with new, independent layers.
     This saves time and resources.
     For example, with CLIP, a linear layer can be added to improve classification performance \cite{finetuneclip}.
     All of the fine-tuning approaches found use the output of the networks for further processing.
-    Another way to increase the accuracy is to use better fitting prompts.
+    Another way to increase the accuracy is to use better fitting text prompts.
 
     % \subsection{Probing}
     % % https://openaccess.thecvf.com/content/CVPR2024/papers/Huang_LP_A_Surprisingly_Strong_Linear_Probe_for_Few-Shot_CLIP_CVPR_2024_paper.pdf

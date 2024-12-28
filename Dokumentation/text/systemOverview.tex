@@ -48,8 +48,12 @@ To use a network on a hardware accelerator a specific software has to be used.
 Because of current limitations of the \acrshort{dfc}, self attention layers were unable to compile.
 Because of this constraint the text encoder of CLIP must be executed in advance on an PC.
 The resulting text embeddings then get loaded on to the Raspberry Pi in form of a json file.
+The text embedding consist of the expressions from \cref{tab:dataset:subclasses} subclasses.
+These expressions are wrapped in 5 scentens to further increase accuracy.
 The constrain also doesnt allow transformers to compile.
 Because of that reason ResNets were used as image encoders.
 The problem with the resnets was, that the last layer also is a self attention layer.
 To get the network to compile, the last part got cut off and is later processed as a from of postprocessing.
+The panorama pictures are split up into 5 pictures which are classified sepertatly.
+To get the final prediction a mayority vote over the 5 image patches gets taken.
 

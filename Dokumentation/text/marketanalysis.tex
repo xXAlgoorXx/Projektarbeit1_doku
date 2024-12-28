@@ -2,63 +2,159 @@
 
 % Write More and display table somewhere
 
-A part of this work is a market analysis of the available hardware accelerator with M.2 interferance.
-The found accelerator are summerised in table.
-The Table contains the most important columns.
-Many of the available product are either to old and weak (Coral M.2 accelerator) or only available as preorder().
-From the current lookt at products, Hailo seems as the most suited for this project.
-It uses less power than products from Coral with higher TOPS.
+% A part of this work is a market analysis of the available hardware accelerator with M.2 interferance.
+% The found accelerator are summerised in table.
+% The Table contains the most important columns.
+% Many of the available product are either to old and weak (Coral M.2 accelerator) or only available as preorder(SAKURA-II M.2  and Metis M.2 Card).
+% From the current look at products, Hailo seems as the most suited for this project.
+% It uses less power than products from Coral with higher TOPS.
 
-For the future a hradware accelerator which has the capability to process floating point models looks very intressting.
-But the advantage from floating point to intger has to be proven.
+% For the future a hardware accelerator which has the capability to process floating point models looks very intressting.
+% But the advantage from floating point to intger has to be proven.
+% There are also many suppliers which produce accelerator chips.
+% It is possible to design a PCB with an M.2 slot yourself to be less dependend on supplier software.
+% The tabels are extendend with intresting hardware accelerator chips.
 
-There are also many suppliers which produce accelerator chips.
-It is possible to design a PCB with an M.2 slot yourself to be less dependend on supplier software.
+% In the end the whole package with hardware accelerator and software has to be ready to use.
+% Most of the looked at companies provide a end-to-end software stack like the \acrshort{dfc} and Gstreamer/python API from Hailo or the Voyager.SDK from Axelera.
+% It is hard to get a good first estimate on how easy to use a certain software stack is.
+% Most of the example application focus on computer vision tasks.
 
 
-% \begin{table}
+
+% \begin{table}[!ht]
 %     \centering
-%     \rotatebox{90}{
-%     \begin{tabular}{|l|l|l|r|r|l|}
+%     \begin{tabular}{|l|l|l|l|l|}
 %     \hline
-%         \thead{Product Name }& \thead{Manufacturer} & Availability & \makecell{Processing \\Power \\(TOPS INT8)} & \makecell{Processing\\ Power\\ (TFLOPS BF16)} & \makecell{Power\\ Consumption} \\ \hline
-%         Hailo-8L Entry-Level M.2 Module & Hailo & Available & 13 & ~ & 1.5 W \\ \hline
-%         Hailo-8 M.2 AI Acceleration Module & Hailo & Available & 26 & ~ & 2.5W \\ \hline
-%         Metis M.2 Card & Axelera & Preorder & 214 & ~ & 4-8 W \\ \hline
-%         SAKURA-II M.2 & Edge Cortix & Preorder & 60 & 30  & 10 W \\ \hline
-%         M.2 Accelerator & Coral & Available & 4 & ~ & 2 W \\ \hline
-%         M.2 Accelerator Dual Edge TPU & Coral & Available & 8 & ~ & 4 W \\ \hline
-%         ME1076 M.2 Accelerator Card & Mythic & ~ & 25 & ~ & 3.5 W \\ \hline
-%         MM1076 M.2 Accelerator Card & Mythic & ~ & 25 & ~ & 3.5 W \\ \hline
-%         MLSoC Dual M.2 Production Board & Sima.ai & ~ & 50 & ~ & 15 W \\ \hline
-%         Orca 1.1 M.2 & DeGirum & In Stock & ~ & ~ & ~ \\ \hline
+%         Product Name & Manufacturer & Price (\$) & Availability & \makecell{M.2 Slot\\Type (Key)} \\ \hline
+%         Hailo-8L Entry-Level M.2 Module & Hailo & 80 & Available & M, B+M, A+E \\ \hline
+%         Hailo-8 M.2 AI Acceleration Module & Hailo & 220 & Available & M, B+M, A+E \\ \hline
+%         Hailo-10H M.2 Key M & Hailo & ~ & On request & M \\ \hline
+%         Metis M.2 Card & Axelera & 150 & Preorder & M \\ \hline
+%         SAKURA-II M.2 & Edge Cortix & 249-299 & Preorder & M \\ \hline
+%         M.2 Accelerator & Coral & 25 & Available & B+M, A+E \\ \hline
+%         M.2 Accelerator Dual Edge TPU & Coral & 40 & Available & E \\ \hline
+%         ME1076 M.2 Accelerator Card & Mythic & ~ & On request & A+E \\ \hline
+%         MM1076 M.2 Accelerator Card & Mythic & ~ & On request & M \\ \hline
+%         MLSoC Dual M.2 Production Board & Sima.ai & ~ & On request & Dual M.2 \\ \hline
+%         MemryX MX3 & MemryX & ~ & On request & N.A.(Chip) \\ \hline
+%         Orca 1.1 M.2 & DeGirum & 159 & Available & M \\ \hline
+%         byteENGINE IMX8MP Plus Quad & bytesatwork & 139 & Available & N.A.(Chip) \\ \hline
+%         Jetson Orin Nano 4GB & Nvidia & ~ & ~ & N.A.(Chip) \\ \hline
+%         Jetson Orin Nano 8GB & Nvidia & ~ & ~ & N.A.(Chip) \\ \hline
+%         Jetson Orin Nano Developer Kit & Nvidia & ~ & ~ & N.A.(Chip) \\ \hline
+%         EnCharge AI Analog IMC & EnChargeAI & ~ & ~ & ~ \\ \hline
 %     \end{tabular}
-%     }
+%     \caption{Economical key figures from found hardware accelerator's}
+%     \label{tab:market:ecotable}
 % \end{table}
 
-\begin{table}
+% \begin{table}[!ht]
+%     \centering
+%     \begin{tabular}{|l|l|l|l|}
+%     \hline
+%         Product Name & \makecell{Processing\\Power\\(TOPS INT8)} & \makecell{Processing\\Power\\(TFLOPS FP32)} & \makecell{Power\\Consumption} \\ \hline
+%         Hailo-8L Entry-Level M.2 Module & 13 & ~ & 1.5 W \\ \hline
+%         Hailo-8 M.2 AI Acceleration Module & 26 & ~ & 2.5W \\ \hline
+%         Hailo-10H M.2 Key M& 40 & ~ & 3.5 W \\ \hline
+%         Metis M.2 Card & 214 & ~ & 4-8 W \\ \hline
+%         SAKURA-II M.2 & 60 & 30 (BF16) & 10 W \\ \hline
+%         M.2 Accelerator & 4 & ~ & 2 W \\ \hline
+%         M.2 Accelerator Dual Edge TPU & 8 & ~ & 4 W \\ \hline
+%         ME1076 M.2 Accelerator Card & 25 & ~ & 3.5 W \\ \hline
+%         MM1076 M.2 Accelerator Card & 25 & ~ & 3.5 W \\ \hline
+%         MLSoC Dual M.2 Production Board & 50 & ~ & 15 W \\ \hline
+%         MemryX MX3 & ~ & 5 (BF16) & ~ \\ \hline
+%         Orca 1.1 M.2 & yes & yes & 4.5 W \\ \hline
+%         byteENGINE IMX8MP Plus Quad & 2.3 & ~ & 5.5V 6A \\ \hline
+%         Jetson Orin Nano 4GB & 20 & ~ & 7-10 W \\ \hline
+%         Jetson Orin Nano 8GB & 40 & ~ & 7-15 W \\ \hline
+%         Jetson Orin Nano Developer Kit & 40 & ~ & 7-15 W \\ \hline
+%         EnCharge AI Analog IMC & 150  & ~ & ~ \\ \hline
+%     \end{tabular}
+%     \caption{Key figures from found hardware accelerator's}
+%     \label{tab:market:keyfigures}
+% \end{table}
+
+
+% New
+% Deepl corected
+
+Part of this work involves conducting a market analysis of available hardware accelerators with M.2 interfaces. The results are summarised in the attached tables, which highlight the most relevant and significant details of these products.
+
+\section{Summary of Current Offerings}
+Many hardware accelerators available today have limitations that affect their suitability for high performance applications. Some products, such as the Coral M.2 accelerator, are either outdated and lack the processing power required for today's workloads, while others, such as the SAKURA-II M.2 and Metis M.2 card, are still only available for pre-order, limiting their accessibility for immediate use.
+
+From the current assessment, the Hailo products appear to be the most promising options for this project. They demonstrate an efficient balance of performance and power consumption, outperforming Coral's offerings in terms of TOPS (tera operations per second) while maintaining a lower power footprint. This efficiency is critical for embedded and power sensitive applications, making Hailo a strong candidate for further exploration and integration.
+
+\section{Future Considerations}
+Looking to the future, hardware accelerators that can handle floating-point models (FP32 or BF16) offer exciting potential. While integer (INT8) operations are optimised for many AI applications due to their efficiency, the theoretical advantages of FP32 precision for certain tasks - such as scientific computing or advanced neural network architectures - warrant further investigation. However, the practical benefits of this precision shift remain to be demonstrated for many real-world use cases.
+
+\section{Custom Design Opportunities}
+An alternative to relying on off-the-shelf solutions is to design and manufacture custom PCBs with M.2 slots. This approach allows for more tailored integration and reduces reliance on proprietary vendor software. Many companies offer hardware accelerator chips that can be incorporated into custom designs, providing the flexibility to optimise the hardware for specific application requirements.
+
+\section{Software Ecosystem}
+In addition to the hardware, the software ecosystem that accompanies these accelerators is a critical consideration. The entire solution, including both hardware and software, must be ready for seamless deployment. Many companies offer end-to-end software stacks to simplify integration and accelerate development. For example:
+\begin{itemize}
+    \item \textbf{Hailo} offers tools such as the Dataflow Compiler \acrshort{dfc} and GStreamer/Python APIs.
+    \item \textbf{Axelera} supports its products with the Voyager.SDK.
+\end{itemize}
+
+Despite these offerings, assessing the usability of software stacks during initial evaluations remains a challenge. Most documentation and sample applications focus primarily on computer vision tasks, potentially limiting their applicability to broader use cases. Further practical testing is needed to understand the ease of integration and adaptability of these tools.
+
+\section{Detailed Tables}
+The tables below summarise the economic and technical key figures of the hardware accelerators reviewed, providing a comparative overview of their capabilities and specifications.
+
+\begin{table}[!ht]
     \centering
-    \rotatebox{90}{
-    \begin{tabular}{|l|l|l|l|l|l|l|l|l|}
+    \begin{tabular}{|l|l|l|l|l|}
     \hline
-        \textbf{Product Name} & \textbf{Manufacturer} & \textbf{Price (\$)} & \textbf{Availability} & \textbf{\makecell{M.2 Slot \\Type (Key)}} & \textbf{\makecell{Processing \\Power \\(TOPS INT8)}} & \textbf{\makecell{Processing\\ Power\\ (TFLOPS FP32)}} & \textbf{Power Consumption} & \textbf{Special Features} \\ \hline
-        Hailo-8L Entry-Level M.2 Module & Hailo & 80 & Available & M, B+M, A+E & 13 & ~ & 1.5 W & - \\ \hline
-        Hailo-8 M.2 AI Acceleration Module & Hailo & 220 & Available & M, B+M, A+E & 26 & ~ & 2.5W & - \\ \hline
-        Hailo-10H M.2 Key M ET Generative AI Acceleration Module & Hailo & ~ & On request & M & 40 & ~ & 3.5 W & 8GB On-Module DDR \\ \hline
-        Metis M.2 Card & Axelera & 150 & Preorder & M & 214 & ~ & 4-8 W & - \\ \hline
-        SAKURA-II M.2 & Edge Cortix & 249-299 & Preorder & M & 60 & 30 (BF16) & 10 W & Onboard DRAM \\ \hline
-        M.2 Accelerator & Coral & 25 & Available & B+M, A+E & 4 & ~ & 2 W & - \\ \hline
-        M.2 Accelerator Dual Edge TPU & Coral & 40 & Available & E & 8 & ~ & 4 W & - \\ \hline
-        ME1076 M.2 Accelerator Card & Mythic & ~ & On request & A+E & 25 & ~ & 3.5 W & - \\ \hline
-        MM1076 M.2 Accelerator Card & Mythic & ~ & On request & M & 25 & ~ & 3.5 W & - \\ \hline
-        MLSoC Dual M.2 Production Board & Sima.ai & ~ & On request & Dual M.2 & 50 & ~ & 15 W & Dual M.2 Slot \\ \hline
-        MemryX MX3 & MemryX & ~ & On request & N.A.(Chip) & ~ & 5 (BF16) & ~ & Stats per Chip \\ \hline
-        Orca 1.1 M.2 & DeGirum & 159 & Available & M & yes & yes & 4.5 W & Onboard DRAM \\ \hline
-        byteENGINE IMX8MP Plus Quad & bytesatwork & 139 & Available & N.A.(Chip) & 2.3 & ~ & 5.5V 6A & CPU,GPU,NPU on chip \\ \hline
-        Jetson Orin Nano 4GB & Nvidia & ~ & ~ & N.A.(Chip) & 20 & ~ & 7-10 W & CPU,GPU on chip \\ \hline
-        Jetson Orin Nano 8GB & Nvidia & ~ & ~ & N.A.(Chip) & 40 & ~ & 7-15 W & CPU,GPU on chip \\ \hline
-        Jetson Orin Nano Developer Kit & Nvidia & ~ & ~ & N.A.(Chip) & 40 & ~ & 7-15 W & CPU,GPU on chip \\ \hline
-        EnCharge AI Analog IMC & EnChargeAI & ~ & ~ & ~ & 150 /W & ~ & ~ & Chip \\ \hline
+        Product Name & Manufacturer & Price (\$) & Availability & \makecell{M.2 Slot\\Type (Key)} \\ \hline
+        Hailo-8L Entry-Level M.2 Module & Hailo & 80 & Available & M, B+M, A+E \\ \hline
+        Hailo-8 M.2 AI Acceleration Module & Hailo & 220 & Available & M, B+M, A+E \\ \hline
+        Hailo-10H M.2 Key M & Hailo & ~ & On request & M \\ \hline
+        Metis M.2 Card & Axelera & 150 & Preorder & M \\ \hline
+        SAKURA-II M.2 & Edge Cortix & 249-299 & Preorder & M \\ \hline
+        M.2 Accelerator & Coral & 25 & Available & B+M, A+E \\ \hline
+        M.2 Accelerator Dual Edge TPU & Coral & 40 & Available & E \\ \hline
+        ME1076 M.2 Accelerator Card & Mythic & ~ & On request & A+E \\ \hline
+        MM1076 M.2 Accelerator Card & Mythic & ~ & On request & M \\ \hline
+        MLSoC Dual M.2 Production Board & Sima.ai & ~ & On request & Dual M.2 \\ \hline
+        MemryX MX3 & MemryX & ~ & On request & N.A.(Chip) \\ \hline
+        Orca 1.1 M.2 & DeGirum & 159 & Available & M \\ \hline
+        byteENGINE IMX8MP Plus Quad & bytesatwork & 139 & Available & N.A.(Chip) \\ \hline
+        Jetson Orin Nano 4GB & Nvidia & ~ & ~ & N.A.(Chip) \\ \hline
+        Jetson Orin Nano 8GB & Nvidia & ~ & ~ & N.A.(Chip) \\ \hline
+        Jetson Orin Nano Developer Kit & Nvidia & ~ & ~ & N.A.(Chip) \\ \hline
+        EnCharge AI Analog IMC & EnChargeAI & ~ & ~ & ~ \\ \hline
     \end{tabular}
-    }
+    \caption{Economical key figures of reviewed hardware accelerators.}
+    \label{tab:market:ecotable}
+\end{table}
+
+\begin{table}[!ht]
+    \centering
+    \begin{tabular}{|l|l|l|l|}
+    \hline
+        Product Name & \makecell{Processing\\Power\\(TOPS INT8)} & \makecell{Processing\\Power\\(TFLOPS FP32)} & \makecell{Power\\Consumption} \\ \hline
+        Hailo-8L Entry-Level M.2 Module & 13 & ~ & 1.5 W \\ \hline
+        Hailo-8 M.2 AI Acceleration Module & 26 & ~ & 2.5 W \\ \hline
+        Hailo-10H M.2 Key M & 40 & ~ & 3.5 W \\ \hline
+        Metis M.2 Card & 214 & ~ & 4-8 W \\ \hline
+        SAKURA-II M.2 & 60 & 30 (BF16) & 10 W \\ \hline
+        M.2 Accelerator & 4 & ~ & 2 W \\ \hline
+        M.2 Accelerator Dual Edge TPU & 8 & ~ & 4 W \\ \hline
+        ME1076 M.2 Accelerator Card & 25 & ~ & 3.5 W \\ \hline
+        MM1076 M.2 Accelerator Card & 25 & ~ & 3.5 W \\ \hline
+        MLSoC Dual M.2 Production Board & 50 & ~ & 15 W \\ \hline
+        MemryX MX3 & ~ & 5 (BF16) & ~ \\ \hline
+        Orca 1.1 M.2 & yes & yes & 4.5 W \\ \hline
+        byteENGINE IMX8MP Plus Quad & 2.3 & ~ & 5.5V 6A \\ \hline
+        Jetson Orin Nano 4GB & 20 & ~ & 7-10 W \\ \hline
+        Jetson Orin Nano 8GB & 40 & ~ & 7-15 W \\ \hline
+        Jetson Orin Nano Developer Kit & 40 & ~ & 7-15 W \\ \hline
+        EnCharge AI Analog IMC & 150  & ~ & ~ \\ \hline
+    \end{tabular}
+    \caption{Key technical figures of reviewed hardware accelerators.}
+    \label{tab:market:keyfigures}
 \end{table}

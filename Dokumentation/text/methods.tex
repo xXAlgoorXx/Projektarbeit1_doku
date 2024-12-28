@@ -59,7 +59,7 @@ Due to the limitation that no transformers can be used with hailo the embeddings
 \textbf{Comparison size}
 
 
-\subsection{Pre processing}
+\subsection{Pre-processing}
 
 The hexagon dataset which is used as refrence consists of panorama pictures.
 These pictuers get cut into 5 equal sized patches.
@@ -67,7 +67,7 @@ Every patch gets processed with CLIP.
 To finally classify a image a mayority vote is taken over the subclasses of the patches.
 This process is mentiond in Lia Winkler's report and increases the accuracy of the model.
 
-\subsection{Post processing}
+\subsection{Post-processing}
 
 As sad the cut of part of the Onnx graph is processed in post processing.
 The Cut of part consists of one matrix multipication and some rearanging of the dimensions.
