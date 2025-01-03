@@ -10,7 +10,25 @@ The CLIP models are taken from the official CLIP Github repo \cite{clipgit}.
 The TinyCLIP models are taken from the official TinyCLIP Github repo \cite{tinyclipgit}.
 There is also the posibility to take models from HuggingFace \cite{huggingface}.
 The problem with HuggingFace is that the model cant be split into image and text encoder.
-Because of this reason only models from the offical CLIP repectiv TinyCLIP repo were used.
+Because of this reason only models from the offical CLIP respectiv TinyCLIP repo were used.
+In \cref{tab:methods:clipsize} one can see the parameter count for all CLIP and TinyCLIP implementation which use a ResNet as a visual encoder.
+We see that TinyCLIP 
+\begin{table}[h]
+    \centering
+    \begin{tabular}{lll}
+    \hline
+    Model name & \begin{tabular}[c]{@{}l@{}}Parameters\\ Visual(Mio)\end{tabular} & \begin{tabular}[c]{@{}l@{}}Parameters\\ Text(Mio)\end{tabular} \\ \hline
+    RN50                & 38  & 38  \\
+    RN50x4              & 87  & 59  \\
+    RN50x16             & 167 & 850 \\
+    RN50x64             & 420 & 151 \\
+    RN101               & 56  & 38  \\
+    TinyCLIP-ResNet-19M & 19  & 19  \\
+    TinyCLIP-ResNet-30M & 30  & 29  \\ \hline
+    \end{tabular}
+    \caption{Paramter count for different CLIP implementations with ResNet as visual encoder}
+    \label{tab:methods:clipsize}
+\end{table}
 
 \section{Model translation}
 The models were first split into image and text encoder.
@@ -126,6 +144,20 @@ As suspected the accuracy reduces significant after quantisation.
 
 \section{Measurments}
 
+To measure the performance of the Hailo hardware the models were tested in 3 ways:
+\begin{itemize}
+    \item CPU PC
+    \item CPU Raspberry Pi
+    \item Hailo hardware accelerator
+\end{itemize}
+
+As values to measure the following found usefull:
+\begin{itemize}
+    \item Throughput(speed)
+    \item Mermory(size)
+    \item Accuracy
+\end{itemize}
+The implementations were made as similiar as possible to ensuer the values are correct. 
 
 % classes = ["construction site", "town", "city",
 % "country side", "alley", "parking lot", "forest"]
