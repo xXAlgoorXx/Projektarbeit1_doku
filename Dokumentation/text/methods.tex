@@ -11,24 +11,9 @@ The TinyCLIP models are taken from the official TinyCLIP Github repo \cite{tinyc
 There is also the posibility to take models from HuggingFace \cite{huggingface}.
 The problem with HuggingFace is that the model cant be split into image and text encoder.
 Because of this reason only models from the offical CLIP respectiv TinyCLIP repo were used.
-In \cref{tab:methods:clipsize} one can see the parameter count for all CLIP and TinyCLIP implementation which use a ResNet as a visual encoder.
-We see that TinyCLIP 
-\begin{table}[h]
-    \centering
-    \begin{tabular}{lll}
-    \hline
-    Model name & \begin{tabular}[c]{@{}l@{}}Parameters\\ Visual(Mio)\end{tabular} & \begin{tabular}[c]{@{}l@{}}Parameters\\ Text(Mio)\end{tabular} \\ \hline
-    RN50                & 38  & 38  \\
-    RN50x4              & 87  & 59  \\
-    RN50x16             & 167 & 850 \\
-    RN50x64             & 420 & 151 \\
-    RN101               & 56  & 38  \\
-    TinyCLIP-ResNet-19M & 19  & 19  \\
-    TinyCLIP-ResNet-30M & 30  & 29  \\ \hline
-    \end{tabular}
-    \caption{Paramter count for different CLIP implementations with ResNet as visual encoder}
-    \label{tab:methods:clipsize}
-\end{table}
+In \cref{result:tab:clipsize} one can see the parameter count for all CLIP and TinyCLIP implementation which use a ResNet as a visual encoder.
+We see that TinyCLIP uses much less parameters than the original CLIP.
+
 
 \section{Model translation}
 The models were first split into image and text encoder.
@@ -40,7 +25,7 @@ This onnx graph then is translated by the \acrshort{dfc} to \acrshort{har} and \
     \subfloat[End of CLIP ResNet50x4 vision encoder Onnx graph acquired though official CLIP]{\includegraphics[width=0.4\textwidth]{Images/Implementation/ClipRes50x4.png}\label{fig:implementation:clipres50x4}}
     \qquad
     \subfloat[End of CLIP ResNet 50x4 vision encoder Onnx graph sendt by Hailo]{\includegraphics[width=0.4\textwidth]{Images/Implementation/HailoClipRes50x4.png}\label{fig:implementation:hailoclipres50x4}}
-    \caption{Comparison of CLIP ResNet 50x4 vision encoder Onnx graph (a) from official CLIP and (b) from Hailo}
+    \caption{Comparison of CLIP ResNet 50x4 vision encoder Onnx graph (a) from official CLIP and (b) from Hailo. The important thing to see are the numbers of dimensions.}
     \label{fig:implementation:compareRN50x4}
 \end{figure}
 
@@ -48,10 +33,12 @@ In that step lays the first big problem of the project.
 As described in \cref{section:dfc} the \acrshort{dfc} is unable to compile transformers.
 To be precise, a transpose block at the end of every self attention layer is were the problems lay.
 The \acrshort{dfc} swaps dimensions and takes together the last 2 dimensions.
-In the ResNet which is acquired though the offical code (see \cref{fig:implementation:clipres50x4}) one can see that the transpose block after the MatMul block swaps a second and the third dimension.
+In the ResNet which is acquired through the offical code (see \cref{fig:implementation:clipres50x4}) one can see that the transpose block after the MatMul block swaps a second and the third dimension.
 This leads to a compilation error because the \acrshort{dfc} already combined the last 2 dimensions.
 This error does not occure when the model given by Hailo is compiled.
-In \cref{fig:implementation:hailoclipres50x4} the maximum of dimensions is 3.
+This is becaues the networks from hailo are acquired with a older version of CLIP and the ONNX exporter.
+The graph are functionaly the same but are diffrent in architecture.
+In \cref{fig:implementation:hailoclipres50x4} the maximum of dimensions of the network from Hailo is 3.
 
 To work around this problem the last part of the onnx graph is cut off.
 To cut the graph Onnx-Modifier \cite{onnxmodifier} is used.
@@ -80,10 +67,12 @@ Due to the limitation that no transformers can be used with hailo the embeddings
 \subsection{Pre-processing}
 
 The hexagon dataset which is used as refrence consists of panorama pictures.
-These pictuers get cut into 5 equal sized patches.
+These pictures get cut into 5 equal sized patches.
 Every patch gets processed with CLIP.
-To finally classify a image a mayority vote is taken over the subclasses of the patches.
-This process is mentiond in Lia Winkler's report and increases the accuracy of the model.
+To process one of these patches with CLIP they have to be preprocessed by resizing them to the specific input size.
+finally a mayority vote is taken over the subclasses of the patches to classify a image.
+This process is mentiond in Lia Winkler's report and increases the accuracy of the predictions.
+
 
 \subsection{Post-processing}
 
@@ -91,9 +80,11 @@ As sad the cut of part of the Onnx graph is processed in post processing.
 The Cut of part consists of one matrix multipication and some rearanging of the dimensions.
 In a first implementation the weights for the matrix multipication were extracted and saved in a json file.
 In a second attemp the cut off Onnx Graph is directly used.
-The second attemp proved as faster while using much less memory.
+The second attemp proved faster while using less memory.
+
 
 \section{Inference}
+
 To have a good comparison of performance the implementation on the Raspberry Pi is mostly similar to the one which is used on PC.
 The PC application is mostly the same as Lia Winkler used in her work.
 For Vision encoder only ResNet's were used because of the limitations from the \acrshort{dfc}.
@@ -103,12 +94,18 @@ The text input were used solo or in a scentens.
 In \cite{clip} the authors state that the performance of the network can improve if the text inputs are in a scentens.
 To use the vision model on Hailo the python api is used.
 2 diffrent implmentations were tested.
-One proved much slower because the device initialisation happens every time a image is encoded.
+The first implementation is based on a code snippet found on \cite{hailoimplementation}.
+In this implementation the device gets initialised every time a output has to be calculated.
+This makes the programm very slow and no significant speed up is achieved.
 
+The second implementation corrects this problem.
+The device gets initialised once at the start of the programm.
+With this approach a speed up of the factor 2 can be achieved in comparison to the evaluation on the PC CPU
 
-To check the functionalit of the \acrshort{dfc} as test picture is used.
+To check the functionality the output and of the quantisation the output of the \acrshort{dfc} is checked at every stage.
 The \acrshort{dfc} is able to calculate the output of the compiling network at every step.
-This is used to compare the output of the different stages with a test image.
+With that the postprocessing can be checked.
+The fist test is conducted with a test image.
 The Results can be seen in \cref{tab:methods:clipcompare}.
 
 \begin{table}[]
@@ -139,25 +136,7 @@ The Results can be seen in \cref{tab:methods:clipcompare}.
     \label{tab:methods:tinyclipcompare}}
 \end{table}
 
-As suspected the accuracy reduces significant after quantisation.
-
-
-\section{Measurments}
-
-To measure the performance of the Hailo hardware the models were tested in 3 ways:
-\begin{itemize}
-    \item CPU PC
-    \item CPU Raspberry Pi
-    \item Hailo hardware accelerator
-\end{itemize}
-
-As values to measure the following found usefull:
-\begin{itemize}
-    \item Throughput(speed)
-    \item Mermory(size)
-    \item Accuracy
-\end{itemize}
-The implementations were made as similiar as possible to ensuer the values are correct. 
+The accuracy reduces significant after quantisation. 
 
 % classes = ["construction site", "town", "city",
 % "country side", "alley", "parking lot", "forest"]

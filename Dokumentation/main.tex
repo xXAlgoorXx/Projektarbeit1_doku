@@ -12,7 +12,8 @@
 \makeglossaries
 \input{common/acro}
 % name des tex-file Reinschteiben welches man bearbeitet
-%\includeonly{text/Entwicklung} % Auskommentiern um ganzes Dokument zu setzen
+% Auskommentiern um ganzes Dokument zu setzen
+%\includeonly{text/Entwicklung} 
 
 \begin{document}
     \pagenumbering{Roman}
@@ -53,14 +54,15 @@
     \newpage
     % ==================================================
     % Appendix
-    % \begin{appendices}
-    % \input{appendix/marcetAnalysis.tex}
-    % \end{appendices}
+    \begin{appendices}
+    \renewcommand\thefigure{\thesection}    
+    \input{appendix/resultPC.tex}
+    \end{appendices}
     % Verzeichnisse
     \pagenumbering{alph}
-    \printbibliography
     \listoffigures
     \listoftables
+    \printbibliography
     \newpage
     
 \end{document}

@@ -28,13 +28,13 @@ The \acrshort{dfc} the compiles the model to a \Acrfull{hef} by executing the fo
     \item Compilation
 \end{enumerate}
 In the full precision optimization step ONNX file first gets compiled into a \acrfull{har} file, a file type defined by Hailo.
-This step also includes any changes to the model in the floating-point precision domain, for example Equalization [Meller2019], TSE [Vosco2021] and pruning.
+This step also includes any changes to the model in the floating-point precision domain, for example Equalization\cite{meller2019same}, \acrshort{tse}\cite{Vosco_2021_ICCV} and pruning.
 
 In the quantization optimization step the model gets compressed.
 This means that the model gets converted from floating point to integer.
 Weights get compiled to either 4,8 or 16 bits.
 Activaitions get compiled to 8 or 16 bits.
-Which quantisation is aplied is handeled through a model script.
+Which quantisation is applied is handeled through a model script.
 In that script the amount of quantized weights can be described.
 There is also the posibility to target specific layer by the model script.
 It is also possible to add preprocessing steps to the model script like resize the input or convert the input from RGB to YUV.
