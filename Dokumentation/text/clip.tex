@@ -22,8 +22,49 @@
     Networks trained for this task are called contrastive language-image pre-training models.
     Most cross-modal networks built for this task consist of a text encoder and an image encoder.
 
+    \section{Base networks}
+    To understand corss-modal netwroks we first have to understand thier components.
+    Most of them use a transformers as encoders but some can use ResNets.
+    
+    \subsection{ResNet}
+    ResNet's were introduced in \cite{resnetpaper}.
+    A ResNet uses residual blocks (\cref{fig:crossmodalnetworks:resblock}).
+    These blocks have residual conections between some layers.
+    This allows information to bypass whole layers if the layers are not needed.
+    These conections stabilizes training and convergence of deep neural networks.
+    Big and deep transformer models like GPT models from Open AI use these conections.
+
+    \begin{figure}[h]
+        \centering
+        \includegraphics[width=0.55\textwidth]{Images/crossmodalnetworks/ResBlock.png}
+        \caption{Image of a ResNet block.\cite{resnetpaper}}
+        \label{fig:crossmodalnetworks:resblock}
+    \end{figure}
+
+    \subsection{Transformer}
+
+    The transformer is first meantioned in \cite{attentionisallyouneed}.
+    Before transformers \acrfull{rnn} were used to process sequential data.
+    A mechanism called attention was used to get information about the context of a sequenz.
+    The transformer was a revolution because it uses a  block called self attention.
+    With this block the need for a \acrshort{rnn} is obsolet.
+    \acrshort{rnn} are hard to train because of a effect called vanishing or exploding gradient.
+    They are also hard to parallelize.
+    These effect's no longer occure when using a transformer.
+
+    \begin{figure}[h]
+        \centering
+        \includegraphics[width=0.25\textwidth]{Images/crossmodalnetworks/The-Transformer-encoder-structure.png}
+        \caption{Image of a transformer which in the case of CLIP is used as a text encoder\cite{fig:encoder}}
+        \label{fig:crossmodalnetworks:transformer}
+    \end{figure}
+
+    
+
+
+
     \section{Text encoder}
-    The text encoder is in most cases a transformer (see \cref{fig:crossmodalnetworks:textencoder}).
+    The text encoder is in most cases a transformer.
     It encodes a given text into a high-dimensional vector space.
     This high dimensional vector space allows the encoder to correctly classify unseen classes because their vector is close to related classes.
     In theory, the closer two words are related, the closer their embedding vectors are to each other.
@@ -35,13 +76,6 @@
         \includegraphics[width=\textwidth]{Images/crossmodalnetworks/3DEmbedding.png}
         \caption{Example of text embedding using CLIP and \Acrshort{pca}}
         \label{fig:crossmodalnetworks:3demb}
-    \end{figure}
-
-    \begin{figure}
-        \centering
-        \includegraphics[width=0.25\textwidth]{Images/crossmodalnetworks/The-Transformer-encoder-structure.png}
-        \caption{Image of a transformer used as a text encoder\cite{fig:encoder}}
-        \label{fig:crossmodalnetworks:textencoder}
     \end{figure}
     
     \section{Image encoder}

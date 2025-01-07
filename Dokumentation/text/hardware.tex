@@ -4,6 +4,7 @@ The Raspberry Pi 5 with an Ai kit was chosen as the hardware to prove the concep
 This desiction was taken based on recommendations from the advisors and the avilability.
 The market analysis confirms this choice.
 The hardware accelerator of the Ai kit is made by Hailo \cite{hailo}.
+Generally a hardware accelerator is used to compute neural netwroks like a graphics card is used to compute graphics.
 Hailo is a company which produces hardware accelerators.
 The Ai kit uses the Hailo-8L entry level hardware accelerator.
 Hailo provides a pipeline to compile a network so that it can be executed on the hailo software.
@@ -59,7 +60,7 @@ Fortunately, the visual encoding of CLIP can also be done with ResNet, a special
 Hailo provides a library called TAPPAS which is based on GStreamer.
 The library enables using a Hailo device within gstreamer pipelines t create intelligent video processing applications.
 The information for this section are taken from the TAPPAS User Guide.
-In the point of time there are 2 approaches to run a network on a hailo device.
+In the point of time there are two approaches to run a network on a hailo device.
 One with Gstreamer and one with a Python API.
 There are many different example applications available for many diffrent usecases.
 These examples can be found in the Hailo model zoo\cite{hailo_model_zoo} or in their repo for Raspberry Pi examples \cite{hailo_rpi5_examples}.

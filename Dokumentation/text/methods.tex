@@ -1,7 +1,7 @@
 \chapter{Implementation
     \label{chapter:implementation}}
 
-This chapter discribs the tools, methods and reasons for the from of implementation.
+This chapter discribs the tools, methods and reasons for the form of implementation.
 As sad due to early test CLIP and TinyCLIP are used as models.
 
 \section{Model acquisition}
@@ -11,8 +11,8 @@ The TinyCLIP models are taken from the official TinyCLIP Github repo \cite{tinyc
 There is also the posibility to take models from HuggingFace \cite{huggingface}.
 The problem with HuggingFace is that the model cant be split into image and text encoder.
 Because of this reason only models from the offical CLIP respectiv TinyCLIP repo were used.
-In \cref{result:tab:clipsize} one can see the parameter count for all CLIP and TinyCLIP implementation which use a ResNet as a visual encoder.
-We see that TinyCLIP uses much less parameters than the original CLIP.
+In \cref{methods:tab:clipsize} one can see the parameter count for all CLIP and TinyCLIP implementation which use a ResNet as a visual encoder.
+One can see that TinyCLIP uses much less parameters than the original CLIP.
 
 
 \section{Model translation}
@@ -196,31 +196,14 @@ In \cref{methods:tab:perfRaspi} the parameter count of the image encoder is disp
     RN50x16             & 167.3 & 850.5 \\
     RN50x64             & 420.4 & 151.1 \\
     RN101               & 56.3  & 37.8  \\
-    TinyCLIP-19M & 18.5  & 18.9  \\
-    TinyCLIP-30M & 29.5  & 28.3  \\ 
+    TinyCLIP-19M        & 18.5  & 18.9  \\
+    TinyCLIP-30M        & 29.5  & 28.3  \\ 
     \end{tabular}
     \caption{Paramter count for different CLIP implementations with ResNet as visual encoder}
     \label{methods:tab:clipsize}
 \end{table}
 
-
-
 \subsection{With hardware accelerator}
-\begin{table}[]
-    \centering
-    \begin{tabular}{l|rr}
-    \hline
-    Model name & \begin{tabular}[c]{@{}l@{}}Parameters\\ Visual(Mio)\end{tabular} \\ \hline
-    RN50                & 36.2  \\
-    RN50x4              & 85.3  \\
-    RN50x16             & 164.6 \\
-    RN101               & 55.1 \\
-    TinyCLIP-19M & 17.1  \\
-    TinyCLIP-30M & 27.7  \\ 
-    \end{tabular}
-    \caption{Paramter count for different CLIP implementations with ResNet as visual encoder}
-    \label{methods:tab:clipsizequant}
-\end{table}
 
 Now networks after compilation are examined.
 First we take a look on the paramter count.
@@ -239,17 +222,35 @@ which is the parameter count before compilation(see \cref{methods:tab:clipsize})
 This calculation can also be done for all other models but the result is the same.
 This result means that the architecture isnt affected by the \acrshort{dfc}.
 It only changes the quantisation.
-Because of quantisation the mermory size should be around 4 times lower than before because the datatype which changes from FP32 to INT8.
-This assumtion cant be verfied because the datatype from before and after arent the same.
+Because of quantisation the mermory size should be around 4 times lower than before because the datatype of the weights which changes from FP32 to INT8.
+In reality the factor is around 3.
+This can be seen in \cref{methods:tab:sizecompare}.
+It is important to meantion that these numbers have to be taken with a grain of salt because they are safed in diffrent data types.
+
+\begin{table}
+    \centering
+    \begin{tabular}{l|rr}
+    \hline
+    Modelname & Onnx & \acrshort{hef}\\\hline
+    RN50 & 153.2 MB & 53.7 MB \\ 
+    RN50x4 & 348.4 MB& 121.7 MB  \\ 
+    RN101 & 224.9 MB  & 82.7 MB \\
+    TinyClip19M & 74.3 MB & 28.6 MB  \\ 
+    TinyClip30M & 118.3 MB & 43.5 MB  \\ 
+    \end{tabular}
+    \caption{Comparison in size between onnx and hef file of a CLIP model.}
+    \label{methods:tab:sizecompare}
+\end{table}
+
 
 \begin{table}[!h]
     \centering
     \begin{tabular}{l|rrrrr}
     \hline
     Modelname & Accuracy & \makecell{Throughput\\(it/s)} & \makecell{Throughput \\ Image (it/s)} & Throughput std & \makecell{Throughput\\Image std} \\ \hline
-    RN50 & 0.983 & 20.63 & 24.58 & 1.341 & 0.27 \\ 
-    RN50x4 & 0.982 & 10.13 & 10.75 & 0.32 & 0.059 \\ 
-    RN101 & 0.981 & 15.61 & 17.09 & 0.49 & 0.081 \\
+    RN50    & 0.983 & 20.63 & 24.58 & 1.341 & 0.27 \\ 
+    RN50x4  & 0.982 & 10.13 & 10.75 & 0.32 & 0.059 \\ 
+    RN101   & 0.981 & 15.61 & 17.09 & 0.49 & 0.081 \\
     TinyClip19M & 0.017 & 30.41 & 39.29 & 2.71 & 3.02 \\ 
     TinyClip30M & 0.530 & 22.96 & 27.82 & 1.57 & 1.71 \\ 
     \end{tabular}
@@ -270,7 +271,7 @@ There we see that although the accuracy is fine many pictures get misclassified.
     \subfloat[][Evaluation on PC]{\includegraphics[width=0.49\textwidth]{Images/appendix/resultsPC/Confusion Matrix 5S(RN50).png}\label{methods:fig:confrn50pc}}
     \subfloat[][Evaluation on Hailo]{\includegraphics[width=0.49\textwidth]{Images/Implementation/Confusion Matrix 5S(RN50)Hailo.png}\label{methods:fig:confrn50hailo}}
     \label{methods:fig:compareConfM}
-    \caption{Comparison of confusion matrix from Hailo to PC}
+    \caption{Comparison of confusion matrix from Hailo to PC.}
 \end{figure}
 
 There are a couple reasons for that:
@@ -304,7 +305,9 @@ With that the postprocessing and the functionality of the quantisation can be ch
 The test is conducted with a test image (see \cref{methods:fig:comparetestpic}).
 The Results can be seen in \cref{methods:fig:comparern50}.
 First we see that the output from CPU, Nativ and Compiled are the same.
-This confirms that postprocessing is implemented correct.
+Nativ is the model which results in the translation from onnx to \acrshort{har}.
+Compiled is floating point omptimized by the \acrshort{dfc}.
+This result confirms that postprocessing is implemented correct otherwise the nativ output would be diffrent from the CPU output.
 We see that after quantisation there is a huge shift of the output.
 The effect can also be seen on the output of other images.
 This indicates that the quantisation is the problem.
@@ -320,7 +323,7 @@ This indicates that the quantisation is the problem.
 
 In \cref{scetion:methods:contimp} the reason for the bad accuracy is suspected to be the bad quantisation.
 The models are all translated to INT8.
-In a attemp to increase accuracy as much as possible is convertet to INT16.
+In a attemp to increase accuracy as much as possible is converted to INT16.
 Other ways to increase the accuracy are better text promts and adjusting the threshold for binary classifications.
 
 
@@ -328,6 +331,7 @@ Other ways to increase the accuracy are better text promts and adjusting the thr
 
 The \acrshort{dfc} offers a way to change the quantisation of the weigths.
 This is applied via the model script in quantisation.
+
 
 
 \subsection{Adjust threshold}
@@ -342,7 +346,7 @@ To get a balanced dataset a subset is created so that each class has the same am
 The images are randomly sampled.
 
 \subsection{Change cut location}
-Most of the examples from the hailo model zoo\cite{hailo_model_zoo} are CNN's.
+% Most of the examples from the hailo model zoo\cite{hailo_model_zoo} are CNN's.
 A assumption is that the last part of the ResNet's a self attention layer isnt quantising propely due to some big matrix multipications.
 
 To work against this effect the cut which in any case has to be made can appear earlier in the graph.
