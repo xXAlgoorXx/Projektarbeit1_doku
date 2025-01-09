@@ -138,6 +138,7 @@ The accuracy of a model describes how a model performs in labeling pictures as i
 This measurment is taken because it is an easy way to see if a network is working correct but it can easly give a wrong image of the situation because it doesnt take unbalanced datasets in consideration.
 To get a precise answer if the network is working correct the confusion matix or a class report of a model has to evaluated.
 Both of these are found in the appendix.
+In the text accurcy is also used to just described the capability of the model to classify a pitcture correct.
 
 The models get executed on the edge.
 Although a Raspberry Pi has plenty of mermory it is always a good practice to include the size of a model as measurment.
@@ -277,17 +278,19 @@ There we see that although the accuracy is fine many pictures get misclassified.
 
 There are a couple reasons for that:
 \begin{itemize}
+    \item Because of bad quantisation the model cant classify the pictures correct.
     \item There is an error in the implementation. This could be in the creation of the confusion matrix or in postprocessing.
     \item The text embeddings are different.
-    \item Because of bad quantisation the model cant classify the pictures correct.
 \end{itemize}
 
 \section{Controll Implementation
     \label{scetion:methods:contimp}}
 First and easy to check is the creation of the confusion matrix because the same code is used on Hailo and on PC.
+The output of the models gets saved in csv file.
+This output from hailo produces the same confusion matrix as the output computed on PC.
 
 Second the text embeddings.
-As menationd earlier the text embeddings are safed in an json file.
+As menationd earlier the text embeddings are safed as an json file.
 Possible erros could be that the embeddings are safed wrong or by that converting the values also rounds them.
 To check for these errors the differents between the output of text encoder and the json file is taken.
 In all cases the differents is zero.
@@ -343,6 +346,9 @@ The \acrshort{dfc} offers a way to change the quantisation of the weigths.
 This is applied via the model script in quantisation.
 Due to the limitation that no GPU was available during the project quantising a network to a diffrent type than INT8 took very long.
 
+Due to this reason only TinyCLIP-19M was quantised to INT16.
+In the end 66\% of parameters were INT16  but no increase in accuracy was found.
+
 
 \subsection{Adjust threshold}
 
@@ -355,3 +361,8 @@ For this calculation one has to watch out to use a balanced dataset.
 To get a balanced dataset a subset is created so that each class has the same amount of images.
 The images are randomly sampled.
 
+This process proved beneficial because it doenst need much computational resources and its easily implemented.
+
+\section{Best Result}
+
+The best result was found to be the model with the RN101 as visual encoder

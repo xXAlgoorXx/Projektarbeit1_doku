@@ -9,19 +9,62 @@ In this chapter the results and their collection is discussed and interpreted.
 
 \section{Execute models on the edge}
 To have a success full compilation of a network it is important to understand which part of network dont lose much accurcy due to quantisation.
-In \cref{methods:sec:cutlocation} the model had an incerase in accurcy after the matrix multiplication isnt calculate on the edge anymore
+In \cref{methods:sec:cutlocation} the most of the models had an incerase in accurcy after the matrix multiplication isnt calculate on the edge anymore.
+
+TinyCLIP didnt achieve good results after quantisation.
+The suspision is that TinyCLIP has to few parameters to work propely after quantisation.
+
+The best results are with RN101.
+The diffrenc to the other ResNet models is that RN101 is wider than most models.
+This means that parameters are better invested in width than in depth of a network.
+This would also explain why TinyCLIP isnt giving good results.
+
+During weight inheritance some weights get masked.
+This reduces the parameter count of a network by making it narrower.
 
 \section{Working with Hailo}
 
 Hailo has proven to have a good product with the Hailo 8L hardware accelerator.
 The combination with the Raspberry Pi 5 makes it easy to develop in comparison to other solutions found.
+
+The \acrshort{dfc} also contributes to simplicity of the solution by hailo.
+The tutorials are built in the software packages.
+Additional information can easly be found in the guide document of the \acrshort{dfc}.
+In the guide are also code examples to use the hailo hardware.
+
 Although nearly all examples from hailo are focused on image processing.
 The help is handeld through the hailo community.
 This is beneficial if other people have the same problem.
 But on serius problems like the problem with the dimension swap (see \cref{implementation:sec:translation}) it fellt like no one of the hailo people which are answering in the forum understood enough to tell that the compilation of this specific network isnt possible at the moment.
 
+The python \acrfull{api} can be found online or in the \acrshort{dfc} Guide.
+Sadly it isnt discribed too good.
+All code from hailo is open source.
+Also there are many sources of examples to use the \acrshort{api} but these are again not described very well.
+Most of the code has be understood by the programmer.
+The other way would be asking in the forum of hailo.
+There the time to answer can alter between 1-10 days.
+
 
 
 \section{Conclusion}
 
+To use qunatized models it isnt beneficial to reduce its parameter count before compilation.
+Especialy with hailo because the \acrshort{dfc} is capable of pruning and optimization.
+This is shown in the result as RN101 shows the best results after quantisation.
+
+It is beneficial to use apropoate hardware (\acrshort{gpu}) to speed up the compilation time.
+There are also cetrain functions of the \acrshort{dfc} which arent possible to make without a \acrshort{gpu} like optimization of a network.
+
+To really use the full potential of the Hailo hardware accelerator and CLIP one should wait until the implementation to use transformers is complete. 
+
 \section{Outlook}
+
+The next steps should be to wait for the next update when hailo implements the usage of transformers.
+In addition SAM\cite{sam} could be used as preprocessing.
+\acrshort{sam} returns segments of pictures.
+This in compination with CLIP could be used to incerase the accuracy of classification.
+\acrshort{sam} could for example isolate things in a office for example a printer or a computer which then gets classified by CLIP.
+To use this most likely 2 hardware accelerators, one for each model.
+This means that the Raspberry Pi 5 wouldnt be capable of this task because it has only 1 M.2 slot.
+
