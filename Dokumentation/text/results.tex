@@ -5,11 +5,23 @@ In this chapter the results and their collection is discussed and interpreted.
 
 
 
+
+
+\section{Execute models on the edge}
+To have a success full compilation of a network it is important to understand which part of network dont lose much accurcy due to quantisation.
+In \cref{methods:sec:cutlocation} the model had an incerase in accurcy after the matrix multiplication isnt calculate on the edge anymore
+
+\section{Working with Hailo}
+
+Hailo has proven to have a good product with the Hailo 8L hardware accelerator.
+The combination with the Raspberry Pi 5 makes it easy to develop in comparison to other solutions found.
+Although nearly all examples from hailo are focused on image processing.
+The help is handeld through the hailo community.
+This is beneficial if other people have the same problem.
+But on serius problems like the problem with the dimension swap (see \cref{implementation:sec:translation}) it fellt like no one of the hailo people which are answering in the forum understood enough to tell that the compilation of this specific network isnt possible at the moment.
+
+
+
 \section{Conclusion}
 
-\subsection{Execute models on the edge}
-
-\subsection{Working with Hailo}
-
 \section{Outlook}
-test

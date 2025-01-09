@@ -25,14 +25,17 @@
     \section{Base networks}
     To understand corss-modal netwroks we first have to understand thier components.
     Most of them use a transformers as encoders but some can use ResNets.
+    Information for this section are taken from the corresponding paper and \cite{clipexplain}.
     
-    \subsection{ResNet}
+    \subsection{ResNet
+    \label{crossmodalnetworks:sec:resnet}}
     ResNet's were introduced in \cite{resnetpaper}.
     A ResNet uses residual blocks (\cref{fig:crossmodalnetworks:resblock}).
     These blocks have residual conections between some layers.
     This allows information to bypass whole layers if the layers are not needed.
     These conections stabilizes training and convergence of deep neural networks.
-    Big and deep transformer models like GPT models from Open AI use these conections.
+    ResNets original motivation was to have better image processing capabilities then \acrfull{cnn}.
+    Big and deep transformer models like GPT models from Open AI also use these conections to get better results.
 
     \begin{figure}[h]
         \centering
@@ -52,15 +55,28 @@
     They are also hard to parallelize.
     These effect's no longer occure when using a transformer.
 
-    \begin{figure}[h]
+
+    To use a transformer the input has first to be split in tokens.
+    These tokens consist of text snippets or in the case of a vision transfomer patches of a picture(see \cref{fig:crossmodalnetworks:visiontransformer}).
+    These tokens then get embedded into a high dimensional vector space.
+    In case of CLIP Vit32 visual encoder the vector has 1024 dimensions.
+    Additionally the vectors get a postitional embedding.
+    Next a combination of self attention block and feed forward is used to process the tokens (see \cref{fig:crossmodalnetworks:transformer}).
+    Mutliple of these block get concantenated.
+
+    \begin{figure}[]
         \centering
         \includegraphics[width=0.25\textwidth]{Images/crossmodalnetworks/The-Transformer-encoder-structure.png}
         \caption{Image of a transformer which in the case of CLIP is used as a text encoder\cite{fig:encoder}}
         \label{fig:crossmodalnetworks:transformer}
     \end{figure}
 
-    
-
+    \begin{figure}[]
+        \centering
+        \includegraphics[width=0.6\textwidth]{Images/crossmodalnetworks/Vision_Transformer.png}
+        \caption{Vision transforme architecture\cite{vitwikipedia}}
+        \label{fig:crossmodalnetworks:visiontransformer}
+    \end{figure}
 
 
     \section{Text encoder}
@@ -73,7 +89,7 @@
 
     \begin{figure}
         \centering
-        \includegraphics[width=\textwidth]{Images/crossmodalnetworks/3DEmbedding.png}
+        \includegraphics[width = 0.8\textwidth]{Images/crossmodalnetworks/3DEmbedding.png}
         \caption{Example of text embedding using CLIP and \Acrshort{pca}}
         \label{fig:crossmodalnetworks:3demb}
     \end{figure}
@@ -93,10 +109,10 @@
         Contrastive techniques take paired inputs from two modalities (e.g. an image and its caption).
         Both inputs are embedded in their own embedding space.
         The aim is for such a pair to be represented by its corresponding encoder in a similar embedding.
-        Speech-image describes the two modalities used by a model.
+        Language-image describes the two modalities used by the model.
+        Most of these models are pre-trained.
         Pre-training means that the model has been trained on a large and universal dataset.
-        These models are often called basic models.
-        For a specific application, a pre-trained model can be fine-tuned to better perform its specific task.
+        For a specific application, a pre-trained model can be fine-tuned to better perform on its specific task.
 
         \subsection{CLIP
             \label{section:clip}}
@@ -106,7 +122,7 @@
         It has been shown to outperform some of the best known models in classifing images.
         Many other models use CLIP as a base and build better models from it.
 
-        \begin{figure}[!h]
+        \begin{figure}[]
             \centering
             \includegraphics[width=\textwidth]{Images/crossmodalnetworks/OpenAICLIP.png}
             \caption{A picture from the \acrshort{clip} paper by OpenAI \cite{clip}.}
@@ -123,7 +139,7 @@
         \begin{figure}
             \centering
             \includegraphics[width=\textwidth]{Images/crossmodalnetworks/examplepicsalign.png}
-            \caption{Example of alt-text image pairs from the train dataset from \acrshort{align}}
+            \caption{Example of alt-text image pairs from the train dataset from \acrshort{align}\cite{ALIGN}}
             \label{fig:crossmodalnetworks:alignepairs}
         \end{figure}
 

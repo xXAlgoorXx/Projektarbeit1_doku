@@ -15,7 +15,8 @@ In \cref{methods:tab:clipsize} one can see the parameter count for all CLIP and 
 One can see that TinyCLIP uses much less parameters than the original CLIP.
 
 
-\section{Model translation}
+\section{Model translation
+\label{implementation:sec:translation}}
 The models were first split into image and text encoder.
 The image encoder then gets translated to a onnx graph and afterwards simplified.
 This onnx graph then is translated by the \acrshort{dfc} to \acrshort{har} and \acrshort{hef} files.
@@ -326,12 +327,21 @@ The models are all translated to INT8.
 In a attemp to increase accuracy as much as possible is converted to INT16.
 Other ways to increase the accuracy are better text promts and adjusting the threshold for binary classifications.
 
+\subsection{Change the cut location
+\label{methods:sec:cutlocation}}
+A assumption is that the last part of the ResNet's, which is a self attention layer, isnt quantising propely due to some big matrix multipications.
+
+To work against this effect the cut which in any case has to be made can appear earlier in the graph.
+This means that only convolutions and additions were quantised and processed on hailo.
+This lead to a higher accuracy on cost of computing time of some models.
+The biggest and best increase was found on the model which uses the RN101 as visual encoder.
+
 
 \subsection{Change quantisation}
 
 The \acrshort{dfc} offers a way to change the quantisation of the weigths.
 This is applied via the model script in quantisation.
-
+Due to the limitation that no GPU was available during the project quantising a network to a diffrent type than INT8 took very long.
 
 
 \subsection{Adjust threshold}
@@ -345,9 +355,3 @@ For this calculation one has to watch out to use a balanced dataset.
 To get a balanced dataset a subset is created so that each class has the same amount of images.
 The images are randomly sampled.
 
-\subsection{Change cut location}
-% Most of the examples from the hailo model zoo\cite{hailo_model_zoo} are CNN's.
-A assumption is that the last part of the ResNet's a self attention layer isnt quantising propely due to some big matrix multipications.
-
-To work against this effect the cut which in any case has to be made can appear earlier in the graph.
-This leads to a lower throughput but may increase the accuracy.

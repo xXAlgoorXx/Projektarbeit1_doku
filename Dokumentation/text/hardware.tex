@@ -4,12 +4,11 @@ The Raspberry Pi 5 with an Ai kit was chosen as the hardware to prove the concep
 This desiction was taken based on recommendations from the advisors and the avilability.
 The market analysis confirms this choice.
 The hardware accelerator of the Ai kit is made by Hailo \cite{hailo}.
-Generally a hardware accelerator is used to compute neural netwroks like a graphics card is used to compute graphics.
+Generally a hardware accelerator is used to compute neural netwroks like a GPU is used to compute graphics.
 Hailo is a company which produces hardware accelerators.
 The Ai kit uses the Hailo-8L entry level hardware accelerator.
 Hailo provides a pipeline to compile a network so that it can be executed on the hailo software.
-First we take a look at the compilation of a network which has to be done on a PC, 
-preferibly one with a GPU.
+First we take a look at the compilation of a network which has to be done on a PC, preferibly one with a GPU.
 Secondly were looking on the way to run the network on the edge.
 
 \section{Network compilation}
@@ -51,9 +50,9 @@ This file can be compiled to a \acrshort{hef} file to use the model on Hailo har
 
 \subsection{Constrains}
 At the time of this writing, the \acrshort{dfc} is not capable of compiling Transformers.
-This is a very important limiting factor for this porject.
+This is a important limiting factor for this porject.
 The best performance for CLIP is achieved with vision Transformers as image encoder.
-Fortunately, the visual encoding of CLIP can also be done with ResNet, a special form of \Acrshort{cnn}'s.
+Fortunately, the visual encoding of CLIP can also be done with ResNet(see \cref{crossmodalnetworks:sec:resnet}), a special form of \Acrshort{cnn}'s.
 
 \section{Running on the edge}
 
