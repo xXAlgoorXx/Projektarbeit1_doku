@@ -1,0 +1,44 @@
+\chapter*{Summary}
+Hexagon AB is a global leader in digitization technology, specializing in measurement and positioning systems.  
+The company's laser scanning devices generate point cloud data of the environment and capture images through additional cameras integrated into their scanners.  
+The objective of this project is to work towards the integration of enhanced scene understanding capabilities into the scanning application's edge devices.  
+
+To achieve this, hardware accelerators from Hailo were selected for implementation.  
+Hailo is a company that produces hardware accelerators.  
+In collaboration with Raspberry Pi, Hailo has developed a board equipped with an M.2 slot, compatible with a Raspberry Pi HAT.  
+This integration enables the execution of neural networks on the Raspberry Pi, thereby demonstrating the efficancy of the hardware accelerators in facilitating advanced computing tasks.  
+
+In a previous study conducted by Lia Winkler, it was determined that CLIP demonstrated the greatest capacity to fulfill this task.  
+\acrfull{clip} is a model designed to assess how well given text prompts align with an image.  
+The model comprises a vision encoder and a text encoder.  
+The outputs of these encoders are high-dimensional vectors.  
+The similarity between text and image is calculated by taking the scaled dot product of the vectors.  
+
+The evaluation of her work was conducted on a dataset provided by Hexagon, consisting of panorama images.  
+These images are divided into five classes: indoor architectural, indoor construction, outdoor construction, outdoor urban, and forest.  
+To achieve optimal results, Winkler identified that dividing the images into patches, classifying each patch, and determining the image's class via a majority vote yielded the most effective approach.  
+
+Finally, Miss Winkler highlighted TinyCLIP in her report, a version of CLIP with a considerably reduced parameter count while maintaining similar levels of accuracy.  
+
+The goal of this work is to utilize CLIP and TinyCLIP on the Hailo hardware.  
+Hailo provides software to compile a network called the \acrfull{dfc}.  
+The \acrshort{dfc} quantizes a model and compiles it into a format that can be executed on Hailo hardware.  
+
+A significant constraint is that the \acrshort{dfc} currently cannot compile neural networks using transformer architectures.
+This limitation shaped the implementation on the Raspberry Pi.  
+The text encoders of CLIP are always transformers.  
+While the vision encoders are typically vision transformers, they can also be implemented as ResNets.  
+
+Text encodings need to be pre-calculated, saved, and uploaded to the Raspberry Pi.  
+On the Raspberry Pi, only ResNets can be used as visual encoders.  
+During the compilation of the ResNets, another limitation was encountered: due to dimensional constraints on the Hailo hardware, the ResNets had to be divided into two parts.  
+The first part is compiled with the \acrshort{dfc} and executed on the hardware accelerator.  
+The second part has to be executed on the CPU of the Raspberry Pi.  
+
+With this solution, an intermediate result was achieved.
+To compare the results which were calculated on the Hailo hardware the same networks were used on a PC.
+
+
+
+
+

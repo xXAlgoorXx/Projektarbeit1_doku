@@ -1,18 +1,40 @@
 \chapter{Tools}
 
+In \cref{tab:softwaretools} the used tools are listed.
+Additionally in \cref{tab:softwaretoolslinks} the links to not obvius tools are documented.
+
 \begin{table}[h!]
     \centering
     
-    \begin{tabularx}{\textwidth}{|l|l|X|l|}
+    \begin{tabularx}{\textwidth}{|l|l|X|X|}
         \hline
-        \textbf{Tool Name} & \textbf{Version} & \textbf{Description} & \textbf{License Type} \\ \hline
-        Visual Studio Code & 1.83 & Code editor with support for debugging, syntax highlighting, and extensions. & Open Source \\ \hline
-        Git               & 2.42 & Version control system for tracking code changes. & Open Source \\ \hline
-        Docker            & 24.0 & Platform for containerized application development and deployment. & Community and Enterprise \\ \hline
-        Postman           & 10.18 & API testing tool for sending requests and viewing responses. & Free and Paid \\ \hline
-        PyCharm           & 2023.3 & Integrated Development Environment (IDE) for Python. & Community and Professional \\ \hline
-        \acrlong{dfc}     & 2023.3 & \acrlong{dfc} from Hailo to compile neural networks & Open Source \\ \hline
+        \textbf{Tool Name} & \textbf{Version} & \textbf{Description}   \\ \hline
+        Visual Studio Code & 1.83 & Code editor with support for debugging, syntax highlighting, and extensions.  \\ \hline
+        Git  & 2.42 & Version control system for tracking code changes.  \\ \hline
+        Raspberry Pi OS & 2024-11-13 & Operating system used on the Raspberry Pi  \\ \hline
+        Python & 3.11.6 & Collection of OpenSource python frameworks for Data Science
+        related tasks  \\ \hline
+        draw.io & 26.0.4 & Free drwwing tool to ceate diagrams \\ \hline
+        \acrlong{dfc}     & 3.29.0 & \acrlong{dfc} from Hailo to compile neural networks  \\ \hline
+        Hailo firmware & 4.17.0 & Hailo firmware to use Hailo hardware accelerator with the Raspberry Pi\\ \hline
+        Hailonet & 1.0 & A part of HailoRT to use Gstreamer elements on Raspberry Pi \\ \hline
+        Hailotools & 3.29.0 & TAPPAS Gstreamer elements \\ \hline
+        ONNX modifier & None & Tool to cut and edit ONNX graphs \\ \hline
     \end{tabularx}
-    \caption{Software Tool Table}
-    \label{tab:software-tools}
+    \caption{Software tool table }
+    \label{tab:softwaretools}
+\end{table}
+
+\begin{table}[h!]
+    \centering
+    
+    \begin{tabularx}{\textwidth}{|l|X|}
+        \hline
+        \textbf{Description} & \textbf{Link}\\ \hline
+        Hailo Raspberry Pi& https://github.com/hailo-ai/hailo-rpi5-examples/blob/main/doc/install-raspberry-pi5.md \\ \hline
+        ONNX modifier & https://github.com/ZhangGe6/onnx-modifier \\ \hline
+        \acrlong{dfc} & https://hailo.ai/developer-zone/software-downloads/ \\ \hline
+    \end{tabularx}
+    \caption{Links to tools}
+    \label{tab:softwaretoolslinks}
 \end{table}
