@@ -1,15 +1,11 @@
 \chapter{Hardware Accelerator}
 
-The Raspberry Pi 5 with an Ai kit was chosen as the hardware to prove the concept of computing data at the edge.
-This desiction was taken based on recommendations from the advisors and the avilability.
-The market analysis confirms this choice.
-The hardware accelerator of the Ai kit is made by Hailo \cite{hailo}.
-Generally a hardware accelerator is used to compute neural netwroks like a GPU is used to compute graphics.
-Hailo is a company which produces hardware accelerators.
-The Ai kit uses the Hailo-8L entry level hardware accelerator.
-Hailo provides a pipeline to compile a network so that it can be executed on the hailo software.
-First we take a look at the compilation of a network which has to be done on a PC, preferibly one with a GPU.
-Secondly were looking on the way to run the network on the edge.
+The Raspberry Pi 5 with an AI kit was chosen as the hardware to demonstrate the concept of edge computing. This decision was made based on recommendations from the advisors and the availability of the hardware. The market analysis confirms this choice. The hardware accelerator in the AI kit is produced by Hailo \cite{hailo}.
+
+Generally, a hardware accelerator is used to compute neural networks, similar to how a GPU is used for graphics processing. Hailo is a company that produces hardware accelerators, and the AI kit uses the Hailo-8L entry-level accelerator. Hailo provides a pipeline to compile a network for execution on their hardware.
+
+First, we will examine the network compilation process, which must be done on a PC, preferably one with a GPU. Then, we will look at how to run the network on the edge.
+
 
 \section{Network compilation}
 As sad before, the network has to be precompiled on a PC.

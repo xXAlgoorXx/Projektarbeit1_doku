@@ -9,34 +9,37 @@
 
 \chapter{Cross-modal networks
     \label{chapter:crossmodalnetworks}}
-    Multimodal deep learning is the study of models that learn from multiple modalities.
-    For example, a human can use both vision and hearing to identify an object or a person.
-    Cross-modal deep learning uses data from one modality to improve performance in another.
-    For example, if a person looks at a picture of a bird and listens to the bird's song, they might be able to identify the bird.
-    
-    Its most impressive feature is the ability to perform well on data on which the model has not been trained.
-    This ability is called zero-shot capability, which is derived from N-shot capability.
-    N-shot capability describes how many training samples of a particular class a model needs to classify it correctly.
+    Multimodal deep learning is the study of models that learn from multiple modalities. 
+    For example, humans can use both vision and hearing to identify an object or a person. 
+    Cross-modal deep learning leverages data from one modality to improve performance in another. 
+    For instance, if a person looks at a picture of a bird and listens to its song, they might be able to identify the bird more effectively.
 
-    In this work, cross-modal networks are used to find relationships between images and text.
-    Networks trained for this task are called contrastive language-image pre-training models.
-    Most cross-modal networks built for this task consist of a text encoder and an image encoder.
+    One of its most impressive features is the ability to perform well on data the model has not been explicitly trained on. 
+    This ability is known as zero-shot capability, which stems from N-shot capability. 
+    N-shot capability refers to the number of training samples of a particular class that a model needs to classify it correctly.
 
-    \section{Base networks}
-    To understand corss-modal netwroks we first have to understand thier components.
-    Most of them use a transformers as encoders but some can use ResNets.
-    Information for this section are taken from the corresponding paper and \cite{clipexplain}.
+    In this work, cross-modal networks are used to identify relationships between images and text. 
+    Networks trained for this purpose are known as \Acrfull{clip} models. 
+    Most cross-modal networks designed for this task consist of a text encoder and an image encoder.
+
+    \section{Base Networks}
+    To understand cross-modal networks, it is essential to first examine their components. 
+    Most of these networks employ transformers as encoders, although some utilize ResNets. 
+    The information presented in this section is derived from the corresponding paper and \cite{clipexplain}.
+
+
     
     \subsection{ResNet
     \label{crossmodalnetworks:sec:resnet}}
-    ResNet's were introduced in \cite{resnetpaper}.
-    A ResNet uses residual blocks (\cref{fig:crossmodalnetworks:resblock}).
-    These blocks have residual conections between some layers.
-    This allows information to bypass whole layers if the layers are not needed.
-    These conections stabilizes training and convergence of deep neural networks.
-    ResNets original motivation was to have better image processing capabilities then \acrfull{cnn}.
-    Big and deep transformer models like GPT models from Open AI also use these conections to get better results.
 
+
+    Residual Networks (ResNets) were introduced in \cite{resnetpaper}. 
+    A ResNet employs residual blocks (\cref{fig:crossmodalnetworks:resblock}), which incorporate residual connections between certain layers. 
+    These connections allow information to bypass specific layers, facilitating the training of deeper networks by mitigating issues such as the vanishing gradient problem. 
+    This mechanism stabilizes the training process and accelerates the convergence of deep neural networks. 
+    The primary motivation for ResNets was to enhance image processing capabilities beyond those of traditional \acrfull{cnn}s. 
+    Notably, large transformer models, such as OpenAI's GPT series, also utilize residual connections to improve performance and enable the training of deeper architectures \cite{attentionisallyouneed}.
+    
     \begin{figure}[h]
         \centering
         \includegraphics[width=0.55\textwidth]{Images/crossmodalnetworks/ResBlock.png}
@@ -46,30 +49,54 @@
 
     \subsection{Transformer}
 
-    The transformer is first meantioned in \cite{attentionisallyouneed}.
-    Before transformers \acrfull{rnn} were used to process sequential data.
-    A mechanism called attention was used to get information about the context of a sequenz.
-    The transformer was a revolution because it uses a  block called self attention.
-    With this block the need for a \acrshort{rnn} is obsolet.
-    \acrshort{rnn} are hard to train because of a effect called vanishing or exploding gradient.
-    They are also hard to parallelize.
-    These effect's no longer occure when using a transformer.
+    The Transformer was first introduced in \cite{attentionisallyouneed}, and most of the information in this section is derived from that paper. 
+    Before Transformers, \acrfull{rnn}s were commonly used to process sequential data. 
+    To capture dependencies and relationships within an input sequence, a mechanism called attention was introduced. 
+    The Transformer marked a significant breakthrough by introducing a mechanism known as self-attention. 
+    Self-attention is defined as:
+    \begin{equation}
+        \text{Attention}(Q, K, V) = \text{softmax}\left(\frac{QK^T}{\sqrt{d_k}}\right)V
+        \label{equ:selfattention}
+    \end{equation}
+    where \(Q = XW_q\), \(K = XW_k\), and \(V = XW_v\). 
+    Here, \(X\) represents the input, and \(W_{q}\), \(W_{k}\), and \(W_{v}\) are learnable parameter matrices. 
+    The matrices \(Q\), \(K\), and \(V\) are referred to as query, key, and value, respectively. 
+    The term \(\frac{1}{\sqrt{d_k}}\) is a scaling factor to normalize the output, where \(d_k\) is the dimensionality of the key vectors.
+    
+    Often, multiple attention heads are used simultaneously to allow the model to focus on different parts of the input sequence (see \cref{fig:crossmodalnetworks:attention}).
+    
 
+    \begin{figure}[]
+        \centering
+        \includegraphics[width=0.7\textwidth]{Images/crossmodalnetworks/attention.png}
+        \caption{Single and multi-head attention\cite{attentionisallyouneed}}
+        \label{fig:crossmodalnetworks:attention}
+    \end{figure}
 
-    To use a transformer the input has first to be split in tokens.
-    These tokens consist of text snippets or in the case of a vision transfomer patches of a picture(see \cref{fig:crossmodalnetworks:visiontransformer}).
-    These tokens then get embedded into a high dimensional vector space.
-    In case of CLIP Vit32 visual encoder the vector has 1024 dimensions.
-    Additionally the vectors get a postitional embedding.
-    Next a combination of self attention block and feed forward is used to process the tokens (see \cref{fig:crossmodalnetworks:transformer}).
-    Mutliple of these block get concantenated.
+    With the introduction of the self-attention mechanism, the need for \acrshort{rnn}s became obsolete. 
+    \acrshort{rnn}s are challenging to train due to issues such as the vanishing or exploding gradient problem. 
+    Additionally, they are difficult to parallelize because of their sequential nature. 
+    These issues no longer occur when using a Transformer, as it processes sequences in parallel and effectively captures long-range dependencies.
+
 
     \begin{figure}[]
         \centering
         \includegraphics[width=0.25\textwidth]{Images/crossmodalnetworks/The-Transformer-encoder-structure.png}
-        \caption{Image of a transformer which in the case of CLIP is used as a text encoder\cite{fig:encoder}}
+        \caption{Image of a transformer which in the case of CLIP is used as a text encoder\cite{attentionisallyouneed}}
         \label{fig:crossmodalnetworks:transformer}
     \end{figure}
+
+    To use a Transformer, the input must first be split into tokens. 
+    These tokens represent text snippets in the case of a text Transformer or patches of an image in the case of a Vision Transformer (ViT) (see \cref{fig:crossmodalnetworks:visiontransformer}). 
+    The tokens are then embedded into a high-dimensional vector space. 
+    For example, in the case of the CLIP ViT-32 visual encoder, each vector has 1024 dimensions.
+
+    Additionally, positional embeddings are added to the token embeddings to retain information about the order or spatial arrangement of the tokens. 
+    Next, a combination of self-attention blocks and feed-forward layers is used to process the tokens (see \cref{fig:crossmodalnetworks:transformer}). 
+    Residual connections and normalization are also employed to facilitate training.
+
+    Multiple such blocks are concatenated to form the full Transformer architecture.
+
 
     \begin{figure}[]
         \centering
@@ -78,14 +105,16 @@
         \label{fig:crossmodalnetworks:visiontransformer}
     \end{figure}
 
+    \section{Text Encoder}
 
-    \section{Text encoder}
-    The text encoder is in most cases a transformer.
-    It encodes a given text into a high-dimensional vector space.
-    This high dimensional vector space allows the encoder to correctly classify unseen classes because their vector is close to related classes.
-    In theory, the closer two words are related, the closer their embedding vectors are to each other.
-    An example of this can be seen in \cref{fig:crossmodalnetworks:3demb}, where \Acrfull{pca} is used to reduce the dimensions of the embedding vectors.
-    Cat and dog are close together.
+    The text encoder is typically implemented as a Transformer. 
+    Its purpose is to encode a given text into a high-dimensional vector space. 
+    This vector space enables the encoder to classify unseen classes by placing their vectors close to those of related classes. 
+    In theory, the closer two words are related, the closer their corresponding embedding vectors are in the high-dimensional space.
+
+    An example of this relationship can be visualized in \cref{fig:crossmodalnetworks:3demb}, where \acrfull{pca} is used to reduce the dimensionality of the embedding vectors. 
+    For instance, the words "cat" and "dog" appear close together because they share a semantic relationship.
+
 
     \begin{figure}
         \centering
@@ -95,32 +124,36 @@
     \end{figure}
     
     \section{Image encoder}
-    In most cases, the image encoder consists of a vision transformer\cite{Vis_N_Grams}.
-    Like a text encoder, the vision encoder encodes an image in a high-dimensional vector space.
-    A vision transformer needs an image in a specific dimension.
-    For this reason, an image encoder is a pair of vision transformer and preprocessor that transforms an image into the right dimensions for the vision transformer.
 
-    
+    In most cases, the image encoder consists of a Vision Transformer \cite{Vis_N_Grams}. 
+    Like the text encoder, the image encoder transforms an image into a high-dimensional vector space. 
+    A Vision Transformer requires the input image to have a specific dimension. 
+    For this reason, an image encoder typically consists of a Vision Transformer and a preprocessor, which transforms the image into the correct dimensions for the Vision Transformer.
+
+
     \section{Contrastive Language-Image models
         \label{section:languageimagemodels}}
-        This section examines some models that use contrastive language-image pretraining.
-        Most of the information in this section is taken from \cite{cliplikeweb} and the related papers.
+        This section explores models that use both text and image modalities. 
+        Most of the information in this section is derived from \cite{cliplikeweb} and related papers.
 
-        Contrastive techniques take paired inputs from two modalities (e.g. an image and its caption).
-        Both inputs are embedded in their own embedding space.
-        The aim is for such a pair to be represented by its corresponding encoder in a similar embedding.
-        Language-image describes the two modalities used by the model.
-        Most of these models are pre-trained.
-        Pre-training means that the model has been trained on a large and universal dataset.
-        For a specific application, a pre-trained model can be fine-tuned to better perform on its specific task.
+        Contrastive techniques involve paired inputs from two modalities (e.g., an image and its corresponding caption). 
+        Each input is embedded into its own embedding space. 
+        The goal is for such pairs to be represented in similar embeddings by their respective encoders. 
+        The term "language-image" refers to the two modalities used by the model. 
+        Most of these models are pre-trained on large, general datasets. 
+        Pre-training means that the model has been trained on a broad, universal dataset. 
+        For a specific application, a pre-trained model can be fine-tuned to improve its performance on the targeted task.
+
+
 
         \subsection{CLIP
             \label{section:clip}}
-        \acrfull{clip} \cite{clip} is a cross-modal model from openAI\cite{openai} that can tell how well a given image and text match.
-        It can be used with a variety of image and text encoders.
-        It is trained on a large dataset consisting of 400 million image-text pairs.
-        It has been shown to outperform some of the best known models in classifing images.
-        Many other models use CLIP as a base and build better models from it.
+        \acrfull{clip} \cite{clip} is a cross-modal model developed by OpenAI \cite{openai} that evaluates how well a given image and text match. 
+        It can be used with various image and text encoders. 
+        The model is trained on a large dataset consisting of 400 million image-text pairs. 
+        \acrshort{clip} has been shown to outperform some of the best-known models in image classification. 
+        Many other models build upon \acrshort{clip} as a foundation, improving upon it to create more advanced architectures.
+            
 
         \begin{figure}[]
             \centering
@@ -131,11 +164,12 @@
 
         \subsection{ALIGN
             \label{section:align}}
-        \acrfull{align}\cite{ALIGN} was released shortly after \acrshort{clip}.
-        Rather than relying on small and image caption datasets, \acrshort{align} uses a dataset of \(1.8\) billion pairs of image and alt-text pairs (e.g. in \cref{fig:crossmodalnetworks:alignepairs}).
-        These alt-text descriptions are much noisier than captions.
-        The authors apply basic filtering to remove duplicates, images with more than 1000 associated alt-texts, and uninformative alt-texts (either too frequent or containing rare tokens), but avoid expensive filtering operations.
-        With just these simple steps, ALIGN meets or exceeds the state of the art for several zero-shot and fine-tuning tasks.
+        \acrfull{align} \cite{ALIGN} was released shortly after \acrshort{clip}. 
+        Rather than relying on small image-caption datasets, \acrshort{align} uses a dataset of 1.8 billion image-alt-text pairs (e.g., as shown in \cref{fig:crossmodalnetworks:alignepairs}). 
+        These alt-text descriptions are much noisier than captions. 
+        The authors apply basic filtering techniques to remove duplicates, images with more than 1000 associated alt-texts, and uninformative alt-texts (such as those that are either too frequent or contain rare tokens), while avoiding expensive filtering operations. 
+        With these simple steps, \acrshort{align} meets or exceeds the state-of-the-art performance on several zero-shot and fine-tuning tasks.
+            
         \begin{figure}
             \centering
             \includegraphics[width=\textwidth]{Images/crossmodalnetworks/examplepicsalign.png}
@@ -143,9 +177,10 @@
             \label{fig:crossmodalnetworks:alignepairs}
         \end{figure}
 
-        In a test for this paper, \acrshort{align} was much slower than CLIP to compute a zero-shoot evaluation on the CIFAR100\cite{cifar100} dataset.
-        For 1 prediction, \acrshort{align} takes 70 times longer than \acrshort{clip} (see \cref{tab:clipaligntest}).
-        Both networks are not fine-tuned. The highest predicted label is used. Due to the slow interference, ALIGN was stopped after processing 35\% of the dataset.
+        In a test described in this paper, \acrshort{align} was much slower than \acrshort{clip} when performing a zero-shot evaluation on the CIFAR100 \cite{cifar100} dataset. 
+        For a single prediction, \acrshort{align} takes 70 times longer than \acrshort{clip} (see \cref{tab:clipaligntest}). 
+        Neither of the networks were fine-tuned, and the highest predicted label was used. 
+        Due to the slow inference speed, ALIGN was stopped after processing 35\% of the dataset.
 
         \begin{table}
             \centering
@@ -168,57 +203,51 @@
             \label{fig:crossmodalnetworks:tinyclip}
         \end{figure}
 
-        TinyCLIP\cite{tinyclip} is a cross-modal distillation method for large-scale pre-trained speech-image models.
-TinyClip can be used on limited systems due to its miniaturisation.
-        It also speeds up training with minimal loss of model accuracy.
-        It uses 3 concepts to reduce the size of the network.
+        TinyCLIP \cite{tinyclip} is a cross-modal distillation method designed for large-scale pre-trained speech-image models. 
+        TinyCLIP can be used on resource-limited systems due to its miniaturization. 
+        It also accelerates training with minimal loss in model accuracy. 
+        The method utilizes three key concepts to reduce the size of the network.
+
 
         \subsubsection{Affinity mimicking}
-        Affinity mimicking is a special form of knowledge distillation, also called model distillation.
-        In knowledge distillation, a larger teacher network is trained first.
-        After training the teacher network, a smaller student network is trained to predict the output of the teacher network.
-        This works because the output of the teacher network has more information than the original label.
-        Affinity Mimicking uses two new metrics in training: language-to-image loss and image-to-language loss (\(L_{t2i}\) and \(L_{i2t}\) in \cref{fig:crossmodalnetworks:tinyclip}).
+        Affinity mimicking is a specialized form of knowledge distillation, also known as model distillation. 
+        In knowledge distillation, a larger teacher network is trained first. 
+        After training the teacher network, a smaller student network is trained to predict the output of the teacher network. 
+        This approach works because the output of the teacher network contains more information than the original label. 
+        Affinity mimicking introduces two new metrics in the training process: language-to-image loss and image-to-language loss (\(L_{t2i}\) and \(L_{i2t}\), as shown in \cref{fig:crossmodalnetworks:tinyclip}).
+
 
         \subsubsection{Weight inhertiance}
-        Weight inheritance is a technique that inherits important weights from well-trained teacher models to smaller student models.
-        In the paper, the authors propose 2 methods:
+        Weight inheritance is a technique that transfers important weights from well-trained teacher models to smaller student models. 
+        In the paper, the authors propose two methods:
+        
 
         \subsubsection{Manual weight inhertiance}
-        Based on the observations of the authors.
-        Text encoders have most redundancy in depth (layer-wise), image encoders in width (channel-wise).
-        They select \(k\) layers and channels of a branch, which will act as initialisation weights.
-        To select the most important weights, some prior knowledge is required
-
+        Based on the authors' observations, text encoders exhibit the most redundancy in depth (layer-wise), while image encoders exhibit redundancy in width (channel-wise). 
+        They select \(k\) layers and channels from a branch to serve as initialization weights. 
+        To select the most important weights, some prior knowledge is required.
+        
         \subsubsection{Automatic weight inhertiance}
-        The authors introduce a learnable mask to identify the importance of weight.
+        The authors introduce a learnable mask to determine the importance of each weight.
 
         \subsubsection{Multi-stage progressiv distillaiton}
-        Pruning the model in several steps.
-        For each stage, the authors use a modest degree of compression (e.g. 25\%). Each stage includes weight inheritance and affinity mimicking.
+        The model is pruned in several steps. 
+        At each stage, the authors apply a modest degree of compression (e.g., 25\%). Each stage also includes weight inheritance and affinity mimicking.
+        
 
-        % Due to the fact that TinyCLIP is already available and is much smaller in comparison to the origibal it will be further used in this work.
+\section{Enhance the algorithm
+    \label{section:enhancealgorithm}}
 
-\section{Enhance the algorithm}
-
-    To improve the accuracy of a pre-trained network, it can be fine-tuned to a specific task.
-    Fine-tuning is a broad term.
-    It ranges from the simple addition of a learnable linear layer at the end of the network to feature destillation.
-    The concept of fine-tuning is derived from transfer learning\cite{transferlearning}.
-    In transfer learning, the final layers of a neural network are removed and the network is retrained with new, independent layers.
-    This saves time and resources.
-    For example, with CLIP, a linear layer can be added to improve classification performance \cite{finetuneclip}.
-    All of the fine-tuning approaches found use the output of the networks for further processing.
-    Another way to increase the accuracy is to use better fitting text prompts.
-
-    % \subsection{Probing}
-    % % https://openaccess.thecvf.com/content/CVPR2024/papers/Huang_LP_A_Surprisingly_Strong_Linear_Probe_for_Few-Shot_CLIP_CVPR_2024_paper.pdf
-    % \subsection{Feature destillation}
-    % % https://arxiv.org/abs/2110.04544
-    % \subsection{Prompt engeneering}
+    To improve the accuracy of a pre-trained network, it can be fine-tuned for a specific task. 
+    Fine-tuning is a broad term, encompassing methods ranging from the simple addition of a learnable linear layer at the end of the network to feature distillation. 
+    The concept of fine-tuning is derived from transfer learning \cite{transferlearning}, where the final layers of a neural network are removed and the network is retrained with new, independent layers. 
+    This approach saves time and resources. 
+    For example, in CLIP, a linear layer can be added to enhance classification performance \cite{finetuneclip}. 
+    All fine-tuning approaches rely on the output of the network for further processing. 
+    Another way to increase accuracy is by using better-fitting text prompts.
+    
 
 \section{Conclusion multi-modal networks}
-    Based on the results of our own testing, ALIGN is not considered as a solution for this work.
-    Instead, the focus of this work is on CLIP and TinyCLIP.
-    These models can be fine-tuned to further improve their performance.
-    In addition, the performance of the models can be improved by using better text prompts.
+    Based on the results of our own testing, ALIGN is not considered a suitable solution for this work. 
+    Instead, the focus is on CLIP and TinyCLIP, which can be fine-tuned to further improve their performance. 
+    Additionally, the performance of these models can be enhanced by using more effective text prompts.

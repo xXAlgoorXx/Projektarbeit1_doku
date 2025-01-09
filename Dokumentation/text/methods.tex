@@ -105,10 +105,7 @@ This makes the programm very slow and no significant speed up is achieved.
 
 The second implementation corrects this problem.
 The device gets initialised once at the start of the programm.
-With this approach a speed up of the factor 2 can be achieved in comparison to the evaluation on the PC CPU
-
-
-
+With this approach a speed up of the factor 2 can be achieved in comparison to the evaluation on the PC CPU.
 The accuracy reduces significant after quantisation. 
 
 \section{Evaluation}
@@ -227,7 +224,7 @@ It only changes the quantisation.
 Because of quantisation the mermory size should be around 4 times lower than before because the datatype of the weights which changes from FP32 to INT8.
 In reality the factor is around 3.
 This can be seen in \cref{methods:tab:sizecompare}.
-It is important to meantion that these numbers have to be taken with a grain of salt because they are safed in diffrent data types.
+It is important to meantion that these numbers have to be taken with a grain of salt because the datatypes of the saved mdoels are diffrent.
 
 \begin{table}
     \centering
@@ -325,6 +322,9 @@ This indicates that the quantisation is the problem.
 
 \section{Increase accuracy}
 
+Things mentiond in \cref{section:enhancealgorithm} wouldn't make much sense to applied.
+Most of the things mentiond extend the current network with some layers.
+Due to the cutting of the network these layers have to be processed on the CPU of the Raspberry Pi which would decrease the throughput of the networks.
 In \cref{scetion:methods:contimp} the reason for the bad accuracy is suspected to be the bad quantisation.
 The models are all translated to INT8.
 In a attemp to increase accuracy as much as possible is converted to INT16.

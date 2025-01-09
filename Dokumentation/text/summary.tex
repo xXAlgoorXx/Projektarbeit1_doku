@@ -1,12 +1,14 @@
 \chapter*{Summary}
 Hexagon AB is a global leader in digitization technology, specializing in measurement and positioning systems.  
 The company's laser scanning devices generate point cloud data of the environment and capture images through additional cameras integrated into their scanners.  
-The objective of this project is to work towards the integration of enhanced scene understanding capabilities into the scanning application's edge devices.  
+The objective of this project is to work towards the integration of enhanced scene understanding capabilities into the scanning application's edge devices.
 
-To achieve this, hardware accelerators from Hailo were selected for implementation.  
+A part of this work is a market analysis for hardware accelerator preferibly with M.2 slot capabilities.
+The result is that Hailo produces the most suitable product at the moment in terms of avilability, power consumption and computing power.
+
 Hailo is a company that produces hardware accelerators.  
 In collaboration with Raspberry Pi, Hailo has developed a board equipped with an M.2 slot, compatible with a Raspberry Pi HAT.  
-This integration enables the execution of neural networks on the Raspberry Pi, thereby demonstrating the efficancy of the hardware accelerators in facilitating advanced computing tasks.  
+This integration enables the execution of neural networks on the Raspberry Pi, thereby demonstrating the efficancy of the hardware accelerators in facilitating advanced computing tasks.\hfill\break
 
 In a previous study conducted by Lia Winkler, it was determined that CLIP demonstrated the greatest capacity to fulfill this task.  
 \acrfull{clip} is a model designed to assess how well given text prompts align with an image.  
@@ -18,7 +20,7 @@ The evaluation of her work was conducted on a dataset provided by Hexagon, consi
 These images are divided into five classes: indoor architectural, indoor construction, outdoor construction, outdoor urban, and forest.  
 To achieve optimal results, Winkler identified that dividing the images into patches, classifying each patch, and determining the image's class via a majority vote yielded the most effective approach.  
 
-Finally, Miss Winkler highlighted TinyCLIP in her report, a version of CLIP with a considerably reduced parameter count while maintaining similar levels of accuracy.  
+Finally, Miss Winkler highlighted TinyCLIP in her report, a version of CLIP with a considerably reduced parameter count while maintaining similar levels of accuracy.  \hfill\break
 
 The goal of this work is to utilize CLIP and TinyCLIP on the Hailo hardware.  
 Hailo provides software to compile a network called the \acrfull{dfc}.  
@@ -37,8 +39,31 @@ The second part has to be executed on the CPU of the Raspberry Pi.
 
 With this solution, an intermediate result was achieved.
 To compare the results which were calculated on the Hailo hardware the same networks were used on a PC.
+The first result showed a big decline in accuracy after quantisation.
+This decline is the worst if the model uses TinyCLIP.\hfill\break
+
+To increase the accuracy if quantised models some actions are taken.
+The first action is to try to decrease the quantisation.
+The \acrshort{dfc} offers to chance quantisation.
+Without a gpu the chance of quantisation takes very long.
+Unfortunately no \acrshort{gpu} was available for this project.
+Thats why a other approach was taken.
+
+The second action was to change the placment of the cut which splits the vision encoder in two parts.
+The cut is placed in a way that only operations which work well after quantisation are in the first part.
+Bad operations are big matrix multiplications.
+This new cut coulndt help to increase accuracy from TinyCLIP models but from the rest.
+The last action is to adjust the threshold for cases were only two classes exist.
+
+With these two steps the accuracy from the network which uses RN101 proved to achieve the best results.
+This result leads to the following conclusion.
+The fact how good a model quantises is depened on the width of a network.
+From the networks which are able to compile RN101 was the widest.
+This also explains why TinyCLIP doesnt achieve a good accuracy.
+In the process to reduce the parameters of clip manly the width is affected.
+This leads to bad quantisation.
 
 
-
-
-
+In this work the capabilities of the Hailo hardware accelerator and its software were explored.
+The porject went a bit of course when the first problem occured where ResNets weren't able to compile.
+The communication with Hailo were only beneficial to a cetrain degree.

@@ -80,34 +80,51 @@
 % New
 % Deepl corected
 
-Part of this work involves conducting a market analysis of available hardware accelerators with M.2 interfaces. The results are summarised in the attached tables, which highlight the most relevant and significant details of these products.
+Part of this work involves conducting a market analysis of hardware accelerators with M.2 interfaces. 
+The results are summarized in the attached tables, highlighting the most relevant and significant details of these products.
 
 \section{Summary of Current Offerings}
-Many hardware accelerators available today have limitations that affect their suitability for high performance applications. Some products, such as the Coral M.2 accelerator, are either outdated and lack the processing power required for today's workloads, while others, such as the SAKURA-II M.2 and Metis M.2 card, are still only available for pre-order, limiting their accessibility for immediate use.
+Many hardware accelerators available today have limitations that affect their suitability for high-performance applications.
+Some products, such as the Coral M.2 accelerator, are outdated and lack the processing power required for today's workloads.
+Other products, such as the SAKURA-II M.2 and Metis M.2 cards, are still only available for pre-order, limiting their accessibility for immediate use.
 
-From the current assessment, the Hailo products appear to be the most promising options for this project. They demonstrate an efficient balance of performance and power consumption, outperforming Coral's offerings in terms of TOPS (tera operations per second) while maintaining a lower power footprint. This efficiency is critical for embedded and power sensitive applications, making Hailo a strong candidate for further exploration and integration.
+From the current assessment, the Hailo products appear to be the most promising options for this project.
+They offer an efficient balance of performance and power consumption, outperforming Coral's offerings in terms of TOPS (tera operations per second) while maintaining a lower power footprint.
+This efficiency is critical for embedded and power-sensitive applications, making Hailo a strong candidate for further exploration and integration.
 
 \section{Future Considerations}
-Looking to the future, hardware accelerators that can handle floating-point models (FP32 or BF16) offer exciting potential. While integer (INT8) operations are optimised for many AI applications due to their efficiency, the theoretical advantages of FP32 precision for certain tasks - such as scientific computing or advanced neural network architectures - warrant further investigation. However, the practical benefits of this precision shift remain to be demonstrated for many real-world use cases.
+Looking ahead, hardware accelerators that can handle floating-point models (FP32 or BF16) offer exciting potential.
+While integer (INT8) operations are optimized for many AI applications due to their efficiency, the theoretical advantages of FP32 precision for certain tasks—such as scientific computing or advanced neural network architectures—warrant further investigation.
+However, the practical benefits of this precision shift remain to be demonstrated in many real-world use cases.
+
 
 \section{Custom Design Opportunities}
-An alternative to relying on off-the-shelf solutions is to design and manufacture custom PCBs with M.2 slots. This approach allows for more tailored integration and reduces reliance on proprietary vendor software. Many companies offer hardware accelerator chips that can be incorporated into custom designs, providing the flexibility to optimise the hardware for specific application requirements.
+An alternative to relying on off-the-shelf solutions is to design and manufacture custom PCBs with M.2 slots.
+This approach enables more tailored integration and reduces dependence on proprietary vendor software. 
+Many companies offer hardware accelerator chips that can be incorporated into custom designs, providing the flexibility to optimize the hardware for specific application requirements.
+
 
 \section{Software Ecosystem}
-In addition to the hardware, the software ecosystem that accompanies these accelerators is a critical consideration. The entire solution, including both hardware and software, must be ready for seamless deployment. Many companies offer end-to-end software stacks to simplify integration and accelerate development. For example:
+In addition to the hardware, the software ecosystem that accompanies these accelerators is a critical consideration.
+The entire solution, including both hardware and software, must be ready for seamless deployment.
+Many companies offer end-to-end software stacks to simplify integration and accelerate development. For example:
+
 \begin{itemize}
     \item \textbf{Hailo} offers tools such as the Dataflow Compiler \acrshort{dfc} and GStreamer/Python APIs.
     \item \textbf{Axelera} supports its products with the Voyager.SDK.
 \end{itemize}
 
-Despite these offerings, assessing the usability of software stacks during initial evaluations remains a challenge. Most documentation and sample applications focus primarily on computer vision tasks, potentially limiting their applicability to broader use cases. Further practical testing is needed to understand the ease of integration and adaptability of these tools.
+Despite these offerings, assessing the usability of software stacks during initial evaluations remains a challenge.
+Most documentation and sample applications focus primarily on computer vision tasks, potentially limiting their applicability to broader use cases.
+Further practical testing is required to fully understand the ease of integration and the adaptability of these tools.
+
 
 \section{Detailed Tables}
-The tables below summarise the economic and technical key figures of the hardware accelerators reviewed, providing a comparative overview of their capabilities and specifications.
-In \cref{tab:market:keyfigures} we see that some accelerators use BF16.
-BF16 stands for Brain Floating Point with 16 bits.
-This is a format that uses less space than FP32 but is still floating point.
-A blank cell in the tabels means that no information is found.
+The tables below summarize the economic and technical key figures of the hardware accelerators reviewed, providing a comparative overview of their capabilities and specifications.
+In \cref{tab:market:keyfigures}, we see that some accelerators support BF16.
+BF16 stands for Brain Floating Point with 16 bits. This format uses less space than FP32 while still being a floating-point representation.
+A blank cell in the tables indicates that no information was found.
+
 \begin{table}[!ht]
     \centering
     \begin{tabular}{|l|l|l|l|l|}
