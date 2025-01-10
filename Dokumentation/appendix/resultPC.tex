@@ -1,44 +1,23 @@
 \chapter{Evaluation on PC}
-The follow figures are the confusion matricies Evaluation on the respectiv hardware 
-\section{With 5 scentens as text embeddings}
+The following figures are the confusion matrices evaluation on PC CPU.
+
 \begin{figure}[!h]
     \centering
-    \subfloat[][RN50]{\includegraphics[width=0.49\textwidth]{Images/appendix/resultsPC/Confusion Matrix 5S(RN50).png}\label{resultpc:fig:rn505s}}
-    \subfloat[][RN50x4]{\includegraphics[width=0.49\textwidth]{Images/appendix/resultsPC/Confusion Matrix 5S(RN50x4).png}\label{resultpc:fig:rn50x45s}}
-    \quad
-    \subfloat[][RN50x16]{\includegraphics[width=0.49\textwidth]{Images/appendix/resultsPC/Confusion Matrix 5S(RN50x16).png}\label{resultpc:fig:rn50x165s}}
-    \subfloat[][RN50x64]{\includegraphics[width=0.49\textwidth]{Images/appendix/resultsPC/Confusion Matrix 5S(RN50x64).png}\label{resultpc:fig:rn50x645s}}
-   
+    \subfloat[][RN50]{\includegraphics[width=0.45\textwidth]{Images/appendix/resultsPC/Confusion Matrix 5S(RN50).png}\label{resultpc:fig:rn505s}}
+    \subfloat[][RN50x4]{\includegraphics[width=0.45\textwidth]{Images/appendix/resultsPC/Confusion Matrix 5S(RN50x4).png}\label{resultpc:fig:rn50x45s}} \\
+    \subfloat[][RN50x16]{\includegraphics[width=0.45\textwidth]{Images/appendix/resultsPC/Confusion Matrix 5S(RN50x16).png}\label{resultpc:fig:rn50x165s}}
+    \subfloat[][RN50x64]{\includegraphics[width=0.45\textwidth]{Images/appendix/resultsPC/Confusion Matrix 5S(RN50x64).png}\label{resultpc:fig:rn50x645s}}\\
+    \subfloat[][RN101]{\includegraphics[width=0.45\textwidth]{Images/appendix/resultsPC/Confusion Matrix 5S(RN101).png}\label{resultpc:fig:rn50x645s}}
+    \caption{Confusion Matrix on PC for CLIP with ResNets as Visual Encoder (5 Sentences as Text Embeddings)}
+    \label{resultpc:fig:clipevalpc5s}
 \end{figure}
 
-\begin{figure}
-    %\ContinuedFloat
+\begin{figure}[!h]
     \centering
-    \subfloat[][RN101]{\includegraphics[width=0.49\textwidth]{Images/appendix/resultsPC/Confusion Matrix 5S(RN101).png}\label{resultpc:fig:rn1015s}}
-    \subfloat[][TinyCLIP 19M]{\includegraphics[width=0.49\textwidth]{Images/appendix/resultsPC/Confusion Matrix 5S(TinyCLIP-ResNet-19M-Text-19M).png}\label{resultpc:fig:tiny195s}}
-    \quad
-    \subfloat[][TinyCLIP 30M]{\includegraphics[width=0.49\textwidth]{Images/appendix/resultsPC/Confusion Matrix 5S(TinyCLIP-ResNet-30M-Text-29M).png}\label{resultpc:fig:tiny305s}}
-    \caption{Confusion matrix on PC with 5 scentens as text embeddings}
-    \label{resultpc:fig:evalpc5s}
+    \subfloat[][TinyClip19M]{\includegraphics[width=0.45\textwidth]{Images/appendix/resultsPC/Confusion Matrix 5S(TinyCLIP-ResNet-19M-Text-19M).png}\label{resultpc:fig:tiny19M5s}}
+    \subfloat[][TinyClip30M]{\includegraphics[width=0.45\textwidth]{Images/appendix/resultsPC/Confusion Matrix 5S(TinyCLIP-ResNet-30M-Text-29M).png}\label{resultpc:fig:tiny30M5s}}
+    \caption{Confusion Matrix on PC for TinyCLIP with ResNets as Visual Encoder (5 Sentences as Text Embeddings)}
+    \label{resultpc:fig:tinyclipevalpc5s}
 \end{figure}
 
-\section{With pure text prompts as text embeddings}
-\begin{figure}[!ht]
-    \centering
-    \subfloat[][RN50]{\includegraphics[width=0.49\textwidth]{Images/appendix/resultsPC/Confusion Matrix (RN50).png}\label{resultpc:fig:rn50}}
-    \subfloat[][RN50x4]{\includegraphics[width=0.49\textwidth]{Images/appendix/resultsPC/Confusion Matrix (RN50x4).png}\label{resultpc:fig:rn50x4}}
-    \quad
-    \subfloat[][RN50x16]{\includegraphics[width=0.49\textwidth]{Images/appendix/resultsPC/Confusion Matrix (RN50x16).png}\label{resultpc:fig:rn50x16}}
-    \subfloat[][RN50x64]{\includegraphics[width=0.49\textwidth]{Images/appendix/resultsPC/Confusion Matrix (RN50x64).png}\label{resultpc:fig:rn50x64}}
-\end{figure}
 
-\begin{figure}
-    \centering
-    %\ContinuedFloat
-    \subfloat[][RN101]{\includegraphics[width=0.49\textwidth]{Images/appendix/resultsPC/Confusion Matrix (RN101).png}\label{resultpc:fig:rn101}}
-    \subfloat[][TinyCLIP 19M]{\includegraphics[width=0.49\textwidth]{Images/appendix/resultsPC/Confusion Matrix (TinyCLIP-ResNet-19M-Text-19M).png}\label{resultpc:fig:tiny19}}
-    \quad
-    \subfloat[][TinyCLIP 30M]{\includegraphics[width=0.49\textwidth]{Images/appendix/resultsPC/Confusion Matrix (TinyCLIP-ResNet-30M-Text-29M).png}\label{resultpc:fig:tiny30}}
-    \label{resultpc:fig:evalpc}
-    \caption{Confusion matrix on PC with pure text prompts as text embeddings}
-\end{figure}

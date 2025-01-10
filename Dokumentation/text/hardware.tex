@@ -1,41 +1,49 @@
 \chapter{Hardware Accelerator}
 
-The Raspberry Pi 5 with an AI kit was chosen as the hardware to demonstrate the concept of edge computing. This decision was made based on recommendations from the advisors and the availability of the hardware. The market analysis confirms this choice. The hardware accelerator in the AI kit is produced by Hailo \cite{hailo}.
+The Raspberry Pi 5 with an AI kit was chosen as the hardware to demonstrate the concept of edge computing.  
+This decision was made based on recommendations from the advisors and the availability of the hardware.  
+The market analysis confirms this choice.  
+The hardware accelerator in the AI kit is produced by Hailo \cite{hailo}.  
 
-Generally, a hardware accelerator is used to compute neural networks, similar to how a GPU is used for graphics processing. Hailo is a company that produces hardware accelerators, and the AI kit uses the Hailo-8L entry-level accelerator. Hailo provides a pipeline to compile a network for execution on their hardware.
+Generally, a hardware accelerator is used to compute neural networks, similar to how a GPU is used for graphics processing.  
+Hailo is a company that produces hardware accelerators.  
+The AI kit uses the Hailo-8L entry-level accelerator.  
+Hailo provides a pipeline to compile a network for execution on their hardware.  
 
-First, we will examine the network compilation process, which must be done on a PC, preferably one with a GPU. Then, we will look at how to run the network on the edge.
+First, we will examine the network compilation process, which must be done on a PC, preferably one with a GPU.  
+Then, we will look at how to run the network on the edge.  
 
+\section{Network Compilation}
 
-\section{Network compilation}
-As sad before, the network has to be precompiled on a PC.
-The application which is meant for this task is called the \Acrfull{dfc}.
+As mentioned before, the network has to be precompiled on a PC.  
+The application designed for this task is called the \Acrfull{dfc}.  
 
-\subsection{Dataflow compiler
-\label{section:dfc}}
+\subsection{Dataflow Compiler  
+\label{section:dfc}}  
 
-To use the \acrshort{dfc} a pytorch or tensorflow model has to be converted to Onnx or tensorflow light.
-Information and pictures are taken from the Hailo Dataflow Compiler User Guide\cite{hailo_dataflow_compiler}.
-The \acrshort{dfc} the compiles the model to a \Acrfull{hef} by executing the following steps:
+To use the \acrshort{dfc}, a PyTorch or TensorFlow model must be converted to ONNX or TensorFlow Lite.  
+Information and images are taken from the Hailo Dataflow Compiler User Guide \cite{hailo_dataflow_compiler}.  
+The \acrshort{dfc} then compiles the model to a \Acrfull{hef} by executing the following steps:  
 
 \begin{enumerate}
     \item Full Precision Optimization
     \item Quantization Optimization
     \item Compilation
 \end{enumerate}
-In the full precision optimization step ONNX file first gets compiled into a \acrfull{har} file, a file type defined by Hailo.
-This step also includes any changes to the model in the floating-point precision domain, for example Equalization\cite{meller2019same}, \acrshort{tse}\cite{Vosco_2021_ICCV} and pruning.
 
-In the quantization optimization step the model gets compressed.
-This means that the model gets converted from floating point to integer.
-Weights get compiled to either 4,8 or 16 bits.
-Activaitions get compiled to 8 or 16 bits.
-Which quantisation is applied is handeled through a model script.
-In that script the amount of quantized weights can be described.
-There is also the posibility to target specific layer by the model script.
-It is also possible to add preprocessing steps to the model script like resize the input or convert the input from RGB to YUV.
-The result of this step is a quantized \acrshort{har} file.
-This file can be compiled to a \acrshort{hef} file to use the model on Hailo hardware.
+In the full precision optimization step, the ONNX file is first compiled into a \acrfull{har} file, a file type defined by Hailo.  
+This step also includes any changes to the model in the floating-point precision domain, such as Equalization \cite{meller2019same}, \acrshort{tse} \cite{Vosco_2021_ICCV}, and pruning.  
+
+In the quantization optimization step, the model is compressed.  
+This means that the model is converted from floating-point to integer.  
+Weights are compiled to either 4, 8, or 16 bits, while activations are compiled to 8 or 16 bits.  
+Which quantization is applied is handled through a model script.  
+In that script, the amount of quantized weights can be specified.  
+It is also possible to target specific layers through the model script.  
+Additionally, preprocessing steps can be added to the model script, such as resizing the input or converting the input from RGB to YUV.  
+
+The result of this step is a quantized \acrshort{har} file.  
+This file can then be compiled into a \acrshort{hef} file for use on Hailo hardware.  
 
 \begin{figure}[!h]
     \centering
@@ -44,34 +52,35 @@ This file can be compiled to a \acrshort{hef} file to use the model on Hailo har
     \label{fig:hardware:dfcoverview}
 \end{figure}
 
-\subsection{Constrains}
-At the time of this writing, the \acrshort{dfc} is not capable of compiling Transformers.
-This is a important limiting factor for this porject.
-The best performance for CLIP is achieved with vision Transformers as image encoder.
-Fortunately, the visual encoding of CLIP can also be done with ResNet(see \cref{crossmodalnetworks:sec:resnet}), a special form of \Acrshort{cnn}'s.
+\subsection{Constraints}
+At the time of this writing, the \acrshort{dfc} is not capable of compiling Transformers.  
+This is an important limiting factor for this project.  
+The best performance for CLIP is achieved with Vision Transformers as the image encoder.  
+Fortunately, the visual encoding of CLIP can also be performed with ResNet (see \cref{crossmodalnetworks:sec:resnet}), a special form of \acrshort{cnn}'s.  
 
-\section{Running on the edge}
+\section{Running on the Edge}
 
-Hailo provides a library called TAPPAS which is based on GStreamer.
-The library enables using a Hailo device within gstreamer pipelines t create intelligent video processing applications.
-The information for this section are taken from the TAPPAS User Guide.
-In the point of time there are two approaches to run a network on a hailo device.
-One with Gstreamer and one with a Python API.
-There are many different example applications available for many diffrent usecases.
-These examples can be found in the Hailo model zoo\cite{hailo_model_zoo} or in their repo for Raspberry Pi examples \cite{hailo_rpi5_examples}.
+Hailo provides a library called TAPPAS, which is based on GStreamer.  
+This library enables the use of a Hailo device within GStreamer pipelines to create intelligent video processing applications.  
+The information for this section is taken from the TAPPAS User Guide.  
 
+At present, there are two approaches to run a network on a Hailo device:  
+one using GStreamer and another using a Python API.  
+There are many different example applications available for various use cases.  
+These examples can be found in the Hailo Model Zoo \cite{hailo_model_zoo} or in their repository for Raspberry Pi examples \cite{hailo_rpi5_examples}.  
 
-\subsection{GStreamer approach}
+\subsection{GStreamer Approach}
 
-Gstreamer is a framework for creating streaming media applications.
-It enables the design any type of multimedia application but it isnt restridted to audio and video processing.
-The framework can porcess any kind of dataflow.
+GStreamer is a framework for creating streaming media applications.  
+It enables the design of any type of multimedia application, but it is not restricted to audio and video processing.  
+The framework can process any kind of data flow.  
 
-GStreamer consists of blocks which can be concantenated.
-To work with the Hailo hardware accelerator some blocks in the pipeline get offloaded to the Hailo processor.
-A python programm is used to construct a string which then is executed in a terminal.
-A example pipeline can be seen in \cref{fig:hardware:gstreamerpipeline}.
+GStreamer consists of blocks that can be concatenated.  
+To work with the Hailo hardware accelerator, some blocks in the pipeline are offloaded to the Hailo processor.  
+A Python program is used to construct a string, which is then executed in a terminal.  
+An example pipeline can be seen in \cref{fig:hardware:gstreamerpipeline}.  
 More examples with code can be found in the TAPPAS User Guide.
+
 \begin{figure}[!h]
     \centering
     \includegraphics[width=\textwidth]{Images/Hardware/gstreamerExample.png}
@@ -79,11 +88,11 @@ More examples with code can be found in the TAPPAS User Guide.
     \label{fig:hardware:gstreamerpipeline}
 \end{figure}
 
-\subsection{Python API approach}
+\subsection{Python API Approach}
 
-With the Python API approch one can execute the whole inferance in python.
-That makes the programm very simple in comparison to the GStreamer approach.
-In python the Hailo hardware accelerator gets treated as an object with dedicated functions to use inference.
-Importent to know is that hailo swaps the input dimension of the network.
-This menas that the dimensions of the input to the network has to be adjusted.
-Due to complexity of the GStreamer approch the Python API is used in this project.
+With the Python API approach, one can execute the entire inference in Python.  
+This makes the program much simpler compared to the GStreamer approach.  
+In Python, the Hailo hardware accelerator is treated as an object with dedicated functions for inference.  
+It is important to note that Hailo swaps the input dimensions of the network.  
+This means that the dimensions of the input to the network must be adjusted accordingly.  
+Due to the complexity of the GStreamer approach, the Python API is used in this project.

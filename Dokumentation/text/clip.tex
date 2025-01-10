@@ -19,7 +19,6 @@
     N-shot capability refers to the number of training samples of a particular class that a model needs to classify it correctly.
 
     In this work, cross-modal networks are used to identify relationships between images and text. 
-    Networks trained for this purpose are known as \Acrfull{clip} models. 
     Most cross-modal networks designed for this task consist of a text encoder and an image encoder.
 
     \section{Base Networks}
@@ -27,11 +26,8 @@
     Most of these networks employ transformers as encoders, although some utilize ResNets. 
     The information presented in this section is derived from the corresponding paper and \cite{clipexplain}.
 
-
-    
     \subsection{ResNet
     \label{crossmodalnetworks:sec:resnet}}
-
 
     Residual Networks (ResNets) were introduced in \cite{resnetpaper}. 
     A ResNet employs residual blocks (\cref{fig:crossmodalnetworks:resblock}), which incorporate residual connections between certain layers. 
@@ -54,10 +50,12 @@
     To capture dependencies and relationships within an input sequence, a mechanism called attention was introduced. 
     The Transformer marked a significant breakthrough by introducing a mechanism known as self-attention. 
     Self-attention is defined as:
+
     \begin{equation}
         \text{Attention}(Q, K, V) = \text{softmax}\left(\frac{QK^T}{\sqrt{d_k}}\right)V
         \label{equ:selfattention}
     \end{equation}
+
     where \(Q = XW_q\), \(K = XW_k\), and \(V = XW_v\). 
     Here, \(X\) represents the input, and \(W_{q}\), \(W_{k}\), and \(W_{v}\) are learnable parameter matrices. 
     The matrices \(Q\), \(K\), and \(V\) are referred to as query, key, and value, respectively. 
@@ -65,7 +63,6 @@
     
     Often, multiple attention heads are used simultaneously to allow the model to focus on different parts of the input sequence (see \cref{fig:crossmodalnetworks:attention}).
     
-
     \begin{figure}[]
         \centering
         \includegraphics[width=0.7\textwidth]{Images/crossmodalnetworks/attention.png}
@@ -94,14 +91,12 @@
     Additionally, positional embeddings are added to the token embeddings to retain information about the order or spatial arrangement of the tokens. 
     Next, a combination of self-attention blocks and feed-forward layers is used to process the tokens (see \cref{fig:crossmodalnetworks:transformer}). 
     Residual connections and normalization are also employed to facilitate training.
-
     Multiple such blocks are concatenated to form the full Transformer architecture.
-
 
     \begin{figure}[]
         \centering
         \includegraphics[width=0.6\textwidth]{Images/crossmodalnetworks/Vision_Transformer.png}
-        \caption{Vision transforme architecture\cite{vitwikipedia}}
+        \caption{Vision Transformer architecture\cite{vitwikipedia}}
         \label{fig:crossmodalnetworks:visiontransformer}
     \end{figure}
 
@@ -114,7 +109,6 @@
 
     An example of this relationship can be visualized in \cref{fig:crossmodalnetworks:3demb}, where \acrfull{pca} is used to reduce the dimensionality of the embedding vectors. 
     For instance, the words "cat" and "dog" appear close together because they share a semantic relationship.
-
 
     \begin{figure}
         \centering
@@ -130,7 +124,6 @@
     A Vision Transformer requires the input image to have a specific dimension. 
     For this reason, an image encoder typically consists of a Vision Transformer and a preprocessor, which transforms the image into the correct dimensions for the Vision Transformer.
 
-
     \section{Contrastive Language-Image models
         \label{section:languageimagemodels}}
         This section explores models that use both text and image modalities. 
@@ -143,8 +136,6 @@
         Most of these models are pre-trained on large, general datasets. 
         Pre-training means that the model has been trained on a broad, universal dataset. 
         For a specific application, a pre-trained model can be fine-tuned to improve its performance on the targeted task.
-
-
 
         \subsection{CLIP
             \label{section:clip}}
@@ -217,7 +208,8 @@
         Affinity mimicking introduces two new metrics in the training process: language-to-image loss and image-to-language loss (\(L_{t2i}\) and \(L_{i2t}\), as shown in \cref{fig:crossmodalnetworks:tinyclip}).
 
 
-        \subsubsection{Weight inhertiance}
+        \subsubsection{Weight inhertiance
+        \label{section:weightinheritance}}
         Weight inheritance is a technique that transfers important weights from well-trained teacher models to smaller student models. 
         In the paper, the authors propose two methods:
         
@@ -246,7 +238,6 @@
     All fine-tuning approaches rely on the output of the network for further processing. 
     Another way to increase accuracy is by using better-fitting text prompts.
     
-
 \section{Conclusion multi-modal networks}
     Based on the results of our own testing, ALIGN is not considered a suitable solution for this work. 
     Instead, the focus is on CLIP and TinyCLIP, which can be fine-tuned to further improve their performance. 

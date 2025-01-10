@@ -18,9 +18,9 @@ The best results are with RN101.
 The diffrenc to the other ResNet models is that RN101 is wider than most models.
 This means that parameters are better invested in width than in depth of a network.
 This would also explain why TinyCLIP isnt giving good results.
-
 During weight inheritance some weights get masked.
 This reduces the parameter count of a network by making it narrower.
+In \cref{section:weightinheritance} it is mentiond that the authors of TinyCLIP found lot of redundancy in width when examing vision encoders and in the progress of make the model smaller reduced this redundancy.
 
 \section{Working with Hailo}
 
@@ -60,8 +60,10 @@ To really use the full potential of the Hailo hardware accelerator and CLIP one 
 
 \section{Outlook}
 
-The next steps should be to wait for the next update when hailo implements the usage of transformers.
-In addition SAM\cite{sam} could be used as preprocessing.
+The next steps should be to wait for the next update when hailo implements the usage of Transformers.
+It is important to keep in mind that a suspision from this project is that matrix multiplications dont quantise well.
+The self attention layer from Transformers are basicly matrix multiplications (see \cref{equ:selfattention})
+To further incerase the scene understanding capabilities SAM\cite{sam} could be used as preprocessing.
 \acrshort{sam} returns segments of pictures.
 This in compination with CLIP could be used to incerase the accuracy of classification.
 \acrshort{sam} could for example isolate things in a office for example a printer or a computer which then gets classified by CLIP.

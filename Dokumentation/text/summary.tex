@@ -1,69 +1,62 @@
 \chapter*{Summary}
 Hexagon AB is a global leader in digitization technology, specializing in measurement and positioning systems.  
 The company's laser scanning devices generate point cloud data of the environment and capture images through additional cameras integrated into their scanners.  
-The objective of this project is to work towards the integration of enhanced scene understanding capabilities into the scanning application's edge devices.
+The objective of this project is to work towards integrating enhanced scene understanding capabilities into the scanning application's edge devices.
 
-A part of this work is a market analysis for hardware accelerator preferibly with M.2 slot capabilities.
-The result is that Hailo produces the most suitable product at the moment in terms of avilability, power consumption and computing power.
+A key part of this project involved conducting a market analysis for hardware accelerators, preferably with M.2 slot capabilities.  
+The analysis concluded that Hailo produces the most suitable product currently available, excelling in terms of availability, power consumption, and computing performance.
 
-Hailo is a company that produces hardware accelerators.  
-In collaboration with Raspberry Pi, Hailo has developed a board equipped with an M.2 slot, compatible with a Raspberry Pi HAT.  
-This integration enables the execution of neural networks on the Raspberry Pi, thereby demonstrating the efficancy of the hardware accelerators in facilitating advanced computing tasks.\hfill\break
+Hailo is a company that develops hardware accelerators.  
+In collaboration with Raspberry Pi, Hailo has created a board equipped with an M.2 slot, compatible with a Raspberry Pi HAT.  
+This integration allows neural networks to run on the Raspberry Pi, showcasing the efficiency of hardware accelerators in enabling advanced computing tasks.\hfill\break
 
-In a previous study conducted by Lia Winkler, it was determined that CLIP demonstrated the greatest capacity to fulfill this task.  
+In a previous study by Lia Winkler, it was determined that CLIP demonstrated the greatest capacity to fulfill the task at hand.  
 \acrfull{clip} is a model designed to assess how well given text prompts align with an image.  
-The model comprises a vision encoder and a text encoder.  
-The outputs of these encoders are high-dimensional vectors.  
-The similarity between text and image is calculated by taking the scaled dot product of the vectors.  
+The model comprises a vision encoder and a text encoder, which output high-dimensional vectors.  
+The similarity between text and image is calculated using the scaled dot product of these vectors.  
 
-The evaluation of her work was conducted on a dataset provided by Hexagon, consisting of panorama images.  
+The evaluation of Winkler's work was conducted on a dataset provided by Hexagon, consisting of panorama images.  
 These images are divided into five classes: indoor architectural, indoor construction, outdoor construction, outdoor urban, and forest.  
-To achieve optimal results, Winkler identified that dividing the images into patches, classifying each patch, and determining the image's class via a majority vote yielded the most effective approach.  
+For optimal results, Winkler identified that dividing the images into patches, classifying each patch, and determining the overall class via majority voting yielded the best performance.  
 
-Finally, Miss Winkler highlighted TinyCLIP in her report, a version of CLIP with a considerably reduced parameter count while maintaining similar levels of accuracy.  \hfill\break
+Additionally, Winkler highlighted TinyCLIP in her report—a version of CLIP with a significantly reduced parameter count while maintaining similar levels of accuracy. \hfill\break
 
-The goal of this work is to utilize CLIP and TinyCLIP on the Hailo hardware.  
-Hailo provides software to compile a network called the \acrfull{dfc}.  
-The \acrshort{dfc} quantizes a model and compiles it into a format that can be executed on Hailo hardware.  
+The goal of this project is to implement CLIP and TinyCLIP on Hailo hardware.  
+Hailo provides software called the \acrfull{dfc}, which compiles neural networks by quantizing them into a format executable on Hailo hardware.  
 
-A significant constraint is that the \acrshort{dfc} currently cannot compile neural networks using transformer architectures.
-This limitation shaped the implementation on the Raspberry Pi.  
-The text encoders of CLIP are always transformers.  
-While the vision encoders are typically vision transformers, they can also be implemented as ResNets.  
+However, a significant limitation is that the \acrshort{dfc} currently cannot compile neural networks utilizing transformer architectures.  
+This constraint influenced the implementation on the Raspberry Pi.  
+The text encoders of CLIP are always transformer-based, while vision encoders are typically vision transformers but can also be implemented as ResNets.  
 
-Text encodings need to be pre-calculated, saved, and uploaded to the Raspberry Pi.  
+To overcome this limitation, text encodings must be pre-calculated, saved, and uploaded to the Raspberry Pi.  
 On the Raspberry Pi, only ResNets can be used as visual encoders.  
-During the compilation of the ResNets, another limitation was encountered: due to dimensional constraints on the Hailo hardware, the ResNets had to be divided into two parts.  
-The first part is compiled with the \acrshort{dfc} and executed on the hardware accelerator.  
-The second part has to be executed on the CPU of the Raspberry Pi.  
+During the compilation of the ResNets, another limitation was identified: due to dimensional constraints on the Hailo hardware, the ResNets had to be divided into two parts.  
+The first part is compiled with the \acrshort{dfc} and executed on the hardware accelerator, while the second part runs on the Raspberry Pi's CPU.  
 
-With this solution, an intermediate result was achieved.
-To compare the results which were calculated on the Hailo hardware the same networks were used on a PC.
-The first result showed a big decline in accuracy after quantisation.
-This decline is the worst if the model uses TinyCLIP.\hfill\break
+This solution achieved intermediate results.  
+To evaluate the accuracy, the same networks were tested on a PC for comparison.  
+Initial results revealed a significant decline in accuracy after quantization, with the decline being most pronounced for TinyCLIP models.\hfill\break
 
-To increase the accuracy if quantised models some actions are taken.
-The first action is to try to decrease the quantisation.
-The \acrshort{dfc} offers to chance quantisation.
-Without a gpu the chance of quantisation takes very long.
-Unfortunately no \acrshort{gpu} was available for this project.
-Thats why a other approach was taken.
+To mitigate accuracy loss in quantized models, several steps were taken:  
+\begin{enumerate}
+    \item  \textbf{Reducing Quantization Levels:}The \acrshort{dfc} allows for adjusting quantization levels.  
+    However, due to the lack of a GPU, the process was extremely time-consuming, and an alternative approach was pursued.
+    \item \textbf{Revising the Network Split:}The placement of the cut that divides the vision encoder was adjusted.  
+    The cut was positioned such that only operations robust to quantization, such as basic convolutions, were included in the first part.  
+    Operations sensitive to quantization, such as large matrix multiplications, were allocated to the second part.  
+    This adjustment improved accuracy for most models, though not for TinyCLIP.
+    \item \textbf{Threshold Adjustment for Binary Class Cases:}The threshold for binary classification was fine-tuned to enhance performance. 
+\end{enumerate}
 
-The second action was to change the placment of the cut which splits the vision encoder in two parts.
-The cut is placed in a way that only operations which work well after quantisation are in the first part.
-Bad operations are big matrix multiplications.
-This new cut coulndt help to increase accuracy from TinyCLIP models but from the rest.
-The last action is to adjust the threshold for cases were only two classes exist.
-
-With these two steps the accuracy from the network which uses RN101 proved to achieve the best results.
-This result leads to the following conclusion.
-The fact how good a model quantises is depened on the width of a network.
-From the networks which are able to compile RN101 was the widest.
-This also explains why TinyCLIP doesnt achieve a good accuracy.
-In the process to reduce the parameters of clip manly the width is affected.
-This leads to bad quantisation.
+As a result of these optimizations, the RN101 network achieved the best accuracy among the compiled models.  
+This finding highlights an important conclusion: the quantization performance of a model depends significantly on the network's width.  
+Among the networks compatible with the Hailo hardware, RN101 had the largest width, explaining its superior results.  
+Conversely, TinyCLIP's poor accuracy can be attributed to its reduced width, a design trade-off made to minimize parameters.  
+This reduction adversely impacts its quantization performance.
 
 
+\subsection*{Self assessment}
 In this work the capabilities of the Hailo hardware accelerator and its software were explored.
-The porject went a bit of course when the first problem occured where ResNets weren't able to compile.
+The project went a bit of course when the first problem occured where ResNets weren't able to compile.
+
 The communication with Hailo were only beneficial to a cetrain degree.
