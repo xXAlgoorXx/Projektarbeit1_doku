@@ -44,9 +44,9 @@ This behavior was discussed with Hailo, and they provided an example where CLIP 
 The reason for this discrepancy is that the networks used by Hailo were acquired with an older version of CLIP and the ONNX exporter.
 While the graphs are functionally equivalent, the architecture differs slightly.
 As seen in \cref{fig:implementation:hailoclipres50x4}, the model provided by Hailo has a maximum of three dimensions.
-To work around this problem, the last part of the ONNX graph is cut off.
+To work around this problem, the ONNX graph is cut off between the last matmul and transpose block.
 For this task, the Onnx-Modifier tool \cite{onnxmodifier} is used.
-The removed blocks are implemented as postprocessing steps.
+The removed graph are implemented as postprocessing steps.
 %As described in \cref{section:dfc}, a script can be applied to adjust the behavior of the \acrshort{dfc}.
 After quantization, the graph can again be visualized using a tool called Profiler from Hailo.
 In \cref{fig:implementation:compareRN50x4qunathar}, the compiled model with the cutoff end is visualized.
@@ -381,7 +381,7 @@ This means that only convolutions and additions were quantised and processed on 
 \end{table}
 
 In \cref{methods:tab:perfHailocut} we see a decrease in accuracy and throughput.
-But the output is group that most of the accuracy can be made better by adjusting the threshold.
+But the output is grouped that most of the accuracy can be made better by adjusting the threshold.
 In %\cref{}
 we see the adjusted performance
 
