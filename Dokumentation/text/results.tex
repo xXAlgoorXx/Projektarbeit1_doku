@@ -1,26 +1,26 @@
 \chapter{Results}
-In this chapter the results and their collection is discussed and interpreted.
-
-
-
-
-
-
+In this chapter the results are discussed and interpreted.
+The conclusions taken are based of the other chapters in this work.
 
 \section{Execute models on the edge}
 To have a success full compilation of a network it is important to understand which part of network dont lose much accurcy due to quantisation.
-In \cref{methods:sec:cutlocation} the most of the models had an incerase in accurcy after the matrix multiplication isnt calculate on the edge anymore.
+In this project two implementations are tested.
+One where as much as possibel is calculated on the edge.
+The second tries to take in consideratio how good a given layer quantises.
+Sadly both implementation lack of good results.
+This means no statement in context of how good a layer quantises can be made.
 
-TinyCLIP didnt achieve good results after quantisation.
+All models suffered under a decrease of accuracy after quantisation.
+This effect is sever with TinyCLIP
 The suspision is that TinyCLIP has to few parameters to work propely after quantisation.
-
-The best results are with RN101.
-The diffrenc to the other ResNet models is that RN101 is wider than most models.
-This means that parameters are better invested in width than in depth of a network.
 This would also explain why TinyCLIP isnt giving good results.
 During weight inheritance some weights get masked.
 This reduces the parameter count of a network by making it narrower.
 In \cref{section:weightinheritance} it is mentiond that the authors of TinyCLIP found lot of redundancy in width when examing vision encoders and in the progress of make the model smaller reduced this redundancy.
+This reduction seems lethal to the accuracy after quantisation.
+
+The take away from this work is that models shouldn't be pruned or simplified before quantisation.
+There is even the possibility to give this task to the \acrshort{dfc}.
 
 \section{Working with Hailo}
 
@@ -40,18 +40,19 @@ But on serius problems like the problem with the dimension swap (see \cref{imple
 The python \acrfull{api} can be found online or in the \acrshort{dfc} Guide.
 Sadly it isnt discribed too good.
 All code from hailo is open source.
-Also there are many sources of examples to use the \acrshort{api} but these are again not described very well.
+There are many sources of examples to use the \acrshort{api} but these are again not described very well.
 Most of the code has be understood by the programmer.
 The other way would be asking in the forum of hailo.
 There the time to answer can alter between 1-10 days.
 
+The suspision arrises that full potential  of the \acrshort{dfc} the is not utilized because of the absence of a GPU.
 
 
 \section{Conclusion}
 
 To use qunatized models it isnt beneficial to reduce its parameter count before compilation.
 Especialy with hailo because the \acrshort{dfc} is capable of pruning and optimization.
-This is shown in the result as RN101 shows the best results after quantisation.
+This is shown in the result as the CLIP models show the better results after quantisation than the TinyCLIP models.
 
 It is beneficial to use apropoate hardware (\acrshort{gpu}) to speed up the compilation time.
 There are also cetrain functions of the \acrshort{dfc} which arent possible to make without a \acrshort{gpu} like optimization of a network.

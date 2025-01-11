@@ -40,14 +40,14 @@ The \acrshort{dfc} swaps dimensions and combines the last two dimensions, leadin
 In the ResNet model obtained through the official CLIP repository (see \cref{fig:implementation:clipres50x4}), the transpose block after the MatMul block swaps the second and third dimensions.
 This results in a compilation error because the \acrshort{dfc} has already combined the last two dimensions.
 
-This behavior was discussed with Hailo, and they provided an example where CLIP is run on their hardware. Upon testing, we observed that the error does not occur when using the model provided by Hailo.
+This behavior was discussed with Hailo, and they provided an example where CLIP is run on their hardware. Upon testing, it is observed that the error does not occur when using the model provided by Hailo.
 The reason for this discrepancy is that the networks used by Hailo were acquired with an older version of CLIP and the ONNX exporter.
+The attemp to recreate the graph from hailo faild due to version depedencys.
 While the graphs are functionally equivalent, the architecture differs slightly.
 As seen in \cref{fig:implementation:hailoclipres50x4}, the model provided by Hailo has a maximum of three dimensions.
 To work around this problem, the ONNX graph is cut off between the last matmul and transpose block.
 For this task, the Onnx-Modifier tool \cite{onnxmodifier} is used.
 The removed graph are implemented as postprocessing steps.
-%As described in \cref{section:dfc}, a script can be applied to adjust the behavior of the \acrshort{dfc}.
 After quantization, the graph can again be visualized using a tool called Profiler from Hailo.
 In \cref{fig:implementation:compareRN50x4qunathar}, the compiled model with the cutoff end is visualized.
 In this figure, the combination of the last dimensions can be seen.
@@ -70,7 +70,15 @@ The cut-off part consists of one matrix multiplication and some rearranging of d
 In the first implementation, the weights for the matrix multiplication were extracted and saved in a JSON file.
 In a second attempt, the cut-off ONNX graph was directly used.
 The second attempt proved to be faster and used less memory.
+The cut location can be seen in \cref{fig:implementation:RNcut}.
 
+\begin{figure}
+    \centering
+    \includegraphics[width=0.4\textwidth]{Images/Implementation/firstcutlocation.png}
+    \caption{Graph for the RN50. The Cut is made at the red arrow between the MarMul and the Transpose block.
+    The location is similar for all models.}
+    \label{fig:implementation:RNcut}
+\end{figure}
 \section{Inference}
 
 To ensure a fair comparison of performance, the implementation on the Raspberry Pi closely mirrors the one used on the PC. 
@@ -224,11 +232,6 @@ we get the parameter count for the cut-off graph. Now, this is added to the para
 which is the parameter count before compilation (see \cref{methods:tab:clipsize}).
 This calculation can also be done for all other models, but the result is the same.
 This result means that the architecture isn't affected by the \acrshort{dfc}; it only changes quantization.
-Because of quantization, the memory size should be around four times lower than before, as the datatype of the weights changes from FP32 to INT8.
-In reality, the factor is around 3.
-This can be seen in \cref{methods:tab:sizecompare}.
-It is important to mention that these numbers should be taken with a grain of salt because the datatypes of the saved models are different.
-
 
 \subsection{Model Size Comparison}
 
@@ -237,6 +240,9 @@ As expected, the ONNX models are significantly larger due to the higher precisio
 This size reduction is a direct result of the \acrshort{dfc}'s quantization process.
 For example, the model "RN50" has a file size of 153.2 MB in ONNX format, but after being compiled to HEF, it reduces to 53.7 MB.
 Similar reductions in size can be observed for other models such as RN50x4, RN101, TinyClip19M, and TinyClip30M.
+Because of quantization, the memory size should be around four times lower than before, as the datatype of the weights changes from FP32 to INT8.
+In reality, the factor is around 3.
+It is important to mention that these numbers should be taken with a grain of salt because the datatypes of the saved models are different.
 This reduction improves memory efficiency when deploying these models on hardware accelerators like Hailo.
 
 \begin{table}
@@ -254,7 +260,7 @@ This reduction improves memory efficiency when deploying these models on hardwar
     \label{methods:tab:sizecompare}
 \end{table}
 
-\begin{table}[!h]
+\begin{table}[]
     \centering
     \begin{tabular}{l|rrrrr}
     \hline
@@ -343,7 +349,7 @@ Due to the cutting of the network these layers have to be processed on the CPU o
 In \cref{scetion:methods:contimp} the reason for the bad accuracy is suspected to be the bad quantisation.
 The models are all translated to INT8.
 In a attemp to increase accuracy as much as possible is converted to INT16.
-Other ways to increase the accuracy are better text promts and adjusting the threshold for binary classifications.
+Other ways to increase the accuracy are better text promts, adjusting the threshold for binary classifications or cutting the graph at a diffrent position so that only operation which work well quantized are used on Hailo.
 
 \subsection{Adjust threshold}
 
@@ -355,17 +361,18 @@ This threshold has to be calculate.
 For this calculation one has to watch out to use a balanced dataset.
 To get a balanced dataset a subset is created so that each class has the same amount of images.
 The images are randomly sampled.
-
 This process proved beneficial because it doenst need much computational resources and its easily implemented.
-
+Due to time limitations it was only applied to the classification between Indoot and Outdoor.
+In contrast to the theory the result showed no improvment.
 
 \subsection{Change the cut location
 \label{methods:sec:cutlocation}}
 A assumption is that the last part of the ResNet's, which is a self attention layer, isnt quantising propely due to some big matrix multipications.
 To work against this effect the cut which in any case has to be made can appear earlier in the graph.
 This means that only convolutions and additions were quantised and processed on hailo.
+The cut location can be seen in \cref{methods:fig:rn50newcut}.
 
-\begin{table}[!ht]
+\begin{table}[]
     \centering
     \begin{tabular}{l|rrrrr}
         \hline
@@ -381,20 +388,29 @@ This means that only convolutions and additions were quantised and processed on 
 \end{table}
 
 In \cref{methods:tab:perfHailocut} we see a decrease in accuracy and throughput.
-But the output is grouped that most of the accuracy can be made better by adjusting the threshold.
-In %\cref{}
-we see the adjusted performance
+The decrease in throughput is explained by a larger part which has to be calculated on the CPU.
+In \cref{methods:fig:comparern50newcut} we see the output didn't improve.
 
+
+\begin{figure}[]
+    \centering
+    \includegraphics[width=0.6\textwidth]{Images/Implementation/compareProbs_newCut_RN50.png}
+    \caption{Compare outputs at different \acrshort{dfc} points with RN50 with the new cut position. The new cut position showed no improvment when compared to \cref{methods:fig:comparern50}}
+    \label{methods:fig:comparern50newcut}
+\end{figure}
+
+\begin{figure}[]
+    \centering
+    \includegraphics[width=0.4\textwidth]{Images/Implementation/secondcutlocation.png}
+    \caption{Graph for the RN50. The new Cut location is at the red arrow between the Concat and the Add block.
+    The location is similar for all models.}
+    \label{methods:fig:rn50newcut}
+\end{figure}
 
 \subsection{Change quantisation}
 
 The \acrshort{dfc} offers a way to change the quantisation of the weigths.
 This is applied via the model script in quantisation.
-Due to the limitation that no GPU was available during the project quantising a network to a diffrent type than INT8 took very long.
-
-Due to this reason only TinyCLIP-19M was quantised to INT16.
-In the end 66\% of parameters were INT16  but no increase in accuracy was found.
-
-\section{Best Result}
-
-The best result was found to be the model with the RN101 as visual encoder
+Due to the limitation that no GPU is available during the project quantising a network to a diffrent type than INT8 took very long.
+Due to this reason only TinyCLIP-19M is quantised to INT16.
+In the end 66\% of parameters were INT16 but no increase in accuracy was found.

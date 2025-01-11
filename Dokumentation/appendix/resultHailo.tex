@@ -1,1 +1,32 @@
-\chapter{Result Hailo}
+\chapter{Evaluation on Hailo-8L}
+\begin{figure}[!h]
+    \centering
+    \subfloat[][TinyClip19M]{\includegraphics[width=0.45\textwidth]{Images/appendix/resultsHailo/oldCut/Confusion Matrix 5S(TinyClip-19M).png}\label{resulthailo:fig:tiny19M5s}}
+    \subfloat[][TinyClip30M]{\includegraphics[width=0.45\textwidth]{Images/appendix/resultsHailo/oldCut/Confusion Matrix 5S(TinyClip-30M).png}\label{resulthailo:fig:tiny30M5s}}
+    \caption{Confusion Matrix on Hailo-8L for TinyCLIP with ResNets as Visual Encoder (5 Sentences as Text Embeddings)}
+    \label{resulthailo:fig:tinyclipevalhailo5s}
+\end{figure}
+\begin{figure}[]
+    \centering
+    \subfloat[][RN50]{\includegraphics[width=0.45\textwidth]{Images/appendix/resultsHailo/oldCut/Confusion Matrix 5S(RN50).png}\label{resulthailo:fig:rn505s}}
+    \subfloat[][RN50x4]{\includegraphics[width=0.45\textwidth]{Images/appendix/resultsHailo/oldCut/Confusion Matrix 5S(RN50x4).png}\label{resulthailo:fig:rn50x45s}} \\
+    \subfloat[][RN101]{\includegraphics[width=0.45\textwidth]{Images/appendix/resultsHailo/oldCut/Confusion Matrix 5S(RN101).png}\label{resulthailo:fig:rn1015s}}
+    \caption{Confusion Matrix on Hailo-8L for CLIP with ResNets as Visual Encoder (5 Sentences as Text Embeddings)}
+    \label{resulthailo:fig:clipevalhailo5s}
+\end{figure}
+
+\begin{figure}[!h]
+    \centering
+    \subfloat[][TinyClip19M]{\includegraphics[width=0.45\textwidth]{Images/appendix/resultsHailo/newCut/withoutThreshold/Confusion Matrix 5S(TinyClip-19M).png}}
+    \subfloat[][TinyClip30M]{\includegraphics[width=0.45\textwidth]{Images/appendix/resultsHailo/newCut/withoutThreshold/Confusion Matrix 5S(TinyClip-30M).png}}
+    \caption{Confusion Matrix on Hailo-8L with the new cut for TinyCLIP with ResNets as Visual Encoder (5 Sentences as Text Embeddings)}
+    \label{resulthailo:fig:tinyclipevalhailo5snewcut}
+\end{figure}
+\begin{figure}[]
+    \centering
+    \subfloat[][RN50]{\includegraphics[width=0.45\textwidth]{Images/appendix/resultsHailo/newCut/withoutThreshold/Confusion Matrix 5S(RN50).png}}
+    \subfloat[][RN50x4]{\includegraphics[width=0.45\textwidth]{Images/appendix/resultsHailo/newCut/withoutThreshold/Confusion Matrix 5S(RN50x4).png}} \\
+    \subfloat[][RN101]{\includegraphics[width=0.45\textwidth]{Images/appendix/resultsHailo/newCut/withoutThreshold/Confusion Matrix 5S(RN101).png}}
+    \caption{Confusion Matrix on Hailo-8L with the new cut for CLIP with ResNets as Visual Encoder (5 Sentences as Text Embeddings)}
+    \label{resulthailo:fig:clipevalhailo5snewcut}
+\end{figure}
