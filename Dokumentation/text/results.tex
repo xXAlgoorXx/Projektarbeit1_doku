@@ -3,17 +3,18 @@ In this chapter the results are discussed and interpreted.
 The conclusions taken are based of the other chapters in this work.
 
 \section{Execute models on the edge}
-To have a success full compilation of a network it is important to understand which part of network dont lose much accurcy due to quantisation.
+To have a success full compilation of a network it is important to understand which parts of network won't lose much accurcy due to quantisation.
 In this project two implementations are tested.
 One where as much as possibel is calculated on the edge.
 The second tries to take in consideratio how good a given layer quantises.
+The reason for this is a suspision that big matrix multiplications dont quantize well.
 Sadly both implementation lack of good results.
 This means no statement in context of how good a layer quantises can be made.
 
 All models suffered under a decrease of accuracy after quantisation.
-This effect is sever with TinyCLIP
+This effect is sever with TinyCLIP.
 The suspision is that TinyCLIP has to few parameters to work propely after quantisation.
-This would also explain why TinyCLIP isnt giving good results.
+% This would also explain why TinyCLIP isnt giving good results.
 During weight inheritance some weights get masked.
 This reduces the parameter count of a network by making it narrower.
 In \cref{section:weightinheritance} it is mentiond that the authors of TinyCLIP found lot of redundancy in width when examing vision encoders and in the progress of make the model smaller reduced this redundancy.
@@ -33,9 +34,9 @@ Additional information can easly be found in the guide document of the \acrshort
 In the guide are also code examples to use the hailo hardware.
 
 Although nearly all examples from hailo are focused on image processing.
-The help is handeld through the hailo community.
+The help is handeld through the hailo community site.
 This is beneficial if other people have the same problem.
-But on serius problems like the problem with the dimension swap (see \cref{implementation:sec:translation}) it fellt like no one of the hailo people which are answering in the forum understood enough to tell that the compilation of this specific network isnt possible at the moment.
+But on serius problems like the problem with the dimension swap (see \cref{implementation:sec:translation}) it felt like no one of the hailo people which are answering in the forum understood enough to tell that the compilation of this specific network isnt possible at the moment.
 
 The python \acrfull{api} can be found online or in the \acrshort{dfc} Guide.
 Sadly it isnt discribed too good.
@@ -45,29 +46,33 @@ Most of the code has be understood by the programmer.
 The other way would be asking in the forum of hailo.
 There the time to answer can alter between 1-10 days.
 
-The suspision arrises that full potential  of the \acrshort{dfc} the is not utilized because of the absence of a GPU.
-
+The suspision arrises that full potential  of the \acrshort{dfc}  is not utilized in this project because of the absence of a GPU.
 
 \section{Conclusion}
 
-To use qunatized models it isnt beneficial to reduce its parameter count before compilation.
+To use qunatized models it isn't beneficial to reduce its parameter count before compilation.
 Especialy with hailo because the \acrshort{dfc} is capable of pruning and optimization.
 This is shown in the result as the CLIP models show the better results after quantisation than the TinyCLIP models.
 
 It is beneficial to use apropoate hardware (\acrshort{gpu}) to speed up the compilation time.
 There are also cetrain functions of the \acrshort{dfc} which arent possible to make without a \acrshort{gpu} like optimization of a network.
 
-To really use the full potential of the Hailo hardware accelerator and CLIP one should wait until the implementation to use transformers is complete. 
+To really use the full potential of the Hailo hardware accelerator and CLIP one should wait until the implementation to use transformers is complete.
+This could also eliminate a other error source which is that the text embeddings are claculated in floating point.
+By also quantising the text embeddings and calculate the results quantized a imporvement in accuracy could be present
+The ability to quantise a transformer and still achive good results has to be proven.
 
 \section{Outlook}
 
 The next steps should be to wait for the next update when hailo implements the usage of Transformers.
 It is important to keep in mind that a suspision from this project is that matrix multiplications dont quantise well.
-The self attention layer from Transformers are basicly matrix multiplications (see \cref{equ:selfattention})
+The self attention layer from Transformers are basicly 3 matrix multiplications (see \cref{equ:selfattention})
 To further incerase the scene understanding capabilities SAM\cite{sam} could be used as preprocessing.
 \acrshort{sam} returns segments of pictures.
 This in compination with CLIP could be used to incerase the accuracy of classification.
 \acrshort{sam} could for example isolate things in a office for example a printer or a computer which then gets classified by CLIP.
 To use this most likely 2 hardware accelerators, one for each model.
 This means that the Raspberry Pi 5 wouldnt be capable of this task because it has only one M.2 slot.
+
+To not be so dependend on Hailo as soon as some alternative is avalable on the market like ME1076 and MM1076 from Mythic they should be tested and evaluated.
 
