@@ -1,67 +1,129 @@
-\chapter*{Summary}
+% \chapter*{Summary}
+% Hexagon AB is a global leader in digitization technology, specializing in measurement and positioning systems.  
+% The company's laser scanning devices generate point cloud data of the environment and capture images through additional cameras integrated into their scanners.  
+% The objective of this project is to work towards integrating enhanced scene understanding capabilities into the scanning application's edge devices.
+
+% A key part of this project involved conducting a market analysis for hardware accelerators, preferably with M.2 slot capabilities.  
+% The analysis concluded that Hailo produces the most suitable product currently available, excelling in terms of availability, power consumption, and computing performance.
+
+% Hailo is a company that develops hardware accelerators.  
+% In collaboration with Raspberry Pi, Hailo has created a board equipped with an M.2 slot, compatible with a Raspberry Pi HAT.  
+% This integration allows neural networks to run on the Raspberry Pi, showcasing the efficiency of hardware accelerators in enabling advanced computing tasks.\hfill\break
+
+% In a previous study by Lia Winkler, it was determined that CLIP demonstrated the greatest capacity to fulfill the task at hand.  
+% \acrfull{clip} is a model designed to assess how well given text prompts align with an image.  
+% The model comprises a vision encoder and a text encoder, which output high-dimensional vectors.  
+% The similarity between text and image is calculated using the scaled dot product of these vectors.  
+
+% The evaluation of Winkler's work was conducted on a dataset provided by Hexagon, consisting of panorama images.  
+% These images are divided into five classes: indoor architectural, indoor construction, outdoor construction, outdoor urban, and forest.  
+% For optimal results, Winkler identified that dividing the images into patches, classifying each patch, and determining the overall class via majority voting yielded the best performance.  
+
+% Additionally, Winkler highlighted TinyCLIP in her report—a version of CLIP with a significantly reduced parameter count while maintaining similar levels of accuracy. \hfill\break
+
+% The goal of this project is to implement CLIP and TinyCLIP on Hailo hardware and evaluate its performance.  
+% Hailo provides software called the \acrfull{dfc}, which compiles neural networks by quantizing them into a format executable on Hailo hardware.  
+
+% However, a significant limitation is that the \acrshort{dfc} currently cannot compile neural networks utilizing transformer architectures.  
+% This constraint influenced the implementation on the Raspberry Pi.  
+% The text encoders of CLIP are always transformer-based, while vision encoders are typically vision transformers but can also be implemented as ResNets.  
+
+% To overcome this limitation, text encodings must be pre-calculated, saved, and uploaded to the Raspberry Pi.  
+% On the Raspberry Pi, only ResNets can be used as visual encoders.  
+% During the compilation of the ResNets, another limitation was identified: due to dimensional constraints on the Hailo hardware, the ResNets had to be divided into two parts.  
+% The first part is compiled with the \acrshort{dfc} and executed on the hardware accelerator, while the second part runs on the Raspberry Pi's CPU.  
+
+% This solution achieved intermediate results.  
+% To evaluate the accuracy, the same networks were tested on a PC for comparison.  
+% Initial results revealed a significant decline in accuracy after quantization, with the decline being most pronounced for TinyCLIP models.\hfill\break
+
+% To mitigate accuracy loss in quantized models, several steps were taken:  
+% \begin{enumerate}
+%     \item  \textbf{Reducing Quantization Levels:}The \acrshort{dfc} allows for adjusting quantization levels.  
+%     However, due to the lack of a GPU, the process is extremely time-consuming, and an alternative approach was pursued.
+%     \item \textbf{Revising the Network Split:}The placement of the cut that divides the vision encoder was adjusted.  
+%     The cut was positioned such that only operations robust to quantization, such as basic convolutions, were included in the first part.  
+%     Operations which are suspected to be sensitive to quantization, such as large matrix multiplications, were allocated to the second part.  
+%     Neither this adjustment didn't improved accuracy.
+%     \item \textbf{Threshold Adjustment for Binary Class Cases:}The threshold for binary classification was fine-tuned to enhance performance. 
+% \end{enumerate}
+
+% As a result of these optimizations, the \acrshort{clip} network achieved better accuracy then the compiled TinyCLIP models.  
+% This finding highlights an important conclusion: the quantization performance of a model depends significantly on the network's parameter count.
+% Conversely, TinyCLIP's poor accuracy can be attributed to its reduced width, a design trade-off made to minimize parameters.  
+% This reduction adversely impacts its performance after quantization.
+
+\chapter*{Summary}  
 Hexagon AB is a global leader in digitization technology, specializing in measurement and positioning systems.  
 The company's laser scanning devices generate point cloud data of the environment and capture images through additional cameras integrated into their scanners.  
-The objective of this project is to work towards integrating enhanced scene understanding capabilities into the scanning application's edge devices.
+The objective of this project was to work towards integrating enhanced scene understanding capabilities into the scanning application's edge devices.  
 
 A key part of this project involved conducting a market analysis for hardware accelerators, preferably with M.2 slot capabilities.  
-The analysis concluded that Hailo produces the most suitable product currently available, excelling in terms of availability, power consumption, and computing performance.
+The analysis concluded that Hailo produces the most suitable product currently available, excelling in terms of availability, power consumption, and computing performance.  
 
 Hailo is a company that develops hardware accelerators.  
 In collaboration with Raspberry Pi, Hailo has created a board equipped with an M.2 slot, compatible with a Raspberry Pi HAT.  
-This integration allows neural networks to run on the Raspberry Pi, showcasing the efficiency of hardware accelerators in enabling advanced computing tasks.\hfill\break
+This integration allows neural networks to run on the Raspberry Pi, showcasing the efficiency of hardware accelerators in enabling advanced computing tasks.  
 
 In a previous study by Lia Winkler, it was determined that CLIP demonstrated the greatest capacity to fulfill the task at hand.  
 \acrfull{clip} is a model designed to assess how well given text prompts align with an image.  
-The model comprises a vision encoder and a text encoder, which output high-dimensional vectors.  
+The model comprises a vision encoder and a text encoder.
+These encoders take text or images and embed them in high-dimensional vectors. 
 The similarity between text and image is calculated using the scaled dot product of these vectors.  
 
 The evaluation of Winkler's work was conducted on a dataset provided by Hexagon, consisting of panorama images.  
 These images are divided into five classes: indoor architectural, indoor construction, outdoor construction, outdoor urban, and forest.  
 For optimal results, Winkler identified that dividing the images into patches, classifying each patch, and determining the overall class via majority voting yielded the best performance.  
 
-Additionally, Winkler highlighted TinyCLIP in her report—a version of CLIP with a significantly reduced parameter count while maintaining similar levels of accuracy. \hfill\break
+Additionally, Winkler highlighted TinyCLIP in her report—a version of CLIP with a significantly reduced parameter count while maintaining similar levels of accuracy.  
 
-The goal of this project is to implement CLIP and TinyCLIP on Hailo hardware and evaluate its performance.  
+The goal of this project was to implement CLIP and TinyCLIP on Hailo hardware and evaluate their performance.  
 Hailo provides software called the \acrfull{dfc}, which compiles neural networks by quantizing them into a format executable on Hailo hardware.  
 
 However, a significant limitation is that the \acrshort{dfc} currently cannot compile neural networks utilizing transformer architectures.  
 This constraint influenced the implementation on the Raspberry Pi.  
 The text encoders of CLIP are always transformer-based, while vision encoders are typically vision transformers but can also be implemented as ResNets.  
 
-To overcome this limitation, text encodings must be pre-calculated, saved, and uploaded to the Raspberry Pi.  
-On the Raspberry Pi, only ResNets can be used as visual encoders.  
+To overcome this limitation, text embeddings had to be pre-calculated, saved, and uploaded to the Raspberry Pi.  
+On the Raspberry Pi, only ResNets could be used as visual encoders.  
 During the compilation of the ResNets, another limitation was identified: due to dimensional constraints on the Hailo hardware, the ResNets had to be divided into two parts.  
-The first part is compiled with the \acrshort{dfc} and executed on the hardware accelerator, while the second part runs on the Raspberry Pi's CPU.  
+The first part was compiled with the \acrshort{dfc} and executed on the hardware accelerator, while the second part ran on the Raspberry Pi's CPU.  
 
 This solution achieved intermediate results.  
 To evaluate the accuracy, the same networks were tested on a PC for comparison.  
-Initial results revealed a significant decline in accuracy after quantization, with the decline being most pronounced for TinyCLIP models.\hfill\break
+Initial results revealed a significant decline in accuracy after quantization, with the decline being most pronounced for models with a low parameter count.  
 
 To mitigate accuracy loss in quantized models, several steps were taken:  
-\begin{enumerate}
-    \item  \textbf{Reducing Quantization Levels:}The \acrshort{dfc} allows for adjusting quantization levels.  
-    However, due to the lack of a GPU, the process is extremely time-consuming, and an alternative approach was pursued.
-    \item \textbf{Revising the Network Split:}The placement of the cut that divides the vision encoder was adjusted.  
+\begin{enumerate}  
+    \item \textbf{Reducing Quantization Levels:} The \acrshort{dfc} allows for adjusting quantization levels.  
+    However, due to the lack of a GPU, the process was extremely time-consuming, and an alternative approach was pursued.  
+    \item \textbf{Revising the Network Split:} The placement of the cut that divides the vision encoder was adjusted.  
     The cut was positioned such that only operations robust to quantization, such as basic convolutions, were included in the first part.  
-    Operations which are suspected to be sensitive to quantization, such as large matrix multiplications, were allocated to the second part.  
-    Neither this adjustment didn't improved accuracy.
-    \item \textbf{Threshold Adjustment for Binary Class Cases:}The threshold for binary classification was fine-tuned to enhance performance. 
-\end{enumerate}
+    Operations suspected to be sensitive to quantization, such as large matrix multiplications, were allocated to the second part.  
+    However, this adjustment did not improve accuracy.  
+    \item \textbf{Threshold Adjustment for Binary Class Cases:} The threshold for binary classification was fine-tuned to enhance performance.  
+\end{enumerate}  
+In the end none of these measures lead to a significant increase in accuracy.
 
-As a result of these optimizations, the \acrshort{clip} network achieved better accuracy then the compiled TinyCLIP models.  
-This finding highlights an important conclusion: the quantization performance of a model depends significantly on the network's parameter count.
-Conversely, TinyCLIP's poor accuracy can be attributed to its reduced width, a design trade-off made to minimize parameters.  
-This reduction adversely impacts its performance after quantization.
+The results lead to the following conclusion.
+The quantization performance of a model depends significantly on the network's parameter count. 
+Conversely, TinyCLIP-30M contradicts this statment in maintaining a better accuracy after quantisation then RN50 while having less parameters.  
+This means that in the process of creating a TinyCLIP model the most important weigths are successfully identified.
 
 
 \subsection*{Self assessment}
-In this work the capabilities of the Hailo hardware accelerator and its software were explored.
-The project went a bit of course when the first problem occured where ResNets weren't able to compile.
-This could have been less worse if better sutational awareness was present and the advisers were asked sooner for their ideas.
-In general a better communication from my side would have accelerated the advancements in this project and possibily could have led to a better result.
-The work was done with the best thoughts in mind.
-The results are a little disappointing due to that the accuracy couldnt have been improved.
+In this work, the capabilities of the Hailo hardware accelerator and its associated software were explored.
+The project faced some challenges when the initial problem arose, preventing ResNets from compiling.
+This issue could have been mitigated if better situational awareness had been present, and if the advisers had been consulted earlier for their input.
 
-It was a very intersting insight in edge AI.
-The usage of the \acrshort{dfc} felt a bit disappointing at some points in the project due to the encounterd problems.
+In general, improved communication on my part would have accelerated progress in the project and could have led to a better outcome.
+The work was conducted with the best intentions, though the results were somewhat disappointing, as the accuracy did not improve as expected.
+
+At times, I was perhaps a bit overzealous.
+For instance, it would have been beneficial to reduce the complexity of the project by developing a Python package for the evaluation functions, such as printing the confusion matrix.
+Additionally, gaining a better understanding of the \acrshort{dfc} before using it would have been helpful, particularly in relation to how compiling a \acrshort{har} file into a \acrshort{hef} file can alter the model's architecture.
+
+Overall, the project provided valuable insights into edge AI.
+However, the use of the \acrshort{dfc} was somewhat disappointing at times due to the encountered issues.
+
 

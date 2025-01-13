@@ -6,18 +6,22 @@
 
 \chapter*{Abstract}
 
- Hexagon AB, a leader in digitization technology, focuses on integrating advanced scene understanding capabilities into edge devices for its scanning applications.
- This project evaluated the use of hardware accelerators, identifying Hailo's products as the most suitable due to their availability, power efficiency, and computational performance.
- By leveraging Hailo's M.2-enabled hardware neural networks can execute efficiently with Raspberry Pi.
+Hexagon AB, a leader in digitization technology, focuses on integrating advanced scene understanding capabilities into edge devices for its scanning applications.
+This project evaluated the use of hardware accelerators, identifying Hailo's products as the most suitable due to their availability, power efficiency, and computational performance.
+By leveraging Hailo's M.2-enabled hardware neural networks can execute efficiently with Raspberry Pi.
 
 The study builds on previous work by Lia Winkler, who demonstrated that CLIP, a model for aligning text and images, is well-suited for scene classification tasks.
-Her best practice involved dividing panoramic images into patches and classifying them via majority voting, achieving strong results. TinyCLIP, a lightweight version of CLIP, was also mentiond for its reduced parameter count and efficiency.
+Her best practice involved dividing panoramic images into patches and classifying them via majority voting, achieving strong results. TinyCLIP, a lightweight version of CLIP, was also mentiond for its reduced parameter count and efficiency.\hfill\break
     
-This work implemented CLIP and TinyCLIP on Hailo hardware using Hailo’s Dataflow Compiler (\acrfull{dfc}), which quantizes and compiles networks.
-However, the \acrshort{dfc} does not support transformer architectures, necessitating adaptations. Text encodings were pre-calculated, and ResNet-based vision encoders were split between Hailo hardware and the Raspberry Pi CPU due to some constraints with the \acrshort{dfc}.
-Despite initial accuracy loss after quantization, optimizations—such as refining quantization levels, adjusting encoder splits, and tuning thresholds—improved performance.
-The original CLIP networks achieved the best performance highlighting the importance of network capacity for quantization.
-The findings underscore the potential of combining CLIP-based models and hardware accelerators for edge computing applications while revealing challenges in hardware constraints and model quantization. 
+The core of the project centered around implementing the CLIP and TinyCLIP models on Hailo hardware to enable efficient scene understanding. 
+CLIP, a neural network model for assessing the alignment of text prompts with images, demonstrated strong performance in prior research. 
+Due to limitations in the Hailo platform's ability to compile transformer-based architectures, pre-calculated text embeddings were used, and ResNets were employed as vision encoders. 
+Challenges arose in maintaining model accuracy after quantization, particularly for models with a lower parameter count. 
+Various strategies were attempted to mitigate accuracy loss, such as adjusting quantization levels, reworking the network split, and fine-tuning classification thresholds. 
+However, none of these approaches resulted in significant improvements.\hfill\break 
 
-	
+The results indicated that model accuracy post-quantization is highly dependent on the network’s parameter count. 
+Interestingly, TinyCLIP-30M, with fewer parameters, exhibited better post-quantization accuracy than the larger RN50 model, suggesting that TinyCLIP’s optimization effectively identifies the most crucial model weights. 
+
+    
 	
