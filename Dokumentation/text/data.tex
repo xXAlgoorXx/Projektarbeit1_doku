@@ -18,7 +18,7 @@ The images are divided into the following 5 classes:
 To increase the accuracy of the algorithm, the classes were rephrased and divided into subclasses.  
 These subclasses can be seen in \cref{tab:dataset:subclasses}.
 
-\begin{table}[!ht]
+\begin{table}[]
     \centering
     \begin{tabular}{ccc}
     \toprule
@@ -49,11 +49,10 @@ These subclasses can be seen in \cref{tab:dataset:subclasses}.
     \caption{Picture Classes of the hexagon dataset
         \label{tab:dataset:piccoding}}
 \end{table}
-
 The labels of the pictures are encoded in the name of the picture. 
 The first number indicates the location where the picture was taken, 
-while the second number is a sequential number for that location. 
-\cref{tab:dataset:piccoding} shows the correspondence between locations and classes. 
+while the second number is a sequential number for that location.
+Table \ref{tab:dataset:piccoding} shows the correspondence between locations and classes. 
 For example, the picture in \cref{fig:dataset:examplepic} belongs to the "Construction (in)" class.
 
 It is important to mention that the dataset is highly imbalanced. 

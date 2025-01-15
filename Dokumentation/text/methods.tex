@@ -18,9 +18,9 @@ It is evident that TinyCLIP uses significantly fewer parameters than the origina
 \section{Model Translation
 \label{implementation:sec:translation}}
 
-The models were initially split into separate image and text encoders.
-The image encoder was then converted into an ONNX graph, which was subsequently simplified.
-This ONNX graph was later translated by the \acrshort{dfc} into \acrshort{har} and \acrshort{hef} files.
+The models were first split into separate image and text encoders.
+The image encoder is then converted into an ONNX graph, which is then simplified.
+This ONNX graph is later translated by the \acrshort{dfc} into \acrshort{har} and \acrshort{hef} files.
 
 
 \begin{figure}
@@ -185,8 +185,8 @@ In \cref{methods:tab:perfRaspi}, the performance measurements from executing on 
 As expected, the throughput on the Raspberry Pi is significantly lower than the throughput on the PC CPU from \cref{methods:tab:perfPC}, due to the lower computing power of the Raspberry Pi. In a first test, the accuracy from the Raspberry Pi CPU differd slightly from the PC.
 A first suspision was that this is due to diffrent CPU architecture.
 Later an error in the evaluation was found where the 5 patches were not sorted.
-This means that 5 patches which didnt belong to the same picture were evaluated together.
-This error was present in the code taken from Lia Winkler.
+This means that 5 patches that did not belong to the same image were evaluated together.
+This error is present in the code taken from Lia Winkler.
 
 In \cref{methods:tab:perfRaspi}, the parameter count of the image encoder is displayed. These values are the same for the models on both the PC and the Raspberry Pi.
 
@@ -230,9 +230,9 @@ In \cref{methods:tab:perfRaspi}, the parameter count of the image encoder is dis
 
 \subsection{With Hardware Accelerator}
 
-The networks, after compilation, are examined. First, the parameter count is analyzed.
-A slight decrease in parameters is observed, which can be explained.
-
+Now, the networks after compilation are examined.
+First, the number of parameters in the compiled \acrshort{har} file is analysed.
+There is a slight decrease in the number of parameters, which can be explained.
 In the case of TinyCLIP-19M, the cut-off graph is composed of a matrix multiplication with a matrix of the shape \(1024 \times 1408\).With the following calculation
 The following calculation is provided:
 
@@ -296,14 +296,14 @@ This reduction improves memory efficiency when deploying these models on hardwar
 \subsection{Speed and Accuracy Analysis}
 
 Now, let's examine the performance in terms of speed and accuracy.
-In \cref{methods:tab:perfHailo}, we present the performance metrics for models evaluated on the Hailo 8L hardware accelerator.
+In \cref{methods:tab:perfHailo} the performance metrics for models evaluated on the Hailo-8L hardware accelerator are presented.
 Notably, the throughput on the Hailo device is much higher compared to the Raspberry Pi CPU (see \cref{methods:tab:perfRaspi}).
 
 On first glance, it appears that accuracy only drops for the TinyCLIP models.
 However, a closer look reveals that the accuracy of the ResNet models may also be misleading.
 To understand the true performance, we need to examine the confusion matrix for the RN50 model (see \cref{methods:fig:compareConfM}) and use the balanced accuracy as measurements.
 In \cref{methods:tab:perfRaspi} a pattern appears.
-The models which original have a low parameter count lose much of their accuracy.
+The models which original have a low parameter count lose much of their accuracy after quantisation.
 This effect can be seen with RN50 and TinyClip19M.
 TinyClip19M has the biggest drop in accuracy of more then 60\%.
 
@@ -441,19 +441,19 @@ To get a balanced dataset a subset is created so that each class has the same am
 The images are randomly sampled.
 This process proved beneficial because it doenst need much computational resources and its easily implemented.
 Due to time limitations it was only applied to the classification between Indoot and Outdoor.
-In contrast to the theory the result showed no improvment.
+The result showed a small improvement improvment.
 The result can be seen in \cref{methods:tab:perfHailocutTh}.
 
 \begin{table}[]
     \centering
-    \begin{tabular}{l|rr}
+    \begin{tabular}{l|rrr}
         \hline
-        Modelname & Accuracy &  \makecell{Balanced \\accuracy}\\ \hline
-        RN50 & 0.799 & 0.200  \\ 
-        RN50x4 & 0.845 & 0.560 \\
-        RN101 & 0.743& 0.507 \\  
-        TinyCLIP-19M & 0.141 & 0.211 \\ 
-        TinyCLIP-30M & 0.624 & 0.521 \\ 
+        Modelname & Accuracy &  \makecell{Balanced \\accuracy}&  \makecell{Change in \\balanced accuracy}\\ \hline
+        RN50 & 0.799 & 0.200  & 0\\ 
+        RN50x4 & 0.845 & 0.560 & 0\\
+        RN101 & 0.743& 0.507 & +0.93\\  
+        TinyCLIP-19M & 0.141 & 0.211 & -0.06\\ 
+        TinyCLIP-30M & 0.624 & 0.521 & +0.95\\ 
     \end{tabular}
     \caption{Performance table from evalutaion on Hailo 8L where the model graph is cut in a diffrent location with calculated threshold .}
     \label{methods:tab:perfHailocutTh}

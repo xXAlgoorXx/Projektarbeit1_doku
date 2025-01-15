@@ -45,7 +45,8 @@
 
     \subsection{Transformer}
 
-    The Transformer was first introduced in \cite{attentionisallyouneed}, and most of the information in this section is derived from that paper. 
+    The Transformer was first introduced in \cite{attentionisallyouneed}.
+    Most of the information in this section is derived from that paper. 
     Before Transformers, \acrfull{rnn}s were commonly used to process sequential data. 
     To capture dependencies and relationships within an input sequence, a mechanism called attention was introduced. 
     The Transformer marked a significant breakthrough by introducing a mechanism known as self-attention. 
@@ -85,7 +86,7 @@
 
     To use a Transformer, the input must first be split into tokens. 
     These tokens represent text snippets in the case of a text Transformer or patches of an image in the case of a Vision Transformer (ViT) (see \cref{fig:crossmodalnetworks:visiontransformer}). 
-    The tokens are then embedded into a high-dimensional vector space. 
+    These tokens or patches are then embedded into a high-dimensional vector space. 
     For example, in the case of the CLIP ViT-32 visual encoder, each vector has 1024 dimensions.
 
     Additionally, positional embeddings are added to the token embeddings to retain information about the order or spatial arrangement of the tokens. 
@@ -212,15 +213,12 @@
         \label{section:weightinheritance}}
         Weight inheritance is a technique that transfers important weights from well-trained teacher models to smaller student models. 
         In the paper, the authors propose two methods:
-        
-
-        \subsubsection{Manual weight inhertiance}
-        Based on the authors' observations, text encoders exhibit the most redundancy in depth (layer-wise), while image encoders exhibit redundancy in width (channel-wise). 
-        They select \(k\) layers and channels from a branch to serve as initialization weights. 
-        To select the most important weights, some prior knowledge is required.
-        
-        \subsubsection{Automatic weight inhertiance}
-        The authors introduce a learnable mask to determine the importance of each weight.
+        \begin{itemize}
+            \item \textbf{Manual weight inhertiance:} Based on the authors' observations, text encoders exhibit the most redundancy in depth (layer-wise), while image encoders exhibit redundancy in width (channel-wise). 
+            They select \(k\) layers and channels from a branch to serve as initialization weights. 
+            To select the most important weights, some prior knowledge is required.
+            \item \textbf{Automatic weight inhertiance:} The authors introduce a learnable mask to determine the importance of each weight.
+        \end{itemize}
 
         \subsubsection{Multi-stage progressiv distillaiton}
         The model is pruned in several steps. 

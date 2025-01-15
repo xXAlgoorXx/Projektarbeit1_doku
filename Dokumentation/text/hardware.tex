@@ -45,9 +45,9 @@ Additionally, preprocessing steps can be added to the model script, such as resi
 The result of this step is a quantized \acrshort{har} file.  
 This file can then be compiled into a \acrshort{hef} file for use on Hailo hardware.  
 
-\begin{figure}[!h]
+\begin{figure}[]
     \centering
-    \includegraphics[width=\textwidth]{Images/Hardware/model_build_overview_with_onnx_and_hef_w_har.png}
+    \includegraphics[width=0.8\textwidth]{Images/Hardware/model_build_overview_with_onnx_and_hef_w_har.png}
     \caption{\Acrlong{dfc} overview \cite{hailo_dataflow_compiler}}
     \label{fig:hardware:dfcoverview}
 \end{figure}
@@ -56,7 +56,7 @@ This file can then be compiled into a \acrshort{hef} file for use on Hailo hardw
 At the time of this writing, the \acrshort{dfc} is not capable of compiling Transformers.  
 This is an important limiting factor for this project.  
 The best performance for CLIP is achieved with Vision Transformers as the image encoder.  
-Fortunately, the visual encoding of CLIP can also be performed with ResNet (see \cref{crossmodalnetworks:sec:resnet}), a special form of \acrshort{cnn}'s.  
+Fortunately, the visual encoding of CLIP can also be performed with ResNet (see \cref{crossmodalnetworks:sec:resnet}).  
 
 \section{Running on the Edge}
 
@@ -67,7 +67,7 @@ The information for this section is taken from the TAPPAS User Guide.
 At present, there are two approaches to run a network on a Hailo device:  
 one using GStreamer and another using a Python API.  
 There are many different example applications available for various use cases.  
-These examples can be found in the Hailo Model Zoo \cite{hailo_model_zoo} or in their repository for Raspberry Pi examples \cite{hailo_rpi5_examples}.  
+These examples can be found in the Hailo Model Zoo \cite{hailo_model_zoo} or in their repository for Raspberry Pi examples \cite{hailo_rpi5_examples} or general application code examples \cite{hailo_application_code_examples}.  
 
 \subsection{GStreamer Approach}
 
@@ -81,7 +81,7 @@ A Python program is used to construct a string, which is then executed in a term
 An example pipeline can be seen in \cref{fig:hardware:gstreamerpipeline}.  
 More examples with code can be found in the TAPPAS User Guide.
 
-\begin{figure}[!h]
+\begin{figure}[]
     \centering
     \includegraphics[width=\textwidth]{Images/Hardware/gstreamerExample.png}
     \caption{Example GStreamer pipeline from TAPPAS User Guide}
