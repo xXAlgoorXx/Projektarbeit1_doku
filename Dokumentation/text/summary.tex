@@ -67,7 +67,7 @@ This integration allows neural networks to run on the Raspberry Pi, showcasing t
 
 In a previous study by Lia Winkler, it was determined that CLIP demonstrated the greatest capacity to fulfill the task at hand.  
 \acrfull{clip} is a model designed to assess how well given text prompts align with an image.  
-The model comprises a vision encoder and a text encoder.
+The model comprises a image encoder and a text encoder.
 These encoders take text or images and embed them in high-dimensional vectors. 
 The similarity between text and image is calculated using the scaled dot product of these vectors.  
 
@@ -77,17 +77,17 @@ For optimal results, Winkler identified that dividing the images into patches, c
 
 Additionally, Winkler highlighted TinyCLIP in her report—a version of CLIP with a significantly reduced parameter count while maintaining similar levels of accuracy.  
 
-The goal of this project was to implement CLIP and TinyCLIP on Hailo hardware and evaluate their performance.  
+The goal of this project waiss to implement CLIP and TinyCLIP on Hailo hardware and evaluate their performance.  
 Hailo provides software called the \acrfull{dfc}, which compiles neural networks by quantizing them into a format executable on Hailo hardware.  
 
-However, a significant limitation is that the \acrshort{dfc} currently cannot compile neural networks utilizing transformer architectures.  
+However, a significant limitation is that the \acrshort{dfc} currently cannot compile neural networks utilizing Transformer architectures.  
 This constraint influenced the implementation on the Raspberry Pi.  
-The text encoders of CLIP are always transformer-based, while vision encoders are typically vision transformers but can also be implemented as ResNets.  
+The text encoders of CLIP are always Transformer-based, while image encoders are typically vision Transformers but can also be implemented as ResNets.  
 
-To overcome this limitation, text embeddings had to be pre-calculated, saved, and uploaded to the Raspberry Pi.  
-On the Raspberry Pi, only ResNets could be used as visual encoders.  
-During the compilation of the ResNets, another limitation was identified: due to dimensional constraints on the Hailo hardware, the ResNets had to be divided into two parts.  
-The first part was compiled with the \acrshort{dfc} and executed on the hardware accelerator, while the second part ran on the Raspberry Pi's CPU.  
+To overcome this limitation, text embeddings have to be pre-calculated, saved, and uploaded to the Raspberry Pi.  
+On the Raspberry Pi, only ResNets can be used as visual encoders.  
+During the compilation of the ResNets, another limitation was identified: due to dimensional constraints on the Hailo hardware, the ResNets has to be divided into two parts.  
+The first part is compiled with the \acrshort{dfc} and executed on the hardware accelerator, while the second part runs on the Raspberry Pi's CPU.  
 
 This solution achieved intermediate results.  
 To evaluate the accuracy, the same networks were tested on a PC for comparison.  
@@ -103,11 +103,11 @@ To mitigate accuracy loss in quantized models, several steps were taken:
     However, this adjustment did not improve accuracy.  
     \item \textbf{Threshold Adjustment for Binary Class Cases:} The threshold for binary classification was fine-tuned to enhance performance.  
 \end{enumerate}  
-In the end none of these measures lead to a significant increase in accuracy.
+In the end only the threshold adjustment lead to a small incerase in accuracy.
 
 The results lead to the following conclusion.
-The quantization performance of a model depends significantly on the network's parameter count. 
-Conversely, TinyCLIP-30M contradicts this statment in maintaining a better accuracy after quantisation then RN50 while having less parameters.  
+The quantization performance of a model depends significantly on the network's parameter count.
+Conversely, TinyCLIP-30M contradicts this statment in maintaining a better accuracy after quantization then RN50 while having less parameters.  
 This means that in the process of creating a TinyCLIP model the most important weigths are successfully identified.
 
 
@@ -115,6 +115,10 @@ This means that in the process of creating a TinyCLIP model the most important w
 In this work, the capabilities of the Hailo hardware accelerator and its associated software were explored.
 The project faced some challenges when the initial problem arose, preventing ResNets from compiling.
 This issue could have been mitigated if better situational awareness had been present, and if the advisers had been consulted earlier for their input.
+Implementation on the PC was very quick due to prior knowledge and well-designed APIs.
+The implementation on the Raspberry PI was the biggest problem of this project.
+The main reason for this is that the \acrshort{dfc} has to be used to quantize the models.
+The limitations of the \acrshort{dfc} sometimes made it hard to make any progress in the project.
 
 In general, improved communication on my part would have accelerated progress in the project and could have led to a better outcome.
 The work was conducted with the best intentions, though the results were somewhat disappointing, as the accuracy did not improve as expected.

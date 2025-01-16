@@ -3,7 +3,7 @@
 % The conclusions taken are based of the other chapters in this work.
 
 % \section{Execute models on the edge}
-% To have a successfull compilation of a network it is important to understand which parts of network won't lose much accuracy due to quantisation.
+% To have a successfull compilation of a network it is important to understand which parts of network won't lose much accuracy due to quantization.
 % In this project, two implementations are tested.
 % One where as much as possibel is calculated on the edge.
 % The second tries to take in consideratio how good a given layer quantises.
@@ -11,9 +11,9 @@
 % Sadly both implementation lack of good results.
 % This means no statement in context of how good a layer quantises can be made.
 
-% All models suffered under a decrease of accuracy after quantisation.
+% All models suffered under a decrease of accuracy after quantization.
 % This effect is sever with models who have a low parameter count like RN50 and TinyCLIP-19M.
-% Interestingly TinyCLIP-30M which has a lower parameter count than RN50 but still retained a higher accuracy after quantisation.
+% Interestingly TinyCLIP-30M which has a lower parameter count than RN50 but still retained a higher accuracy after quantization.
 
 % \section{Working with Hailo}
 
@@ -44,12 +44,12 @@
 
 % This project showed that quantising models with a low parameter count leads to bad results.
 % This can be seen in the result from the evaluation of the models RN50 and TinyCLIP-19M.
-% On the other hand TinyClip-30M surprisingly retaind the most part of its accuracy through quantisation although having less parameters than RN50.
-% This indicates that the steps taken to get the TinyCLIP models work even beyond quantisation if the original model has enough capacity.
+% On the other hand TinyClip-30M surprisingly retaind the most part of its accuracy through quantization although having less parameters than RN50.
+% This indicates that the steps taken to get the TinyCLIP models work even beyond quantization if the original model has enough capacity.
 
-% There has to menationd that all the models lack of a satisfactory accuracy after quantisation.
+% There has to menationd that all the models lack of a satisfactory accuracy after quantization.
 % The taken measures to increase this accuracy didn't work.
-% Further work has to be done in advance of the quantisation to increase the accuracy after quantisation.
+% Further work has to be done in advance of the quantization to increase the accuracy after quantization.
 % It is beneficial to use apropoate hardware (\acrshort{gpu}) to speed up the compilation time.
 % There are also cetrain functions of the \acrshort{dfc} which arent possible to make without a \acrshort{gpu} like optimization of a network.
 
@@ -64,7 +64,7 @@
 % It is important to keep in mind that a suspision from this project is that matrix multiplications dont quantise well.
 % The self attention layer from Transformers are basicly 3 matrix multiplications (see \cref{equ:selfattention}).
 
-% When the functionality of the \acrshort{dfc} of compiling the whole model is present, other measures to increase the accuracy before quantisation can be done like finetuning or the usage of the CLIP adapter\cite{clipadapter}.
+% When the functionality of the \acrshort{dfc} of compiling the whole model is present, other measures to increase the accuracy before quantization can be done like finetuning or the usage of the CLIP adapter\cite{clipadapter}.
 % Also to use both text and image encoder on the hardware accelerator they have to be quantised together.
 % This may further boost their performance.
 % Otherwise a expensive context switch from one model to the other has to be done like in a early form of the implementation to evaluate Hailo in this project.
@@ -85,17 +85,22 @@ In this chapter, the results are presented, discussed, and interpreted.
 The conclusions are drawn based on the findings from the previous chapters of this work.  
 
 \section{Execution of Models on the Edge}  
-The successful compilation of a neural network requires an understanding of which parts of the network can be quantized without significant loss of accuracy.  
-In this project, two implementations were evaluated.  
+The successful compilation of a neural network requires an understanding of which parts of the network can be quantized without significant loss of accuracy.
+The quantization process is completely handled by the \acrshort{dfc}.
+As no \acrshort{gpu} was available, all models were quantized to 8 bits. 
+Two implementations were evaluated in this project.  
 The first aimed to perform as many computations as possible on the edge, while the second considered the quantization quality of individual layers.  
-This was based on the hypothesis that large matrix multiplications may not quantize effectively.  
+This was based on the hypothesis raised by a advisor that large matrix multiplications may not quantize effectively (see \cref{methods:sec:cutlocation}).
+  
 
 Unfortunately, both implementations yielded unsatisfactory results.  
 Consequently, no definitive statements could be made regarding the impact of layer quantization quality.  
 
 All tested models experienced a reduction in accuracy after quantization.  
-This effect was particularly severe for models with low parameter counts, such as RN50 and TinyCLIP-19M.  
-Interestingly, TinyCLIP-30M, despite having fewer parameters than RN50, retained higher accuracy post-quantization.  
+This effect was particularly severe for models with low parameter counts, such as RN50 and TinyCLIP-19M.
+The reason for this could be that the low-parameter networks have little or no redundant weights.
+The redundancy could contribute to a reduction in the quantization error, for example, so that the sum of the quantization errors of all the redundant weights is close to zero.
+Interestingly, despite having fewer parameters than RN50, TinyCLIP-30M retained relatively high accuracy after quantization.    
 
 \section{Evaluation of Hailo}  
 The Hailo 8L hardware accelerator was found to be an effective product.  
@@ -106,26 +111,38 @@ The guides included code examples for using Hailo hardware, though it should be 
 It is suspected that the full potential of the \acrshort{dfc} was not utilized in this project due to the absence of a GPU.  
 
 Most of Hailo's examples found in the model zoo\cite{hailo_model_zoo}, Hailos Raspberry Pi examples\cite{hailo_rpi5_examples} and some more generic examples\cite{hailo_application_code_examples} focused on image processing.
+
 Hailo has no offical support.
-Their are handeling questions and requests through their Hailo community site.  
-While this was helpful for addressing common issues, complex problems, such as those involving dimension swapping (see \cref{implementation:sec:translation}), revealed gaps in the support team's expertise.  
+They are handeling questions and requests through their Hailo community site.  
+While this was helpful for addressing common issues, complex problems, such as those involving dimension swapping (see \cref{implementation:sec:translation}), revealed gaps in the support team's expertise.
+Questions posted in the Hailo community site received responses within 1–10 days. 
 It became apparent that certain network compilations were not feasible with the current tools.  
 
 The Python \acrfull{api} was accessible online and in the \acrshort{dfc} guide but was not well-documented.  
-While the code provided by Hailo is open source and supplemented with examples, these examples also lacked detailed descriptions, requiring developers to independently interpret the functionality.  
-Questions posted in the Hailo community site received responses within 1–10 days.  
+While the code provided by Hailo is open source and supplemented with examples.
+These examples also lacked detailed descriptions, requiring developers to independently interpret the functionality.  
+ 
 
-\section{Conclusion}  
-This project demonstrated that quantizing models with low parameter counts results in significant accuracy degradation.  
+\section{Conclusion}
+The implementation on the PC was done very fast due to the reuse of Lia Winkler's code.
+All CLIP implementations are easy to use due to their well-designed \acrshort{api}.
+The TinyCLIP \acrshort{api} is designed to be as close as possible to the original CLIP implementation.
+This made the adaptation from CLIP to TinyCLIP very easy.
+The implementation on the Raspberry Pi proved to be more diffcult.
+The constraints from the \acrshort{dfc} made the quantization pretty laborious.
+Using the Python \acrshort{api} was also difficult due to the lack of documentation.
+
+This project demonstrated that quantizing models with low parameter counts results in significant accuracy degradation.
 This was evident in the evaluation of RN50 and TinyCLIP-19M.  
 Conversely, TinyCLIP-30M retained a larger portion of its accuracy after quantization, indicating that the model's inherent capacity may play a role in mitigating quantization losses.  
-
 It must be emphasized that none of the models achieved satisfactory accuracy after quantization.  
-The measures implemented to improve accuracy were ineffective.  
+The measures implemented to improve accuracy were ineffective.
+Only the changes to the threshold achieved some improvements. 
 Future efforts should focus on optimizing the models prior to quantization to enhance post-quantization performance.  
 Additionally, appropriate hardware, such as GPUs, should be utilized to reduce compilation times and enable advanced \acrshort{dfc} functionalities.  
 
-To fully leverage the Hailo hardware accelerator and the CLIP model, it is recommended to await the implementation of transformer support.  
+To fully leverage the Hailo hardware accelerator and the CLIP model, it is recommended to await the implementation of transformer support.
+CLIP models which use transformers as vision encoders have higher accuracy than the ones which use ResNets. 
 This may also address the limitation of floating-point calculations for text embeddings.  
 Quantizing text embeddings alongside the models could lead to improved accuracy.  
 Furthermore, the ability to quantize transformers effectively and achieve high performance remains to be established.  
@@ -134,9 +151,9 @@ Furthermore, the ability to quantize transformers effectively and achieve high p
 Future work should consider waiting for updates that enable transformer support in the \acrshort{dfc}.  
 It is important to validate the hypothesis that matrix multiplications are challenging to quantize effectively, as these operations form the core of self-attention layers in transformers (see \cref{equ:selfattention}).  
 
-Of the two TinyCLIP models tested, only one (TinyClip-30M) had a reasonably usable accuracy after quantisation.
+Of the two TinyCLIP models tested, only one (TinyClip-30M) had a reasonably usable accuracy after quantization.
 This is surprising as it uses fewer parameters than the smallest ResNet tested, but still outperformed it.
-This suggests that the process used to create TinyCLIP works well after quantisation if the original model has a sufficiently large capacity.
+This suggests that the process used to create TinyCLIP works well after quantization if the original model has a sufficiently large capacity.
 To confirm this suspicion, the transformer solutions from TinyCLIP should also be evaluated once it is possible to use them on Hailo.
 
 Once the \acrshort{dfc} supports full-model compilation, additional measures, such as fine-tuning and utilizing CLIP adapter \cite{clipadapter}, can be implemented to improve accuracy before quantization.  

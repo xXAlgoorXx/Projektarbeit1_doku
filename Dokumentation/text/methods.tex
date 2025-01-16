@@ -12,7 +12,9 @@ Similarly, the TinyCLIP models were obtained from the official TinyCLIP GitHub r
 Alternatively, models can be retrieved from HuggingFace \cite{huggingface}.
 However, the challenge with HuggingFace is that the models cannot be split into separate image and text encoders.
 For this reason, only models from the official CLIP and TinyCLIP repositories were used.
-In \cref{methods:tab:clipsize}, the parameter count for all CLIP and TinyCLIP implementations using a ResNet as the visual encoder is provided.
+The API to use these network is self explainatory.
+The implementaion is done in Pytorch\cite{pytorch}.
+In \cref{methods:tab:clipsize}, the parameter count for all CLIP and TinyCLIP implementations using a ResNet as the image encoder is provided.
 It is evident that TinyCLIP uses significantly fewer parameters than the original CLIP.
 
 \section{Model Translation
@@ -20,7 +22,11 @@ It is evident that TinyCLIP uses significantly fewer parameters than the origina
 
 The models were first split into separate image and text encoders.
 The image encoder is then converted into an ONNX graph, which is then simplified.
+To get the ONNX graph the ONNX exporter from Pytorch is used.
 This ONNX graph is later translated by the \acrshort{dfc} into \acrshort{har} and \acrshort{hef} files.
+The \acrshort{dfc} needs a \acrshort{gpu} to perform some tasks or just to speed up compilation.
+Due to the fact that no \acrshort{gpu} was available for this project, not all of the \acrshort{dfc} features were used.
+The model weights are quantized to 8 bits.
 
 
 \begin{figure}
@@ -34,7 +40,7 @@ This ONNX graph is later translated by the \acrshort{dfc} into \acrshort{har} an
 
 \subsection{Splitting the Graph}
 
-The first major issue encountered during the translation step is that the \acrshort{dfc} cannot compile transformers.
+The first major issue encountered during the translation step is that the \acrshort{dfc} cannot compile Transformers.
 Specifically, the problem arises from a transpose block at the end of every self-attention layer.
 The \acrshort{dfc} swaps dimensions and combines the last two dimensions, leading to conflicts.
 In the ResNet model obtained through the official CLIP repository (see \cref{fig:implementation:clipres50x4}), the transpose block after the MatMul block swaps the second and third dimensions.
@@ -42,7 +48,7 @@ This results in a compilation error because the \acrshort{dfc} has already combi
 
 This behavior was discussed with Hailo, and they provided an example where CLIP is run on their hardware. Upon testing, it is observed that the error does not occur when using the model provided by Hailo.
 The reason for this discrepancy is that the networks used by Hailo were acquired with an older version of CLIP and the ONNX exporter.
-The attemp to recreate the graph from hailo faild due to version depedencys.
+The attempt to recreate the graph from hailo failed due to version dependencies.
 While the graphs are functionally equivalent, the architecture differs slightly.
 As seen in \cref{fig:implementation:hailoclipres50x4}, the model provided by Hailo has a maximum of three dimensions.
 To work around this problem, the ONNX graph is cut off between the last matmul and transpose block.
@@ -62,13 +68,14 @@ In this figure, the combination of the last dimensions can be seen.
 This graph is then compiled into a \acrshort{hef} file, which can be executed on the Hailo hardware.
 To use CLIP, the text embeddings are also required.
 Due to the limitation that Transformers cannot be used with Hailo, the embeddings are calculated on a PC and saved in a JSON file.
+The JSON format is used because it is readable.
 
 \subsection{Rest of the Graph}
 
 As mentioned earlier, the cut-off part of the ONNX graph is handled during post-processing. 
-The cut-off part consists of one matrix multiplication and some rearranging of dimensions. 
+The cut-off part consists of a matrix multiplication and some reordering of dimensions. 
 In the first implementation, the weights for the matrix multiplication were extracted and saved in a JSON file.
-In a second attempt, the cut-off ONNX graph was directly used.
+In a second attempt, the cut-off ONNX graph was used directly.
 The second attempt proved to be faster and used less memory.
 The cut location can be seen in \cref{fig:implementation:RNcut}.
 
@@ -83,9 +90,16 @@ The cut location can be seen in \cref{fig:implementation:RNcut}.
 
 To ensure a fair comparison of performance, the implementation on the Raspberry Pi closely mirrors the one used on the PC. 
 The PC application follows a similar structure to the one used by Lia Winkler in her work.
-Due to the limitations of the \acrshort{dfc}, only ResNets are used as the vision encoder.
+The application calculates the probability score for indoor / outdoor, all outdoor subclasses and all indoor subclasses.
+After that the score are evaluated.
+First the distinction between indoor and outdoor is made by comparing the corresponding scores.
+Then either the indoor subclasses or the outdoor subclasses are evaluated to finaly classify the image.
+This process can be seen in \cref{fig:overview:evaluation}.
+There the evaluation for the Raspberry Pi is showed.
+On PC the text embeddings are directly calculated with the text encoder.
 
-To utilize the vision model on Hailo, the Python API is employed. 
+Due to the limitations of the \acrshort{dfc}, only ResNets are used as the image encoder.
+To utilize a model on Hailo, the Python API is employed. 
 Two different implementations were tested.
 
 The first implementation is based on a code snippet found in \cite{hailoimplementation}.
@@ -118,13 +132,14 @@ To process one of these patches with CLIP, it must first undergo pre-processing 
 The pre-processing steps consist of the following:
 
 \begin{itemize}
-    \item Resize
+    \item Resize (to for example \(244 \times 244\) pixel)
     \item Center-crop
     \item If not already in RGB, convert the image to RGB
-    \item Normalize
+    \item Normalize to mean 0 and standard deviation 1
 \end{itemize}
 
-Normalization values are calculated over the entire Hexagon dataset.
+Mean and standart deviation for normalization are calculated over the entire Hexagon dataset.
+These steps are included natively in any pre-process for CLIP or CLIP-like networks.
 Finally, a majority vote is taken over the subclasses of the patches to classify an image. 
 This process, mentioned in Lia Winkler's report, helps improve the accuracy of the predictions.
 
@@ -151,8 +166,8 @@ The second measures the time it takes to calculate one image embedding. This mea
 Both measurements are made on a subset of 100 images.
 
 Accuracy describes how well a model performs in labeling images.
-Its calculate by dividing the correctly classified images by the total amount of images.
-This metric is useful for checking if the network works correctly, but it may be misleading because it doesn't account for unbalanced datasets.
+It is calculate by dividing the correctly classified images by the total amount of images.
+This metric is useful for checking if a network works correctly, but it may be misleading because it does not account for unbalanced datasets.
 To get a more precise balanced accuracy is used.
 Balanced accuracy takes the amount of data from a class in consideration.
 The confusion matrices to all model evaluations are provided in the appendix.
@@ -183,7 +198,7 @@ In \cref{methods:tab:perfPC}, the performance on a PC CPU is displayed. These va
 In \cref{methods:tab:perfRaspi}, the performance measurements from executing on the Raspberry Pi CPU are displayed. RN50x16 and RN50x64 are missing because they are too large to evaluate on the Raspberry Pi.
 
 As expected, the throughput on the Raspberry Pi is significantly lower than the throughput on the PC CPU from \cref{methods:tab:perfPC}, due to the lower computing power of the Raspberry Pi. In a first test, the accuracy from the Raspberry Pi CPU differd slightly from the PC.
-A first suspision was that this is due to diffrent CPU architecture.
+A first suspision was that this is due to different CPU architecture.
 Later an error in the evaluation was found where the 5 patches were not sorted.
 This means that 5 patches that did not belong to the same image were evaluated together.
 This error is present in the code taken from Lia Winkler.
@@ -257,7 +272,7 @@ In \cref{methods:tab:sizecompare}, a comparison between the file sizes of ONNX a
 As expected, the ONNX models are significantly larger due to the higher precision (FP32), while the HEF files, which are quantized to INT8, are smaller.
 This size reduction is a direct result of the \acrshort{dfc}'s quantization process.
 For example, the model RN50 has a file size of 153.2 MB in ONNX format, but after being compiled to HEF, it reduces to 53.7 MB.
-Similar reductions in size can be observed for other models such as RN50x4, RN101, TinyClip19M, and TinyClip30M.
+Similar reductions in size can be observed for other models such as RN50x4, RN101, TinyCLIP-19M, and TinyCLIP-30M.
 Because of quantization, the memory size should be around 4 times lower than before, as the datatype of the weights changes from FP32 to INT8.
 In reality, the factor is around 3.
 It is important to mention that these numbers should be taken with a grain of salt because the datatypes of the saved models are different.
@@ -271,8 +286,8 @@ This reduction improves memory efficiency when deploying these models on hardwar
     RN50 & 153.2 MB & 53.7 MB \\ 
     RN50x4 & 348.4 MB & 121.7 MB  \\ 
     RN101 & 224.9 MB  & 82.7 MB \\
-    TinyClip19M & 74.3 MB & 28.6 MB  \\ 
-    TinyClip30M & 118.3 MB & 43.5 MB  \\ 
+    TinyCLIP-19M & 74.3 MB & 28.6 MB  \\ 
+    TinyCLIP-30M & 118.3 MB & 43.5 MB  \\ 
     \end{tabular}
     \caption{Comparison in size between ONNX and HEF file of a CLIP model.}
     \label{methods:tab:sizecompare}
@@ -301,11 +316,11 @@ Notably, the throughput on the Hailo device is much higher compared to the Raspb
 
 On first glance, it appears that accuracy only drops for the TinyCLIP models.
 However, a closer look reveals that the accuracy of the ResNet models may also be misleading.
-To understand the true performance, we need to examine the confusion matrix for the RN50 model (see \cref{methods:fig:compareConfM}) and use the balanced accuracy as measurements.
+To understand the true performance, the confusion matrix for the RN50 model (see \cref{methods:fig:compareConfM}) and the balanced accuracy as a measurement are used.
 In \cref{methods:tab:perfRaspi} a pattern appears.
-The models which original have a low parameter count lose much of their accuracy after quantisation.
-This effect can be seen with RN50 and TinyClip19M.
-TinyClip19M has the biggest drop in accuracy of more then 60\%.
+The models which original have a low parameter count lose much of their accuracy after quantization.
+This effect can be seen with RN50 and TinyCLIP-19M.
+TinyCLIP-19M has the biggest drop in accuracy of more then 60\%.
 
 
 \begin{figure}[!h]
@@ -343,23 +358,24 @@ In all cases, the differences were found to be zero, indicating that the embeddi
     \label{methods:fig:comparern50}
 \end{figure}
 
-To check the functionality, the output and of the quantisation the output of the \acrshort{dfc} is checked at every stage.
+To check the functionality, the output and of the quantization the output of the \acrshort{dfc} is checked at every stage.
 The \acrshort{dfc} is able to calculate the output of the compiling network at every step.
-With that the postprocessing and the functionality of the quantisation can be checked.
+With that the postprocessing and the functionality of the quantization can be checked.
 The test is conducted with a test image (see \cref{methods:fig:comparetestpic}).
 The Results can be seen in \cref{methods:fig:comparern50}.
 It can be seen that the output from CPU, Nativ and Compiled are the same.
 Nativ is the model which results in the translation from onnx to \acrshort{har}.
 Compiled is floating point omptimized by the \acrshort{dfc}.
-This result confirms that postprocessing is implemented correct otherwise the nativ output would be diffrent from the CPU output.
-After quantisation there is a huge shift of the output.
+This result confirms that postprocessing is implemented correct otherwise the nativ output would be different from the CPU output.
+After quantization there is a huge shift of the output.
 The effect can also be seen on the output of other images.
-This indicates that the quantisation is the problem.
+This indicates that the quantization is the problem.
 
 Important to mention is that in the process of creating the \acrshort{hef} file changes to the model architecture can happen in the form of 
 layer fusion and memory optimization.
 The effect of these changes can be seen in \cref{methods:fig:comparern50harhef} where the output of the quantized \acrshort{har} file is different from the output from the output calculated on Hailo with the compiled \acrshort{hef} file.
-This effect makes it diffcult to make a precise statment about the state of quantisation but similiar effect can be seen on the \acrshort{har} output compared to the \acrshort{hef} output.
+This effect makes it diffcult to make a precise statment about the state of quantization.
+but a similiar effect can be seen on the \acrshort{har} output compared to the \acrshort{hef} output as in both ouput "alley" has the highest probability.
 
 \begin{figure}
     \centering
@@ -371,7 +387,7 @@ This effect makes it diffcult to make a precise statment about the state of quan
 \begin{figure}
     \centering
     \includegraphics[width=0.5\textwidth]{Images/Implementation/panorama_00002_0014_2_testIMg.jpg}
-    \caption{Testimage [panorama\_00002\_0014\_2] to compare outputs of the \acrshort{dfc}. The diffrence in the output is from changes to the architecture while compile \acrshort{har} to \acrshort{hef}.}
+    \caption{Testimage [panorama\_00002\_0014\_2] to compare outputs of the \acrshort{dfc}. The difference in the output is from changes to the architecture while compile \acrshort{har} to \acrshort{hef}.}
     \label{methods:fig:comparetestpic}
 \end{figure}
 
@@ -379,36 +395,20 @@ This effect makes it diffcult to make a precise statment about the state of quan
 
 \section{Increase accuracy}
 
-Things mentiond in \cref{section:enhancealgorithm} wouldn't make much sense to applied.
+Things mentiond in \cref{section:enhancealgorithm} would not make much sense to applied.
 Most of the things mentiond extend the current network with some layers.
 Due to the cutting of the network these layers have to be processed on the CPU of the Raspberry Pi which would decrease the throughput of the networks.
-In \cref{scetion:methods:contimp} the reason for the bad accuracy is suspected to be the bad quantisation.
+In \cref{scetion:methods:contimp} the reason for the bad accuracy is suspected to be the bad quantization.
 The models are all translated to INT8.
 In a attemp to increase accuracy as much as possible is converted to INT16.
-Other ways to increase the accuracy are better text promts, adjusting the threshold for binary classifications or cutting the graph at a diffrent position so that only operation which work well quantized are used on Hailo.
+Other ways to increase the accuracy are better text promts, adjusting the threshold for binary classifications or cutting the graph at a different position so that only operation which work well quantized are used on Hailo.
 
 \subsection{Change the cut location
 \label{methods:sec:cutlocation}}
-A assumption is that the last part of the ResNet's, which is a self attention layer, isnt quantising propely due to some big matrix multipications.
+A assumption is that the last part of the ResNet's, which is a self attention layer, is not quantizing propely due to some big matrix multipications.
 To work against this effect the cut which in any case has to be made can appear earlier in the graph.
-This means that only convolutions and additions were quantised and processed on hailo.
+This means that only convolutions and additions were quantized and processed on hailo.
 The cut location can be seen in \cref{methods:fig:rn50newcut}.
-
-% \begin{table}[]
-%     \centering
-%     \begin{tabular}{l|rrrrr}
-%         \hline
-%         Modelname & Accuracy & \makecell{Throughput\\(it/s)} & \makecell{Throughput \\ Image (it/s)} & Throughput std & \makecell{Throughput\\Image std} \\ \hline
-%         RN50 & 0.972 & 20.30 $\pm$ 1.44 & 24.00 & 1.44 & 1.19 \\ 
-%         RN50x4 & 0.931 & 9.30 & 9.75 & 0.33 & 0.33 \\ 
-%         RN101 & 0.972 & 15.22 & 16.59 & 0.73 & 0.49 \\ 
-%         TinyClip19M & 0.029 & 28.40 & 36.58 & 2.85 & 3.38 \\ 
-%         TinyClip30M & 0.820 & 21.61 & 23.84 & 1.35 & 4.85 \\ 
-%     \end{tabular}
-%     \caption{Performance table from evalutaion on Hailo 8L where the model graph is cut in a diffrent location.}
-%     \label{methods:tab:perfHailocut}
-% \end{table}
-
 
 \begin{table}[]
     \centering
@@ -421,7 +421,7 @@ The cut location can be seen in \cref{methods:fig:rn50newcut}.
         TinyCLIP-19M & 0.175 & 0.217 & 28.40 $\pm$ 2.85 & 36.58 $\pm$ 3.38 \\ 
         TinyCLIP-30M & 0.625 & 0.426 & 21.61$\pm$ 1.35 & 23.84 $\pm$ 4.85\\ 
     \end{tabular}
-    \caption{Performance table from evalutaion on Hailo 8L where the model graph is cut in a diffrent location.}
+    \caption{Performance table from evalutaion on Hailo-8L where the model graph is cut in a different location.}
     \label{methods:tab:perfHailocut}
 \end{table}
 
@@ -439,9 +439,9 @@ This threshold has to be calculate.
 For this calculation one has to watch out to use a balanced dataset.
 To get a balanced dataset a subset is created so that each class has the same amount of images.
 The images are randomly sampled.
-This process proved beneficial because it doenst need much computational resources and its easily implemented.
+This process proved beneficial because it does not need much computational resources and its easily implemented.
 Due to time limitations it was only applied to the classification between Indoot and Outdoor.
-The result showed a small improvement improvment.
+The result showed a small improvement.
 The result can be seen in \cref{methods:tab:perfHailocutTh}.
 
 \begin{table}[]
@@ -455,7 +455,7 @@ The result can be seen in \cref{methods:tab:perfHailocutTh}.
         TinyCLIP-19M & 0.141 & 0.211 & -0.06\\ 
         TinyCLIP-30M & 0.624 & 0.521 & +0.95\\ 
     \end{tabular}
-    \caption{Performance table from evalutaion on Hailo 8L where the model graph is cut in a diffrent location with calculated threshold .}
+    \caption{Performance table from evalutaion on Hailo 8L where the model graph is cut in a different location with calculated threshold .}
     \label{methods:tab:perfHailocutTh}
 \end{table}
 
@@ -475,11 +475,11 @@ The result can be seen in \cref{methods:tab:perfHailocutTh}.
     \label{methods:fig:rn50newcut}
 \end{figure}
 
-\subsection{Change quantisation}
+\subsection{Change quantization}
 
-The \acrshort{dfc} offers a way to change the quantisation of the weigths.
-This is applied via the model script in quantisation.
-Due to the limitation that no GPU is available during the project quantising a network to a diffrent type than INT8 took very long.
-Due to this reason only TinyCLIP-19M is quantised to INT16.
+The \acrshort{dfc} offers a way to change the quantization of the weigths.
+This is applied via the model script in quantization.
+Due to the limitation that no GPU is available during the project quantizing a network to a different type than INT8 took very long.
+Due to this reason only TinyCLIP-19M is quantized to INT16.
 In the end 66\% of parameters were INT16 but no increase in accuracy was found.
-Further test have to made.
+Further test have to be made.
