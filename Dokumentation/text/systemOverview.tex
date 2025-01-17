@@ -54,7 +54,7 @@ The resulting text embeddings are then loaded onto the Raspberry Pi in the form 
 The text embeddings consist of the expressions from \cref{tab:dataset:subclasses} subclasses.  
 These expressions are wrapped into 5 sentences to improve accuracy.  
 
-This limitation also prevents the compilation of transformers.  
+The limitation that self-attention layers were unable to compile also prevents the compilation of Transformers.  
 Therefore, ResNets were used as the image encoders.  
 However, a challenge arose with ResNets, as the last layer is also a self-attention layer.  
 To enable the network to compile, the last part of the ResNet was removed and processed later as part of postprocessing.  
@@ -73,7 +73,6 @@ Each patch is embedded by the vision encoder.
 To get the probability scores, the text embeddings are loaded from the JSON file and multiplied by the patch embedding.
 The text embeddings have 3 layers.
 Each layer is computed separately.
-This means that 3 multiplications are required.
 The first layer contains the text embeddings to classify a patch as indoor or outdoor.
 The second layer is filled with text embeddings from the subclasses of \cref{tab:dataset:subclasses} used in indoor classes.
 The third and final layer uses the remaining outdoor subclasses from \cref{tab:dataset:subclasses}.

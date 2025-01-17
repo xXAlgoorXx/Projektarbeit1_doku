@@ -48,9 +48,10 @@
     The Transformer was first introduced in \cite{attentionisallyouneed}.
     Most of the information in this section is derived from that paper. 
     Before Transformers, \acrfull{rnn}s were commonly used to process sequential data. 
-    To capture dependencies and relationships within an input sequence, a mechanism called attention was introduced. 
-    The Transformer marked a significant breakthrough by introducing a mechanism known as self-attention. 
-    Self-attention is defined as:
+    To capture dependencies and relationships within an input sequence, a mechanism called attention was introduced.
+    The Transformer marked a significant breakthrough by introducing a mechanism known as self-attention.
+    Self-attention does not need to be calculated sequentially.
+    It is defined as:
 
     \begin{equation}
         \text{Attention}(Q, K, V) = \text{softmax}\left(\frac{QK^T}{\sqrt{d_k}}\right)V
