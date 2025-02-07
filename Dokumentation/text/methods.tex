@@ -13,7 +13,7 @@ Alternatively, models can be retrieved from HuggingFace \cite{huggingface}.
 However, the challenge with HuggingFace is that the models cannot be split into separate image and text encoders.
 For this reason, only models from the official CLIP and TinyCLIP repositories were used.
 The API to use these network is self explainatory.
-The implementaion is done in Pytorch\cite{pytorch}.
+The implementaion is done with Pytorch\cite{pytorch}.
 In \cref{methods:tab:clipsize}, the parameter count for all CLIP and TinyCLIP implementations using a ResNet as the image encoder is provided.
 It is evident that TinyCLIP uses significantly fewer parameters than the original CLIP.
 
@@ -21,7 +21,7 @@ It is evident that TinyCLIP uses significantly fewer parameters than the origina
 \label{implementation:sec:translation}}
 
 The models were first split into separate image and text encoders.
-The image encoder is then converted into an ONNX graph, which is then simplified.
+The image encoder is converted into an ONNX graph, which is then simplified.
 To get the ONNX graph the ONNX exporter from Pytorch is used.
 This ONNX graph is later translated by the \acrshort{dfc} into \acrshort{har} and \acrshort{hef} files.
 The \acrshort{dfc} needs a \acrshort{gpu} to perform some tasks or just to speed up compilation.
@@ -163,12 +163,12 @@ The following metrics were used to measure performance:
 For throughput, two measurements were taken:
 The first measures the time from input to output, including calculating the text embeddings, the image embeddings, and the dot product of the embeddings. This measurement is called throughput and is measured in iterations per second (it/s).
 The second measures the time it takes to calculate one image embedding. This measurement is called throughput image and is also measured in iterations per second (it/s).
-Both measurements are made on a subset of 100 images.
+Both measurements are calculated on a subset of 100 images.
 
 Accuracy describes how well a model performs in labeling images.
 It is calculate by dividing the correctly classified images by the total amount of images.
 This metric is useful for checking if a network works correctly, but it may be misleading because it does not account for unbalanced datasets.
-To get a more precise balanced accuracy is used.
+In order to make a more precise statement, balanced accuracy is used.
 Balanced accuracy takes the amount of data from a class in consideration.
 The confusion matrices to all model evaluations are provided in the appendix.
 In the text, accuracy is also used to refer to the models ability to classify images correctly.
@@ -248,8 +248,8 @@ In \cref{methods:tab:perfRaspi}, the parameter count of the image encoder is dis
 Now, the networks after compilation are examined.
 First, the number of parameters in the compiled \acrshort{har} file is analysed.
 There is a slight decrease in the number of parameters, which can be explained.
-In the case of TinyCLIP-19M, the cut-off graph is composed of a matrix multiplication with a matrix of the shape \(1024 \times 1408\).With the following calculation
-The following calculation is provided:
+In the case of TinyCLIP-19M, the cut-off graph is composed of a matrix multiplication with a matrix of the shape \(1024 \times 1408\).
+With the following calculation:
 
 \begin{equation*}
     1024 \times 1408 + 1024 = 1'442'816
@@ -375,7 +375,7 @@ Important to mention is that in the process of creating the \acrshort{hef} file 
 layer fusion and memory optimization.
 The effect of these changes can be seen in \cref{methods:fig:comparern50harhef} where the output of the quantized \acrshort{har} file is different from the output from the output calculated on Hailo with the compiled \acrshort{hef} file.
 This effect makes it diffcult to make a precise statment about the state of quantization.
-but a similiar effect can be seen on the \acrshort{har} output compared to the \acrshort{hef} output as in both ouput "alley" has the highest probability.
+A similiar effect can be seen on the \acrshort{har} output compared to the \acrshort{hef} output as in both ouput "alley" has the highest probability.
 
 \begin{figure}
     \centering

@@ -99,7 +99,7 @@ Consequently, no definitive statements could be made regarding the impact of lay
 All tested models experienced a reduction in accuracy after quantization.  
 This effect was particularly severe for models with low parameter counts, such as RN50 and TinyCLIP-19M.
 The reason for this could be that the low-parameter networks have little or no redundant weights.
-The redundancy could contribute to a reduction in the quantization error, for example, so that the sum of the quantization errors of all the redundant weights is close to zero.
+The redundancy could, for example, help to reduce the quantisation error so that the sum of the quantisation errors of all the redundant weights is close to zero.
 Interestingly, despite having fewer parameters than RN50, TinyCLIP-30M retained relatively high accuracy after quantization.    
 
 \section{Evaluation of Hailo}  
@@ -107,10 +107,10 @@ The Hailo 8L hardware accelerator was found to be an effective product.
 Its combination with the Raspberry Pi 5 facilitated the development of edge AI solutions, offering a simpler alternative to creating custom PCBs.  
 
 The \acrshort{dfc} contributed to this simplicity by providing built-in tutorials and comprehensive guides.  
-The guides included code examples for using Hailo hardware, though it should be noted that full functionality of the \acrshort{dfc} requires a GPU.  
+The guides included code examples for compiling networks with the \acrshort{dfc}, although it should be noted that full functionality of the \acrshort{dfc} requires a GPU. 
 It is suspected that the full potential of the \acrshort{dfc} was not utilized in this project due to the absence of a GPU.  
 
-Most of Hailo's examples found in the model zoo\cite{hailo_model_zoo}, Hailos Raspberry Pi examples\cite{hailo_rpi5_examples} and some more generic examples\cite{hailo_application_code_examples} focused on image processing.
+Most of Hailo's examples found in the model zoo\cite{hailo_model_zoo}, Hailos Raspberry Pi examples\cite{hailo_rpi5_examples} and some more generic examples\cite{hailo_application_code_examples} focuse on image processing.
 
 Hailo has no offical support.
 They are handeling questions and requests through their Hailo community site.  
@@ -136,7 +136,7 @@ This project demonstrated that quantizing models with low parameter counts resul
 This was evident in the evaluation of RN50 and TinyCLIP-19M.  
 Conversely, TinyCLIP-30M retained a larger portion of its accuracy after quantization, indicating that the model's inherent capacity may play a role in mitigating quantization losses.  
 It must be emphasized that none of the models achieved satisfactory accuracy after quantization.  
-The measures implemented to improve accuracy were ineffective.
+The measures implemented to improve accuracy were mostly ineffective.
 Only the changes to the threshold achieved some improvements. 
 Future efforts should focus on optimizing the models prior to quantization to enhance post-quantization performance.  
 Additionally, appropriate hardware, such as GPUs, should be utilized to reduce compilation times and enable advanced \acrshort{dfc} functionalities.  
@@ -154,7 +154,7 @@ It is important to validate the hypothesis that matrix multiplications are chall
 Of the two TinyCLIP models tested, only one (TinyClip-30M) had a reasonably usable accuracy after quantization.
 This is surprising as it uses fewer parameters than the smallest ResNet tested, but still outperformed it.
 This suggests that the process used to create TinyCLIP works well after quantization if the original model has a sufficiently large capacity.
-To confirm this suspicion, the transformer solutions from TinyCLIP should also be evaluated once it is possible to use them on Hailo.
+To confirm this suspicion, the Transformer solutions from TinyCLIP should also be evaluated once it is possible to use them on Hailo.
 
 Once the \acrshort{dfc} supports full-model compilation, additional measures, such as fine-tuning and utilizing CLIP adapter \cite{clipadapter}, can be implemented to improve accuracy before quantization.  
 For optimal performance, both the text and image encoders should be quantized together to avoid costly context switches during processing.  
