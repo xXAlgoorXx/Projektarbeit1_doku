@@ -144,13 +144,26 @@ Finally, a majority vote is taken over the subclasses of the patches to classify
 This process, mentioned in Lia Winkler's report, helps improve the accuracy of the predictions.
 
 \section{Evaluation}
+\begin{table}[h!]
+    \centering
+    \begin{tabular}{l|l}
+    \hline
+    Environment &  Models used\\
+    \hline
+    CPU on PC (Intel Core i7-14700) &  Complette Models\\
+    CPU on Raspberry Pi 5 &  Complete Models\\
+    Hailo-8L entry level hardware accelerator & Cut Models
+    \end{tabular}
+    \caption{Overview of environments used for evaluation and models used on the corresponding environment}
+    \label{tab:implementation:platform}
+\end{table}
 
-To measure the performance of the Hailo hardware, the models were tested in three different environments:
-\begin{itemize}
-    \item CPU on PC (Intel Core i7-14700)
-    \item CPU on Raspberry Pi 5
-    \item Hailo-8L entry level hardware accelerator
-\end{itemize}
+To measure the performance of the Hailo hardware, the models were tested in three different environments (see \cref{tab:implementation:platform})
+%\begin{itemize}
+%    \item CPU on PC (Intel Core i7-14700)
+%    \item CPU on Raspberry Pi 5
+%    \item Hailo-8L entry level hardware accelerator
+%\end{itemize}
 The implementations were made as similar as possible to ensure the values are correct and representative. 
 
 The following metrics were used to measure performance:
@@ -395,6 +408,20 @@ A similiar effect can be seen on the \acrshort{har} output compared to the \acrs
 
 \section{Increase accuracy}
 
+\begin{table}[h!]
+    \centering
+    \begin{tabular}{l|l}
+        \hline
+     Mehtod &  Improvement\\
+     \hline
+     Change the cut location &  Small in models RN101 and TinyCLIP-30M\\
+     Adjust threshold &  None\\
+     Change quantization & None
+    \end{tabular}
+    \caption{Overview of the taken actions to increase accuracy.}
+    \label{methods:tab:prefOverview}
+\end{table}
+
 Things mentiond in \cref{section:enhancealgorithm} would not make much sense to applied.
 Most of the things mentiond extend the current network with some layers.
 Due to the cutting of the network these layers have to be processed on the CPU of the Raspberry Pi which would decrease the throughput of the networks.
@@ -410,7 +437,7 @@ To work against this effect the cut which in any case has to be made can appear 
 This means that only convolutions and additions were quantized and processed on hailo.
 The cut location can be seen in \cref{methods:fig:rn50newcut}.
 
-\begin{table}[]
+\begin{table}[h!]
     \centering
     \begin{tabular}{l|rrrrr}
         \hline
@@ -444,7 +471,7 @@ Due to time limitations it was only applied to the classification between Indoot
 The result showed a small improvement.
 The result can be seen in \cref{methods:tab:perfHailocutTh}.
 
-\begin{table}[]
+\begin{table}[h!]
     \centering
     \begin{tabular}{l|rrr}
         \hline
@@ -483,3 +510,22 @@ Due to the limitation that no GPU is available during the project quantizing a n
 Due to this reason only TinyCLIP-19M is quantized to INT16.
 In the end 66\% of parameters were INT16 but no increase in accuracy was found.
 Further test have to be made.
+
+\section{Compare PC CPU to Hailo-8L}
+The table \ref{methods:tab:comparehailopc} shows the comparison between the performance on PC to the performance off the Hailo-8L.
+\begin{table}[h!]
+    \centering
+    \begin{tabular}{l|rrr}
+    \hline
+    Modelname & \makecell{Accuracy\\change} &  \makecell{Balanced accuracy\\change}&\makecell{Throughput\\change}
+    \\
+    \hline
+    RN50 & -0.046 & -0.396 &  +7.84\\
+    RN50x4 & -0.092 & -0.296 &  +3.51\\
+    RN101 & -0.139&  -0.199& +5.84\\  
+    TinyCLIP-19M &-0.664 & -0.619 & -25.66\\ 
+    TinyCLIP-30M &-0.215 & -0.3 & -15.92\\ 
+    \end{tabular}
+    \caption{Performance compare of models processed on Hailo-8L compared to PC CPU}
+    \label{methods:tab:comparehailopc}
+\end{table}
