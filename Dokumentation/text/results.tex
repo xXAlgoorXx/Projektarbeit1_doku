@@ -146,8 +146,11 @@ CLIP models which use transformers as vision encoders have higher accuracy than 
 This may also address the limitation of floating-point calculations for text embeddings.  
 Quantizing text embeddings alongside the models could lead to improved accuracy.  
 Furthermore, the ability to quantize transformers effectively and achieve high performance remains to be established.  
+% 
 
-\section{Outlook}  
+\section{Outlook}
+% was würde gehen mit mehr zeit
+% Vergleich resnet transformer
 Future work should consider waiting for updates that enable transformer support in the \acrshort{dfc}.  
 It is important to validate the hypothesis that matrix multiplications are challenging to quantize effectively, as these operations form the core of self-attention layers in transformers (see \cref{equ:selfattention}).  
 

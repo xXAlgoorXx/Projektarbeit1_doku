@@ -38,7 +38,8 @@ The model weights are quantized to 8 bits.
     \label{fig:implementation:compareRN50x4}
 \end{figure}
 
-\subsection{Splitting the Graph}
+\subsection{Splitting the Graph
+\label{subsection:implementation:splitgraph}}
 
 The first major issue encountered during the translation step is that the \acrshort{dfc} cannot compile Transformers.
 Specifically, the problem arises from a transpose block at the end of every self-attention layer.
@@ -150,7 +151,7 @@ This process, mentioned in Lia Winkler's report, helps improve the accuracy of t
     \hline
     Environment &  Models used\\
     \hline
-    CPU on PC (Intel Core i7-14700) &  Complette Models\\
+    CPU on PC (Intel Core i7-14700) &  Complete Models\\
     CPU on Raspberry Pi 5 &  Complete Models\\
     Hailo-8L entry level hardware accelerator & Cut Models
     \end{tabular}
@@ -158,12 +159,8 @@ This process, mentioned in Lia Winkler's report, helps improve the accuracy of t
     \label{tab:implementation:platform}
 \end{table}
 
-To measure the performance of the Hailo hardware, the models were tested in three different environments (see \cref{tab:implementation:platform})
-%\begin{itemize}
-%    \item CPU on PC (Intel Core i7-14700)
-%    \item CPU on Raspberry Pi 5
-%    \item Hailo-8L entry level hardware accelerator
-%\end{itemize}
+To measure the performance of the Hailo hardware, the models were tested in three different environments (see \cref{tab:implementation:platform}).
+The cut models refer to the models that were cut off after the last MatMul block (see \cref{subsection:implementation:splitgraph}).
 The implementations were made as similar as possible to ensure the values are correct and representative. 
 
 The following metrics were used to measure performance:
@@ -512,7 +509,11 @@ In the end 66\% of parameters were INT16 but no increase in accuracy was found.
 Further test have to be made.
 
 \section{Compare PC CPU to Hailo-8L}
+% CPU to RP CPU erklären und tendezen erläutern
 The table \ref{methods:tab:comparehailopc} shows the comparison between the performance on PC to the performance off the Hailo-8L.
+The accuracy comparison between Raspberry Pi CPU and PC CPU is not shown becasue the it is the same on both platforms.
+This can be seen in \cref{methods:tab:perfPC} and \cref{methods:tab:perfRaspi}.
+
 \begin{table}[h!]
     \centering
     \begin{tabular}{l|rrr}
