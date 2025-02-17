@@ -326,19 +326,34 @@ Notably, the throughput on the Hailo device is much higher compared to the Raspb
 
 On first glance, it appears that accuracy only drops for the TinyCLIP models.
 However, a closer look reveals that the accuracy of the ResNet models may also be misleading.
-To understand the true performance, the confusion matrix for the RN50 model (see \cref{methods:fig:compareConfM}) and the balanced accuracy as a measurement are used.
+To understand the true performance, the confusion matrix for the RN50 model (see \cref{methods:fig:compareConfM}) and the balanced accuracy as a measurement is used.
+The balanced accuracy is calculated as
+\begin{equation*}
+    \text{Balanced Accuracy} = \frac{\text{Sensitivity + Specificity}}{2}
+\end{equation*}
+where Sensitivity is the true positive rate (TPR) and Specificity is the true negative(TNR) rate.
+They are calculated as
+\begin{equation*}
+    \text{Sensitivity} = \frac{\text{TP}}{\text{TP} + \text{FN}}
+\end{equation*}
+and 
+\begin{equation*}
+    \text{Specificity} = \frac{\text{TN}}{\text{TN} + \text{FP}}
+\end{equation*}
+where TP is the true positive, FN is the false negative, TN is the true negative and FP is the false positive.
+The values for TP, FN, TN and FP are taken from the confusion matrix.
+
 In \cref{methods:tab:perfRaspi} a pattern appears.
 The models which original have a low parameter count lose much of their accuracy after quantization.
 This effect can be seen with RN50 and TinyCLIP-19M.
 TinyCLIP-19M has the biggest drop in accuracy of more then 60\%.
 
-
 \begin{figure}[!h]
     \centering
     \subfloat[][Evaluation on PC]{\includegraphics[width=0.49\textwidth]{Images/appendix/resultsPC/Confusion Matrix 5S(RN50).png}\label{methods:fig:confrn50pc}}
     \subfloat[][Evaluation on Hailo]{\includegraphics[width=0.49\textwidth]{Images/Implementation/Confusion Matrix 5S(RN50)Hailo.png}\label{methods:fig:confrn50hailo}}
-    \label{methods:fig:compareConfM}
     \caption{Comparison of confusion matrix from Hailo to PC.}
+    \label{methods:fig:compareConfM}
 \end{figure}
 
 There are several possible reasons for the discrepancies between the PC and Hailo evaluations, which are reflected in the balanced accuracy:
@@ -409,7 +424,7 @@ A similiar effect can be seen on the \acrshort{har} output compared to the \acrs
     \centering
     \begin{tabular}{l|l}
         \hline
-     Mehtod &  Improvement\\
+     Method &  Improvement\\
      \hline
      Change the cut location &  Small in models RN101 and TinyCLIP-30M\\
      Adjust threshold &  None\\
@@ -530,3 +545,16 @@ This can be seen in \cref{methods:tab:perfPC} and \cref{methods:tab:perfRaspi}.
     \caption{Performance compare of models processed on Hailo-8L compared to PC CPU}
     \label{methods:tab:comparehailopc}
 \end{table}
+
+\begin{figure}
+    \centering
+    \subfloat[Performance history for accuracy over all environments]{\includegraphics[width=0.47\textwidth]{Images/Implementation/AccuracyModels.png}}
+    \qquad
+    \subfloat[Performance history for balanced accuracy over all environments]{\includegraphics[width=0.47\textwidth]{Images/Implementation/BalancedAccuracyModels.png}}\\
+    \subfloat[Performance history for Throughput over all environments]{\includegraphics[width=0.47\textwidth]{Images/Implementation/ThroughputModels.png}}
+    \caption{Plots where the performance history across all environments is displayed.}
+    \label{methods:fig:peformanceplatforms}
+\end{figure}
+
+Additionallly, in \cref{methods:fig:peformanceplatforms} the performance history across all platforms is displayed.
+There it is visualized that no change in accuracy is present between the Raspberry Pi and the PC.

@@ -1,85 +1,3 @@
-% \chapter{Results}
-% In this chapter the results are discussed and interpreted.
-% The conclusions taken are based of the other chapters in this work.
-
-% \section{Execute models on the edge}
-% To have a successfull compilation of a network it is important to understand which parts of network won't lose much accuracy due to quantization.
-% In this project, two implementations are tested.
-% One where as much as possibel is calculated on the edge.
-% The second tries to take in consideratio how good a given layer quantises.
-% The reason for this is a suspision that big matrix multiplications dont quantize well.
-% Sadly both implementation lack of good results.
-% This means no statement in context of how good a layer quantises can be made.
-
-% All models suffered under a decrease of accuracy after quantization.
-% This effect is sever with models who have a low parameter count like RN50 and TinyCLIP-19M.
-% Interestingly TinyCLIP-30M which has a lower parameter count than RN50 but still retained a higher accuracy after quantization.
-
-% \section{Working with Hailo}
-
-% Hailo has proven to have a good product with the Hailo 8L hardware accelerator.
-% In use the combination with the Raspberry Pi 5 makes it easy to develop a edge AI solution in comparison to other solutions like making a new PCB.
-
-% The \acrshort{dfc} also contributes to simplicity of the solution by hailo.
-% The tutorials are built into the software packages.
-% Additional information can easly be found in the guide document of the \acrshort{dfc}.
-% In the guide are also code examples on how to use the hailo hardware.
-% To use the full potential of the \acrshort{dfc} a GPU is needed.
-% The suspision arrises that full potential  of the \acrshort{dfc}  is not utilized in this project because of the absence of a GPU.
-
-% Although nearly all examples from hailo are focused on image processing.
-% The help is handeld through the hailo community site.
-% This is beneficial if other people have the same problem.
-% But on serius problems like the problem with the dimension swap (see \cref{implementation:sec:translation}) it felt like no one of the hailo people which are answering in the forum understood enough to tell that the compilation of this specific network isn't possible at the moment.
-
-% The python \acrfull{api} can be found online or in the \acrshort{dfc} Guide.
-% Sadly it isn't discribed too good.
-% All code from hailo is open source.
-% There are many sources of examples to use the \acrshort{api} but these are again not described very well.
-% It felt like most of the code has be understood by the programmer.
-% The other way would be asking in the forum of hailo.
-% There the time to answer can alter between 1-10 days.
-
-% \section{Conclusion}
-
-% This project showed that quantising models with a low parameter count leads to bad results.
-% This can be seen in the result from the evaluation of the models RN50 and TinyCLIP-19M.
-% On the other hand TinyClip-30M surprisingly retaind the most part of its accuracy through quantization although having less parameters than RN50.
-% This indicates that the steps taken to get the TinyCLIP models work even beyond quantization if the original model has enough capacity.
-
-% There has to menationd that all the models lack of a satisfactory accuracy after quantization.
-% The taken measures to increase this accuracy didn't work.
-% Further work has to be done in advance of the quantization to increase the accuracy after quantization.
-% It is beneficial to use apropoate hardware (\acrshort{gpu}) to speed up the compilation time.
-% There are also cetrain functions of the \acrshort{dfc} which arent possible to make without a \acrshort{gpu} like optimization of a network.
-
-% To really use the full potential of the Hailo hardware accelerator and CLIP one should wait until the implementation to use transformers is complete.
-% This could also eliminate a other error source which is that the text embeddings are claculated in floating point.
-% By also quantising the text embeddings and calculate the results quantized a imporvement in accuracy could be present
-% The ability to quantise a transformer and still achive good results has to be proven.
-
-% \section{Outlook}
-
-% The next steps should be to wait for the next update when hailo implements the usage of Transformers.
-% It is important to keep in mind that a suspision from this project is that matrix multiplications dont quantise well.
-% The self attention layer from Transformers are basicly 3 matrix multiplications (see \cref{equ:selfattention}).
-
-% When the functionality of the \acrshort{dfc} of compiling the whole model is present, other measures to increase the accuracy before quantization can be done like finetuning or the usage of the CLIP adapter\cite{clipadapter}.
-% Also to use both text and image encoder on the hardware accelerator they have to be quantised together.
-% This may further boost their performance.
-% Otherwise a expensive context switch from one model to the other has to be done like in a early form of the implementation to evaluate Hailo in this project.
-
-
-% To further incerase the scene understanding capabilities SAM\cite{sam} could be used as preprocessing.
-% \acrshort{sam} returns segments of pictures.
-% This in compination with CLIP could be used to incerase the accuracy of classification.
-% \acrshort{sam} could for example isolate things in a office for example a printer or a computer which then gets classified by CLIP.
-% To use this most likely 2 hardware accelerators, one for each model.
-% This means that the Raspberry Pi 5 wouldnt be capable of this task because it has only one M.2 slot.
-
-% To not be so dependend on Hailo as soon as some alternative is avalable on the market like ME1076 and MM1076 from Mythic they should be tested and evaluated.
-
-
 \chapter{Results}  
 In this chapter, the results are presented, discussed, and interpreted.  
 The conclusions are drawn based on the findings from the previous chapters of this work.  
@@ -145,12 +63,9 @@ To fully leverage the Hailo hardware accelerator and the CLIP model, it is recom
 CLIP models which use transformers as vision encoders have higher accuracy than the ones which use ResNets. 
 This may also address the limitation of floating-point calculations for text embeddings.  
 Quantizing text embeddings alongside the models could lead to improved accuracy.  
-Furthermore, the ability to quantize transformers effectively and achieve high performance remains to be established.  
-% 
+Furthermore, the ability to quantize transformers effectively and achieve high performance remains to be established.   
 
 \section{Outlook}
-% was würde gehen mit mehr zeit
-% Vergleich resnet transformer
 Future work should consider waiting for updates that enable transformer support in the \acrshort{dfc}.  
 It is important to validate the hypothesis that matrix multiplications are challenging to quantize effectively, as these operations form the core of self-attention layers in transformers (see \cref{equ:selfattention}).  
 
@@ -165,6 +80,18 @@ For optimal performance, both the text and image encoders should be quantized to
 To further enhance scene understanding capabilities, preprocessing with SAM \cite{sam} could be employed.  
 SAM segments images into distinct regions, which can then be classified by CLIP.  
 This approach would likely require two hardware accelerators, one for each model, making the Raspberry Pi 5 unsuitable due to its single M.2 slot.  
+To reduce dependency on Hailo, alternative solutions, such as the ME1076 and MM1076 from Mythic, should be evaluated as they become available.
 
-To reduce dependency on Hailo, alternative solutions, such as the ME1076 and MM1076 from Mythic, should be evaluated as they become available.  
+\subsubsection*{Next Steps}
+The Next steps should look like this:
+\begin{enumerate}
+    \item First an evaluation should be made if Transformers really achieve better results than ResNets on the Hexagon dataset.
+    The original CLIP paper \cite{clip} states that the Transformer models in general are better than the ResNet models.
+    \item If the update from Hailo comes to enable the compilation of Transformers, the full power of the \acrshort{dfc} should be explored.
+    This includes different quantisations and optimizations.
+    As stated in this document, a GPU is needed to use the full potential of the \acrshort{dfc}.
+    \item If Hailo's updates to the \acrshort{dfc} to support Transformers take too long, other options that follow a similar procedure should be explored, such as Mythic's ME1076 and MM1076, or other hardware accelerators mentioned in the market analysis \cref{chapter:marketanalysis}.
+    \item As an alternative to the previous point, hardware accelerator chips could be explored.
+    For example, ST Microelectronics and ARM offer hardware accelerator chips that can be integrated into custom designs.
+\end{enumerate}
 

@@ -1,13 +1,24 @@
 import numpy as np  
 import matplotlib.pyplot as plt 
+
 # Define discrete classes
 x = ['PC CPU', 'Raspberry Pi', 'Hailo-8L']
 models = ['RN50', 'RN50x4', 'RN101', 'TinyCLIP-19M', 'TinyCLIP-30M']
+
+# Update font sizes
 plt.rcParams.update({
     "text.usetex": True,
     "font.family": "serif",
-    "font.serif": ["Computer Modern Roman"]
+    "font.serif": ["Computer Modern Roman"],
+    "font.size": 14,  # Default text size
+    "axes.titlesize": 16,  # Title size
+    "axes.labelsize": 14,  # X and Y label size
+    "xtick.labelsize": 12,  # X tick label size
+    "ytick.labelsize": 12,  # Y tick label size
+    "legend.fontsize": 12,  # Legend font size
+    "figure.titlesize": 16  # Figure title size
 })
+
 # Performance data for each model in different environments
 performance_data_accuracy = {
     'RN50': [0.845, 0.845, 0.799],
@@ -18,14 +29,15 @@ performance_data_accuracy = {
 }
 
 # Create the first plot
-plt.figure()
+plt.figure(figsize=(6,6))
 for model in models:
     plt.plot(x, performance_data_accuracy[model], label=model)
 plt.xlabel('Environment')
 plt.ylabel('Accuracy')
+plt.ylim(-0.1,1.1)
 plt.legend()
 plt.grid(True)
-plt.savefig('AccuracyModels.png')
+plt.savefig('AccuracyModels.png',dpi= 600)
 
 performance_data_balanced_accuracy = {
     'RN50': [0.596, 0.596, 0.200],
@@ -36,14 +48,15 @@ performance_data_balanced_accuracy = {
 }
 
 # Create the second plot
-plt.figure()
+plt.figure(figsize=(6,6))
 for model in models:
     plt.plot(x, performance_data_balanced_accuracy[model], label=model)
 plt.xlabel('Environment')
 plt.ylabel('Balanced Accuracy')
 plt.legend()
+plt.ylim(-0.1,1.1)
 plt.grid(True)
-plt.savefig('BalancedAccuracyModels.png')
+plt.savefig('BalancedAccuracyModels.png',dpi= 600)
 
 
 performance_data_throughput = {
@@ -55,14 +68,14 @@ performance_data_throughput = {
 }
 
 # Create the third plot
-plt.figure()
+plt.figure(figsize=(6,6))
 for model in models:
     plt.plot(x, performance_data_throughput[model], label=model)
 plt.xlabel('Environment')
 plt.ylabel('Throughput (it/s)')
 plt.legend()
 plt.grid(True)
-plt.savefig('ThroughputModels.png')
+plt.savefig('ThroughputModels.png',dpi= 600)
 
 plt.show()
 
